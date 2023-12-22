@@ -1,0 +1,5 @@
+<!-- imageGallery.hbs - Display uploaded images -->
+<h1>Image Gallery</h1>
+{{#each images}}
+  <img src="data:{{contentType}};base64,{{data.toString 'base64'}}" alt="{{filename}}">
+{{/each}}

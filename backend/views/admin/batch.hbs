@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Image Upload</title>
+</head>
+
+<head>
+  <title>Create Batch</title>
+</head>
+<body>
+  <h1>Create Batch</h1>
+  <form id="createBatchForm">
+    <label for="batchName">Batch Name:</label>
+    <input type="text" id="batchName" name="batchName" required><br><br>
+    
+    <label for="productName">Product Name:</label>
+    <input type="text" id="productName" name="productName" required><br><br>
+
+    <label for="productDis">Product Discription:</label>
+    <input type="text" id="productDiscription" name="productDis" required><br><br>
+
+    <label for="stockNumber">Stock Number:</label>
+    <input type="number" id="stockNumber" name="stockNumber" required><br><br>
+
+    <label for="productDis">Price:</label>
+    <input type="text" id="productPrice" name="productDis" required><br><br>
+    
+    <label for="stockNumber">Starting Date:</label>
+    <input type="date" id="startDate" name="stockNumber" required><br><br>
+
+    <label for="stockNumber">Ending Date:</label>
+    <input type="date" id="endDate" name="stockNumber" required><br><br>
+
+    <label for="stockNumber">Variable Product:</label>
+    <input type="checkbox" id="variableProduct" name="stockNumber" ><br><br>
+
+     <label action="/upload" method="post" enctype="multipart/form-data">Image Upload</label>
+    <input type="file" name="image" accept="image/*"><br><br>
+    
+    
+    <button type="submit">Add Product</button>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#createBatchForm').submit(function(e) {
+        e.preventDefault();
+        const batchName = $('#batchName').val();
+        const productName = $('#productName').val();
+        const stockNumber = $('#stockNumber').val();
+        const productDiscription = $('#productDiscription').val();
+        const productprice = $('#productPrice').val();
+        const startingdate = $('#startDate').val();
+        const endingdate = $('#endDate').val();
+        // const variableProduct = $('#variableProduct').prop('checked');
+        $.ajax({
+          type: 'POST',
+          url: '/admin', // This should be the endpoint you want to handle this form
+          data: JSON.stringify({ batchName, productName, stockNumber , productDiscription, productprice, startingdate, endingdate, 
+            // variableproduct 
+          }),
+          contentType: 'application/json',
+          success: function(response) {
+            alert(response); // Handle success response
+          },
+          error: function(error) {
+            alert('Error creating batch HBS'); // Handle error
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
