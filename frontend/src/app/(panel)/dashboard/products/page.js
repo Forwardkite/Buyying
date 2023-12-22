@@ -1,0 +1,531 @@
+"use client";
+
+import "./style.scss";
+import * as React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Switch from "@mui/material/Switch";
+import { useEffect, useState } from "react";
+
+
+//_________________________________________________________________________________________________//
+
+
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "60%",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+const label = { inputProps: { "aria-label": "Switch demo" } };
+
+//_________________________________________________________________________________________________//
+
+export default function Home() {
+  const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [Fetchdata, setData] = useState(null);
+
+  const [ProName, SetProname] = useState();
+  const [ProPrice, SetProprice] = useState();
+  const [ProDis, SetProdis] = useState();
+  const [ProNum, SetProNum] = useState();
+  const [startDate, SetStartDate] = useState();
+  const [endDate, SetEndDate] = useState();
+  const [variablePro, SetVariablePro] = useState(false);
+
+  const [openEditModal, setOpenEditModal] = React.useState(false);
+  const [proImage, SetProImage] = useState();
+
+  //_________________________________________________________________________________________________//
+
+  const SendingData = {
+    productName: ProName,
+    stockNumber: ProNum,
+    productDiscription: ProDis,
+    productprice: ProPrice,
+    startingdate: startDate,
+    endingdate: endDate,
+
+    imageProduct: proImage
+  };
+
+  //_________________________________________________________________________________________________//
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:5000/admin/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(SendingData),
+      });
+
+      if (response.ok) {
+        console.log("Data sent successfully");
+        window.location.reload(false);
+      } else {
+        console.error("Failed to send data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+  };
+
+
+
+//_________________________________________________________________________________________________//
+
+
+const handleOpenEditing = (data) => {
+  // Set the state with the data for editing
+  SetProname(data.productName);
+  SetProNum(data.stockNumber);
+  SetProdis(data.productDiscription);
+  SetProprice(data.productprice);
+  SetStartDate(data.startingdate);
+  SetEndDate(data.endingdate);
+
+  SetProImage(data.proImage);
+
+  // Open the edit modal
+  setOpenEditModal(true);
+};
+
+const handleEditSubmit = async (e) => {
+  e.preventDefault();
+
+  const updatedData = {
+    productName: ProName,
+    stockNumber: ProNum,
+    productDiscription: ProDis,
+    productprice: ProPrice,
+    startingdate: startDate,
+    endingdate: endDate,
+  };
+
+  try {
+    const response = await fetch(`http://localhost:5000/admin/view/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (response.ok) {
+      console.log("Data updated successfully");
+      // Close the edit modal after successful update
+      setOpenEditModal(false);
+      // You might want to refresh the product list or update state after editing
+    } else {
+      console.error("Failed to update data:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error updating data:", error);
+  }
+};
+
+//_________________________________________________________________________________________________//
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/admin/view");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const result = await response.json();
+
+        if (isMounted) {
+          setData(result);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return (
+    <>
+      <section className="w-full mb-6">
+        <div className="flex justify-between">
+          <h5 className="mb-4">Products</h5>
+          <button
+            onClick={handleOpen}
+            className="bg-violet-700 text-white py-2 px-4 rounded"
+          >
+            Add New product
+          </button>
+        </div>
+      </section>
+      <section className="flex gap-6">
+        <TableContainer className="shadow-md-0-0 rounded-md">
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow className="border-b">
+                <TableCell component="th" scope="row">
+                  Product
+                </TableCell>
+
+                <TableCell>Product Name</TableCell>
+                <TableCell align="right">Price</TableCell>
+                <TableCell align="right">Sale Date</TableCell>
+                <TableCell align="right">Stock Left</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {/* ................................ */}
+              {Fetchdata ? (
+                Fetchdata.map((e) => (
+                  <TableRow className="border-b">
+                    <TableCell component="th" scope="row">
+                      <img
+                        src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg?w=996"
+                        alt=""
+                        className="w-[100px]"
+                      />
+                    </TableCell>
+                    <TableCell>{e.productName}</TableCell>
+                    <TableCell align="right">₹{e.productprice}</TableCell>
+                    <TableCell align="right">{e.startingdate}</TableCell>
+                    <TableCell align="right">{e.stockNumber}</TableCell>
+                    <TableCell align="right">
+                      <button
+                        // onClick={handleOpenEdit}
+                        onClick={() => handleOpenEditing(e)}
+                        className="px-8 py-2 bg-violet-700 text-white rounded"
+                      >
+                        Edit
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <p></p>
+              )}
+
+              {/* ................................ */}
+
+              {/* <TableRow className="border-b">
+                <TableCell component="th" scope="row">
+                  <img
+                    src="../../../../../assets/img/pen.png"
+                    alt=""
+                    className="w-[100px]"
+                  />
+                </TableCell>
+                <TableCell>Pen</TableCell>
+                <TableCell align="right">999</TableCell>
+                <TableCell align="right">14/12/23</TableCell>
+                <TableCell align="right">50</TableCell>
+                <TableCell align="right">
+                  <button className="px-8 py-2 bg-violet-700 text-white rounded">
+                    Edit
+                  </button>
+                </TableCell>
+              </TableRow>
+              <TableRow className="border-b">
+                <TableCell component="th" scope="row">
+                  <img
+                    src="../../../../../assets/img/biryani.png"
+                    alt=""
+                    className="w-[100px]"
+                  />
+                </TableCell>
+                <TableCell align="left">Biryani</TableCell>
+                <TableCell align="right">999</TableCell>
+                <TableCell align="right">14/12/23</TableCell>
+                <TableCell align="right">50</TableCell>
+                <TableCell align="right">
+                  <button className="px-8 py-2 bg-violet-700 text-white rounded">
+                    Edit
+                  </button>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  <img
+                    src="../../../../../assets/img/tshirt.png"
+                    alt=""
+                    className="w-[100px]"
+                  />
+                </TableCell>
+                <TableCell align="left">T shirt</TableCell>
+                <TableCell align="right">999</TableCell>
+                <TableCell align="right">14/12/23</TableCell>
+                <TableCell align="right">50</TableCell>
+                <TableCell align="right">
+                  <button className="px-8 py-2 bg-violet-700 text-white rounded">
+                    Edit
+                  </button>
+                </TableCell>
+              </TableRow> */}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </section>
+
+{/*____________________________________________ADD_PRODUCT___________________________________________*/}
+
+      <Modal
+        className="left-[16.666667%]"
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            className="font-bold"
+          >
+            Add Product
+          </Typography>
+
+          <form
+            action=""
+            className="flex flex-wrap gap-6 text-black"
+            onSubmit={handleSubmit}
+          >
+            <div className="flex w-full gap-x-6">
+              <div className="input flex flex-col w-4/6">
+                <label htmlFor="" className="">
+                  Product Name
+                </label>
+                <input
+                  type="text"
+                  className="border"
+                  value={ProName}
+                  onChange={(e) => SetProname(e.target.value)}
+                />
+              </div>
+              <div className="input flex flex-col w-2/6">
+                <label htmlFor="">Item in Stock</label>
+                <input
+                  type="number"
+                  className="border"
+                  value={ProNum}
+                  onChange={(e) => SetProNum(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-6 w-full">
+              <div className="input flex flex-col w-1/2 input-image">
+                <h6>Product Image</h6>
+                <label htmlFor="imgupload">
+                  <span>Upload Image</span>
+                </label>
+                <input type="file" className="border" id="imgupload" />
+              </div>
+              <div className="input flex flex-col w-1/2">
+                <label htmlFor="">Product Description</label>
+                <textarea
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="5"
+                  className="border"
+                  value={ProDis}
+                  onChange={(e) => SetProdis(e.target.value)}
+                ></textarea>
+              </div>
+            </div>
+
+            <div className="flex w-full gap-x-6">
+              <div className="flex flex-col w-2/6">
+                <div className="input flex flex-col w-full">
+                  <label htmlFor="">Starting Date</label>
+                  <input
+                    type="date"
+                    className="border"
+                    value={startDate}
+                    onChange={(e) => SetStartDate(e.target.value)}
+                  />
+                </div>
+                <div className="input flex flex-col w-full">
+                  <label htmlFor="">Ending Date</label>
+                  <input
+                    type="date"
+                    className="border"
+                    value={endDate}
+                    onChange={(e) => SetEndDate(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="input flex flex-col w-2/6">
+                <label htmlFor="">Price</label>
+                <input
+                  type="number"
+                  className="border"
+                  value={ProPrice}
+                  onChange={(e) => SetProprice(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col w-2/6">
+                <span>Variable product</span>
+                <Switch {...label} />
+              </div>
+            </div>
+            <div className="flex w-full">
+              <button
+                type="submit"
+                className="px-8 py-2 bg-violet-700 rounded-md text-white float-none mx-auto"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </Box>
+      </Modal>
+
+{/*______________________________________PRODUCT_EDITING_MODAL___________________________________ */}
+
+
+      <Modal
+        className="left-[16.666667%]"
+        open={openEditModal}
+        onClose={handleCloseEdit}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            className="font-bold"
+          >
+            Edit Product
+          </Typography>
+
+          <form action="" className="flex flex-wrap gap-6 text-black">
+            <div className="flex w-full gap-x-6">
+              <div className="input flex flex-col w-4/6">
+                <label htmlFor="" className="">
+                  Product Name
+                </label>
+                <input
+                  type="text"
+                  className="border"
+                  value={ProName}
+                  onChange={(e) => SetProname(e.target.value)}
+                />
+              </div>
+              <div className="input flex flex-col w-2/6">
+                <label htmlFor="">Item in Stock</label>
+                <input
+                  type="number"
+                  className="border"
+                  value={ProNum}
+                  onChange={(e) => SetProNum(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-6 w-full">
+              <div className="input flex flex-col w-1/2 input-image">
+                <h6>Product Image</h6>
+                <label htmlFor="imgupload">
+                  <span>Upload Image</span>
+                </label>
+                <input type="file" className="border" id="imgupload" />
+              </div>
+              <div className="input flex flex-col w-1/2">
+                <label htmlFor="">Product Description</label>
+                <textarea
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="5"
+                  className="border"
+                  value={ProDis}
+                  onChange={(e) => SetProdis(e.target.value)}
+                ></textarea>
+              </div>
+            </div>
+
+            <div className="flex w-full gap-x-6">
+              <div className="flex flex-col w-2/6">
+                <div className="input flex flex-col w-full">
+                  <label htmlFor="">Start Date</label>
+                  <input
+                    type="date"
+                    className="border"
+                    value={startDate}
+                    onChange={(e) => SetStartDate(e.target.value)}
+                  />
+                </div>
+                <div className="input flex flex-col w-full">
+                  <label htmlFor="">End Date</label>
+                  <input
+                    type="date"
+                    className="border"
+                    value={endDate}
+                    onChange={(e) => SetEndDate(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="input flex flex-col w-2/6">
+                <label htmlFor="">Price</label>
+                <input
+                  type="number"
+                  className="border"
+                  value={ProPrice}
+                  onChange={(e) => SetProprice(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col w-2/6">
+                <span>Variable product</span>
+                <Switch {...label} />
+              </div>
+            </div>
+            <div className="flex w-full">
+              <button
+                type="submit"
+                className="px-8 py-2 bg-violet-700 rounded-md text-white float-none mx-auto"
+              >
+                Update
+              </button>
+            </div>
+          </form>
+        </Box>
+      </Modal>
+    </>
+  );
+}
