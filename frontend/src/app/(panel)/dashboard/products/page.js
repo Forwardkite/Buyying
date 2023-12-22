@@ -517,11 +517,19 @@ const handleEditSubmit = async (e) => {
             </div>
             <div className="flex w-full">
               <button
+                type="update-button"
+                className="px-8 py-2 bg-red-700 rounded-md text-white float-none mx-auto"
+              >
+                Delete
+              </button>
+
+              <button
                 type="submit"
                 className="px-8 py-2 bg-violet-700 rounded-md text-white float-none mx-auto"
               >
                 Update
               </button>
+
             </div>
           </form>
         </Box>

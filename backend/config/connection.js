@@ -16,3 +16,5 @@ module.exports = connectionDB;
 
 
 // 97fvTcy1zllzpUcY
+//mongodb+srv://sreerajmack7:<password>@cluster0.wdcchv9.mongodb.net/?retryWrites=true&w=majority//
+//mongodb+srv://abhinavshyjupc:97fvTcy1zllzpUcY@cluster0.0j5pjr2.mongodb.net/?retryWrites=true&w=majority
