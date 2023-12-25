@@ -1,24 +1,28 @@
-// Require necessary modules
-const mongoose = require('mongoose');
-
-// Create a schema for the image
-const ImageSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const multer = require('multer')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads");
   },
-  data: {
-    type: Buffer,
-    required: true,
-  },
-  contentType: {
-    type: String,
-    required: true,
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString() + "-" + file.originalname);
   },
 });
 
-// Create a model based on the schema
-const Image = mongoose.model('Image', ImageSchema);
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg"
+  ) {
+    cb(null, true);
+  } else
+    ({ error: "Unsupported file format. Upload only JPEG/JPG or PNG" }, false);
+};
 
-// Export the model
-module.exports = Image;
+const upload = multer({
+  storage,
+  limits: { fieldSize: 1024 * 1024 },
+  fileFilter,
+});
+
+export default upload;

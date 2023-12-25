@@ -14,6 +14,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Switch from "@mui/material/Switch";
 import { useEffect, useState } from "react";
+import { Message } from "@mui/icons-material";
 
 
 //_________________________________________________________________________________________________//
@@ -40,7 +41,7 @@ export default function Home() {
   const [open, setOpen] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [Fetchdata, setData] = useState(null);
-
+  const [productList, setProductList] = useState(Fetchdata);
   const [ProName, SetProname] = useState();
   const [ProPrice, SetProprice] = useState();
   const [ProDis, SetProdis] = useState();
@@ -48,7 +49,7 @@ export default function Home() {
   const [startDate, SetStartDate] = useState();
   const [endDate, SetEndDate] = useState();
   const [variablePro, SetVariablePro] = useState(false);
-
+  const [ProId, setProId] = useState();
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [proImage, SetProImage] = useState();
 
@@ -61,7 +62,7 @@ export default function Home() {
     productprice: ProPrice,
     startingdate: startDate,
     endingdate: endDate,
-
+    productId: ProId,
     imageProduct: proImage
   };
 
@@ -76,7 +77,7 @@ export default function Home() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/admin/", {
+      const response = await fetch("http://localhost:5000/admin/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,59 +98,97 @@ export default function Home() {
 
 
 
-//_________________________________________________________________________________________________//
+  //_________________________________________________________________________________________________//
 
 
-const handleOpenEditing = (data) => {
-  // Set the state with the data for editing
-  SetProname(data.productName);
-  SetProNum(data.stockNumber);
-  SetProdis(data.productDiscription);
-  SetProprice(data.productprice);
-  SetStartDate(data.startingdate);
-  SetEndDate(data.endingdate);
+  const handleOpenEditing = (data) => {
+    // Set the state with the data for editing
+    SetProname(data.productName);
+    SetProNum(data.stockNumber);
+    SetProdis(data.productDiscription);
+    SetProprice(data.productprice);
+    SetStartDate(data.startingdate);
+    SetEndDate(data.endingdate);
+    setProId(data._id);
+    SetProImage(data.proImage);
 
-  SetProImage(data.proImage);
-
-  // Open the edit modal
-  setOpenEditModal(true);
-};
-
-const handleEditSubmit = async (e) => {
-  e.preventDefault();
-
-  const updatedData = {
-    productName: ProName,
-    stockNumber: ProNum,
-    productDiscription: ProDis,
-    productprice: ProPrice,
-    startingdate: startDate,
-    endingdate: endDate,
+    // Open the edit modal
+    setOpenEditModal(true);
   };
 
-  try {
-    const response = await fetch(`http://localhost:5000/admin/view/`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    });
+  /*_____________________________________________________________________________________________*/
 
-    if (response.ok) {
-      console.log("Data updated successfully");
-      // Close the edit modal after successful update
-      setOpenEditModal(false);
-      // You might want to refresh the product list or update state after editing
-    } else {
-      console.error("Failed to update data:", response.statusText);
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+
+    const updatedData = {
+      productName: ProName,
+      stockNumber: ProNum,
+      productDescription: ProDis,
+      productPrice: ProPrice,
+      startingDate: startDate,
+      endingDate: endDate,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/admin/', {
+        method: 'PUT', // or 'POST' depending on your API
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any necessary headers like authorization token if needed
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (response.ok) {
+        console.log("Data updated successfully");
+        // Close the edit modal after successful update
+        setOpenEditModal(false);
+        // You might want to refresh the product list or update state after editing
+      } else {
+        console.error("Failed to update data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
     }
-  } catch (error) {
-    console.error("Error updating data:", error);
+  };
+
+  //________________________________________PRODUCT_DELETE___________________________________________//
+
+const handleDelete = async () => {
+  // Check if ProId exists
+  if (!ProId) {
+    return; // Exit function early if ProId is undefined
   }
+
+  // if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
+    try {
+      const response = await fetch(`http://localhost:5000/admin/delete/${ProId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Product deleted successfully:", data.message);
+
+        // Fetch and log the updated product list after deletion
+        const updatedProductsResponse = await fetch("http://localhost:5000/admin/view");
+        const updatedProducts = await updatedProductsResponse.json();
+        console.log("Updated product list:", updatedProducts);
+      } else {
+        console.error("Failed to delete product:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  // }
 };
 
-//_________________________________________________________________________________________________//
+
+  //_________________________________________________________________________________________________//
 
   useEffect(() => {
     let isMounted = true;
@@ -204,13 +243,15 @@ const handleEditSubmit = async (e) => {
                 <TableCell align="right">Price</TableCell>
                 <TableCell align="right">Sale Date</TableCell>
                 <TableCell align="right">Stock Left</TableCell>
+                <TableCell align="right">Action  </TableCell>
+                <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {/* ................................ */}
               {Fetchdata ? (
                 Fetchdata.map((e) => (
-                  <TableRow className="border-b">
+                  <TableRow key={e._id} className="border-b">
                     <TableCell component="th" scope="row">
                       <img
                         src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg?w=996"
@@ -224,7 +265,7 @@ const handleEditSubmit = async (e) => {
                     <TableCell align="right">{e.stockNumber}</TableCell>
                     <TableCell align="right">
                       <button
-                        // onClick={handleOpenEdit}
+                        // onClick={handleOpenEditing}
                         onClick={() => handleOpenEditing(e)}
                         className="px-8 py-2 bg-violet-700 text-white rounded"
                       >
@@ -236,69 +277,12 @@ const handleEditSubmit = async (e) => {
               ) : (
                 <p></p>
               )}
-
-              {/* ................................ */}
-
-              {/* <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  <img
-                    src="../../../../../assets/img/pen.png"
-                    alt=""
-                    className="w-[100px]"
-                  />
-                </TableCell>
-                <TableCell>Pen</TableCell>
-                <TableCell align="right">999</TableCell>
-                <TableCell align="right">14/12/23</TableCell>
-                <TableCell align="right">50</TableCell>
-                <TableCell align="right">
-                  <button className="px-8 py-2 bg-violet-700 text-white rounded">
-                    Edit
-                  </button>
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  <img
-                    src="../../../../../assets/img/biryani.png"
-                    alt=""
-                    className="w-[100px]"
-                  />
-                </TableCell>
-                <TableCell align="left">Biryani</TableCell>
-                <TableCell align="right">999</TableCell>
-                <TableCell align="right">14/12/23</TableCell>
-                <TableCell align="right">50</TableCell>
-                <TableCell align="right">
-                  <button className="px-8 py-2 bg-violet-700 text-white rounded">
-                    Edit
-                  </button>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  <img
-                    src="../../../../../assets/img/tshirt.png"
-                    alt=""
-                    className="w-[100px]"
-                  />
-                </TableCell>
-                <TableCell align="left">T shirt</TableCell>
-                <TableCell align="right">999</TableCell>
-                <TableCell align="right">14/12/23</TableCell>
-                <TableCell align="right">50</TableCell>
-                <TableCell align="right">
-                  <button className="px-8 py-2 bg-violet-700 text-white rounded">
-                    Edit
-                  </button>
-                </TableCell>
-              </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>
       </section>
 
-{/*____________________________________________ADD_PRODUCT___________________________________________*/}
+      {/*____________________________________________ADD_PRODUCT___________________________________________*/}
 
       <Modal
         className="left-[16.666667%]"
@@ -414,7 +398,7 @@ const handleEditSubmit = async (e) => {
         </Box>
       </Modal>
 
-{/*______________________________________PRODUCT_EDITING_MODAL___________________________________ */}
+      {/*______________________________________PRODUCT_EDITING_MODAL___________________________________ */}
 
 
       <Modal
@@ -517,7 +501,8 @@ const handleEditSubmit = async (e) => {
             </div>
             <div className="flex w-full">
               <button
-                type="update-button"
+                type="submit"
+                onClick={handleDelete()}
                 className="px-8 py-2 bg-red-700 rounded-md text-white float-none mx-auto"
               >
                 Delete
@@ -525,6 +510,7 @@ const handleEditSubmit = async (e) => {
 
               <button
                 type="submit"
+                onClick={() => handleEditSubmit(e)}
                 className="px-8 py-2 bg-violet-700 rounded-md text-white float-none mx-auto"
               >
                 Update

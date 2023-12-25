@@ -8,47 +8,34 @@ const app = express();
 const authMiddleware = require('../middleware/authMiddleware')
 connectionDB();
 
-router.get('/',authMiddleware.isLoggedIn, (req, res) => {
+router.get('/', (req, res) => {
   res.render('admin/batch');
 });
 
 // Define the Batch schema
 const batchSchema = new mongoose.Schema({
-  
+
   productName: String,
-  productDiscription : String,
+  productDiscription: String,
   productprice: Number,
-  variableproduct : Boolean,
-  startingdate : Date,
-  endingdate : Date,
+  variableproduct: Boolean,
+  startingdate: Date,
+  endingdate: Date,
   LotteryToken: String
   // other fields as needed
 });
 
 
-
+/*____________________________________ADD_PRODUCT_CREATE_______________________________________________________*/
 
 
 // Endpoint to handle batch creation
-router.post('/', async (req, res) => {
-  const { batchName, productName, stockNumber , productDiscription, productprice, startingdate, endingdate ,  } = req.body;
+router.post('/create', async (req, res) => {
+  const { productName, stockNumber, productDiscription, productprice, startingdate, endingdate, } = req.body;
 
-  const productData = {productName : productName, productDiscription: productDiscription, stockNumber: stockNumber, productprice: productprice ,startingdate: startingdate, endingdate: endingdate  }
-  
-  // Create a Mongoose model dynamically with the batchName as collection name
-  // const BatchModel = mongoose.model(batchName.replace(/\s/g, ''), batchSchema);
+  const productData = { productName: productName, productDiscription: productDiscription, stockNumber: stockNumber, productprice: productprice, startingdate: startingdate, endingdate: endingdate }
 
   try {
-
-    // // Create 'stockNumber' objects inside the collection
-    // const objectsToCreate = [];
-    // for (let i = 0; i < stockNumber; i++) {
-    //   // const serialNumber = count + i + 1;
-    //   LotteryToken = LotteryGenerator();
-    //   objectsToCreate.push({ productName , productDiscription, productprice, startingdate, endingdate, LotteryToken });
-    // }
-
-    // await BatchModel.insertMany(objectsToCreate);
 
     await ProductDB.create(productData);
     res.status(200).send('Batch created successfully');
@@ -58,7 +45,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-
+/*_______________________________________PRODUCT_DISPLAY___________________________________________*/
 
 router.get('/view', async (req, res) => {
   try {
@@ -70,35 +57,62 @@ router.get('/view', async (req, res) => {
   }
 });
 
+/*_________________________________________PRODUCT_UPDATE___________________________________________*/
 
-/*________________________________________________________________________________________________________________________*/
+router.put('/update', async (req, res) => {
+  const { productId } = req.params; // Extracting the product ID from the URL
+  const {
+    productName,
+    stockNumber,
+    productDiscription,
+    productPrice,
+    startingDate,
+    endingDate,
+  } = req.body; // Extracting updated data from the request body
 
-
-
-
-
-//  Route to fetch and display data based on batch name
-router.get('/:batchName', async (req, res) => {
   try {
-    // Extract the batchName from the URL params
-    const { batchName } = req.params;
+    // Find the product by ID and update its fields
+    const updatedProduct = await ProductDB.findByIdAndUpdate(
+      productId,
+      {
+        productName,
+        stockNumber,
+        productDiscription,
+        productPrice,
+        startingDate,
+        endingDate,
+      },
+      { new: true } // To return the updated product after the update operation
+    );
 
-    // Create a Mongoose model dynamically with the batchName as the collection name
-    const BatchModel = mongoose.model(batchName.replace(/\s/g, ''), batchSchema);
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
 
-    // Fetch data from the corresponding collection based on batchName
-    const batches = await BatchModel.find({});
-
-    // console.log(batches)
-    // Render the HBS template with fetched data
-    // res.render('products', { batchName, batches });
-
-    res.send(batches)
-
-
+    res.status(200).json({ message: 'Product updated successfully', updatedProduct });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error fetching batches');
+    console.error('Error updating product:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+/*_____________________________________PRODUCT_DELETE_______________________________________________________*/
+
+router.delete('/delete/:productIdToDelete', async (req, res) => {
+  try {
+    const productIdToDelete = req.params.productIdToDelete; // Get productId from route parameters
+
+    // Find the product by ID and delete it from the database
+    const deletedProduct = await ProductDB.findByIdAndDelete(productIdToDelete);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    return res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
