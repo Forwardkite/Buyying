@@ -116,4 +116,33 @@ router.delete('/delete/:productIdToDelete', async (req, res) => {
   }
 });
 
+router.get('/export', async (req, res) => {
+  try {
+    const purchases = await ProductDB.find({}, '-_id -__v'); // Fetch all purchases, excluding _id and __v fields
+    if (purchases.length === 0) {
+      return res.status(404).json({ message: 'No data found' });
+    }
+
+    // Convert data to CSV format
+    const csvFields = Object.keys(purchases[0].toJSON());
+    const csvData = [
+      csvFields.join(','),
+      ...purchases.map((purchase) =>
+        csvFields.map((field) => purchase[field]).join(',')
+      ),
+    ];
+    const csv = csvData.join('\n');
+
+    // Set response headers for CSV download
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=purchase_data.csv');
+
+    // Send CSV data as response
+    res.status(200).send(csv);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 module.exports = router;

@@ -155,13 +155,14 @@ export default function Home() {
 
   //________________________________________PRODUCT_DELETE___________________________________________//
 
-const handleDelete = async () => {
+
+
+  const handleDelete = async () => {
   // Check if ProId exists
   if (!ProId) {
     return; // Exit function early if ProId is undefined
   }
 
-  // if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
     try {
       const response = await fetch(`http://localhost:5000/admin/delete/${ProId}`, {
         method: "DELETE",
@@ -184,7 +185,6 @@ const handleDelete = async () => {
     } catch (error) {
       console.error("Error deleting product:", error);
     }
-  // }
 };
 
 
@@ -197,7 +197,7 @@ const handleDelete = async () => {
       try {
         const response = await fetch("http://localhost:5000/admin/view");
         if (!response.ok) {
-          throw new Error("Failed to fetch data");
+          throw new Error("Failed to fetch data");  
         }
 
         const result = await response.json();

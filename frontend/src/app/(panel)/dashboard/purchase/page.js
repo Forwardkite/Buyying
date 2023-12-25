@@ -36,6 +36,27 @@ export default function Purchase() {
   const handleChange = (event) => {
     setSort(event.target.value);
   };
+
+
+  const handleExport = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/admin/export'); // Fetch the export endpoint
+      const blob = await response.blob(); // Get the response as a Blob
+
+      // Create a download link and trigger the download
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'purchase_data.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }
+  };
+
   return (
     <>
       <section className="w-full ">
@@ -80,7 +101,8 @@ export default function Purchase() {
               </FormControl>
             </Box>
           </div>
-          <button className="px-4 py-2 bg-violet-700 text-white rounded-md">
+          <button onClick={handleExport}
+          className="px-4 py-2 bg-violet-700 text-white rounded-md">
             Export
           </button>
         </div>
