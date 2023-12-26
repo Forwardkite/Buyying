@@ -2,7 +2,7 @@ please fork this repo
 
 please clone this repo
 
-git clone https://github.com/<yourUsername>/forwardKite.git
+git clone https://github.com/Forwardkite/Buyying.git
 
 note: clone this repo in the empty or home or Desktop dir
 
