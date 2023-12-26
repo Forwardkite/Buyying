@@ -155,13 +155,13 @@ export default function Home() {
 
   //________________________________________PRODUCT_DELETE___________________________________________//
 
-const handleDelete = async () => {
-  // Check if ProId exists
-  if (!ProId) {
-    return; // Exit function early if ProId is undefined
-  }
+  const handleDelete = async () => {
+    // Check if ProId exists
+    if (!ProId) {
+      return; // Exit function early if ProId is undefined
+    }
 
-  // if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
+    // if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
     try {
       const response = await fetch(`http://localhost:5000/admin/delete/${ProId}`, {
         method: "DELETE",
@@ -185,8 +185,8 @@ const handleDelete = async () => {
     } catch (error) {
       console.error("Error deleting product:", error);
     }
-  // }
-};
+    // }
+  };
 
 
   //_________________________________________________________________________________________________//
@@ -503,7 +503,7 @@ const handleDelete = async () => {
             <div className="flex w-full">
               <button
                 type="button"
-                onClick={()=>handleDelete()}
+                onClick={() => handleDelete()}
                 className="px-8 py-2 bg-red-700 rounded-md text-white float-none mx-auto"
               >
                 Delete
@@ -511,7 +511,7 @@ const handleDelete = async () => {
 
               <button
                 type="submit"
-                onClick={ ()=>  handleEditSubmit(e)}
+                onClick={() => handleEditSubmit(e)}
                 className="px-8 py-2 bg-violet-700 rounded-md text-white float-none mx-auto"
               >
                 Update
