@@ -155,14 +155,13 @@ export default function Home() {
 
   //________________________________________PRODUCT_DELETE___________________________________________//
 
-
-
-  const handleDelete = async () => {
+const handleDelete = async () => {
   // Check if ProId exists
   if (!ProId) {
     return; // Exit function early if ProId is undefined
   }
 
+  // if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
     try {
       const response = await fetch(`http://localhost:5000/admin/delete/${ProId}`, {
         method: "DELETE",
@@ -179,12 +178,14 @@ export default function Home() {
         const updatedProductsResponse = await fetch("http://localhost:5000/admin/view");
         const updatedProducts = await updatedProductsResponse.json();
         console.log("Updated product list:", updatedProducts);
+        window.location.reload();
       } else {
         console.error("Failed to delete product:", response.statusText);
       }
     } catch (error) {
       console.error("Error deleting product:", error);
     }
+  // }
 };
 
 
@@ -197,7 +198,7 @@ export default function Home() {
       try {
         const response = await fetch("http://localhost:5000/admin/view");
         if (!response.ok) {
-          throw new Error("Failed to fetch data");  
+          throw new Error("Failed to fetch data");
         }
 
         const result = await response.json();
@@ -501,8 +502,8 @@ export default function Home() {
             </div>
             <div className="flex w-full">
               <button
-                type="submit"
-                onClick={handleDelete()}
+                type="button"
+                onClick={()=>handleDelete()}
                 className="px-8 py-2 bg-red-700 rounded-md text-white float-none mx-auto"
               >
                 Delete
@@ -510,7 +511,7 @@ export default function Home() {
 
               <button
                 type="submit"
-                onClick={() => handleEditSubmit(e)}
+                onClick={ ()=>  handleEditSubmit(e)}
                 className="px-8 py-2 bg-violet-700 rounded-md text-white float-none mx-auto"
               >
                 Update
