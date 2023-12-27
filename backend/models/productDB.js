@@ -4,16 +4,16 @@ const productDatabase = new mongoose.Schema({
   productName: String,
   stockNumber: Number,
   productDiscription: String,
-  productprice: Number,
-  startingdate: String, // Change the type to String for formatted dates
-  endingdate: String    // Change the type to String for formatted dates
+  productPrice: Number,
+  startingDate: String, // Change the type to String for formatted dates
+  endingDate: String    // Change the type to String for formatted dates
 });
 
 // Convert the dates to dd-mm-yyyy format before saving
 productDatabase.pre('save', function(next) {
-  if (this.startingdate instanceof Date && this.endingdate instanceof Date) {
-    this.startingdate = formatDate(this.startingdate);
-    this.endingdate = formatDate(this.endingdate);
+  if (this.startingDate instanceof Date && this.endingDate instanceof Date) {
+    this.startingDate = formatDate(this.startingDate);
+    this.endingDate = formatDate(this.endingDate);
   }
   next();
 });

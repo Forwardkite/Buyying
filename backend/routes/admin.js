@@ -17,10 +17,10 @@ const batchSchema = new mongoose.Schema({
 
   productName: String,
   productDiscription: String,
-  productprice: Number,
+  productPrice: Number,
   variableproduct: Boolean,
-  startingdate: Date,
-  endingdate: Date,
+  startingDate: Date,
+  endingDate: Date,
   LotteryToken: String
   // other fields as needed
 });
@@ -48,21 +48,21 @@ router.get('/view', async (req, res) => {
 
 /*_________________________________________PRODUCT_UPDATE___________________________________________*/
 
-router.put('/update', async (req, res) => {
-  const { productId } = req.params; // Extracting the product ID from the URL
+router.put('/update/:ProId', async (req, res) => {
+  const { ProId } = req.params; // Extracting the product ID from the URL
   const {
     productName,
     stockNumber,
     productDiscription,
     productPrice,
-    startingDate,
+    startingDate, 
     endingDate,
   } = req.body; // Extracting updated data from the request body
 
   try {
     // Find the product by ID and update its fields
     const updatedProduct = await ProductDB.findByIdAndUpdate(
-      productId,
+      ProId,
       {
         productName,
         stockNumber,

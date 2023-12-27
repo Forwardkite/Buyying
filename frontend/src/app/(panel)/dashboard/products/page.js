@@ -59,9 +59,9 @@ export default function Home() {
     productName: ProName,
     stockNumber: ProNum,
     productDiscription: ProDis,
-    productprice: ProPrice,
-    startingdate: startDate,
-    endingdate: endDate,
+    productPrice: ProPrice,
+    startingDate: startDate,
+    endingDate: endDate,
     productId: ProId,
     imageProduct: proImage
   };
@@ -106,9 +106,9 @@ export default function Home() {
     SetProname(data.productName);
     SetProNum(data.stockNumber);
     SetProdis(data.productDiscription);
-    SetProprice(data.productprice);
-    SetStartDate(data.startingdate);
-    SetEndDate(data.endingdate);
+    SetProprice(data.productPrice);
+    SetStartDate(data.startingDate);
+    SetEndDate(data.endingDate);
     setProId(data._id);
     SetProImage(data.proImage);
 
@@ -124,14 +124,14 @@ export default function Home() {
     const updatedData = {
       productName: ProName,
       stockNumber: ProNum,
-      productDescription: ProDis,
+      productDiscription: ProDis,
       productPrice: ProPrice,
       startingDate: startDate,
       endingDate: endDate,
     };
 
     try {
-      const response = await fetch('http://localhost:5000/admin/', {
+      const response = await fetch(`http://localhost:5000/admin/update/${ProId}`, {
         method: 'PUT', // or 'POST' depending on your API
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ export default function Home() {
         console.log("Data updated successfully");
         // Close the edit modal after successful update
         setOpenEditModal(false);
-        // You might want to refresh the product list or update state after editing
+        window.location.reload();
       } else {
         console.error("Failed to update data:", response.statusText);
       }
@@ -162,29 +162,29 @@ export default function Home() {
     }
 
     if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
-    try {
-      const response = await fetch(`http://localhost:5000/admin/delete/${ProId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      try {
+        const response = await fetch(`http://localhost:5000/admin/delete/${ProId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Product deleted successfully:", data.message);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Product deleted successfully:", data.message);
 
-        // Fetch and log the updated product list after deletion
-        const updatedProductsResponse = await fetch("http://localhost:5000/admin/view");
-        const updatedProducts = await updatedProductsResponse.json();
-        console.log("Updated product list:", updatedProducts);
-        window.location.reload();
-      } else {
-        console.error("Failed to delete product:", response.statusText);
+          // Fetch and log the updated product list after deletion
+          const updatedProductsResponse = await fetch("http://localhost:5000/admin/view");
+          const updatedProducts = await updatedProductsResponse.json();
+          console.log("Updated product list:", updatedProducts);
+          window.location.reload();
+        } else {
+          console.error("Failed to delete product:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error deleting product:", error);
       }
-    } catch (error) {
-      console.error("Error deleting product:", error);
-    }
     }
   };
 
@@ -261,8 +261,8 @@ export default function Home() {
                       />
                     </TableCell>
                     <TableCell>{e.productName}</TableCell>
-                    <TableCell align="right">₹{e.productprice}</TableCell>
-                    <TableCell align="right">{e.startingdate}</TableCell>
+                    <TableCell align="right">₹{e.productPrice}</TableCell>
+                    <TableCell align="right">{e.startingDate}</TableCell>
                     <TableCell align="right">{e.stockNumber}</TableCell>
                     <TableCell align="right">
                       <button
@@ -511,7 +511,7 @@ export default function Home() {
 
               <button
                 type="button"
-                onClick={() => handleEditSubmit(e)}
+                onClick={handleEditSubmit}
                 className="px-8 py-2 bg-violet-700 rounded-md text-white float-none mx-auto"
               >
                 Update
