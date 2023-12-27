@@ -53,7 +53,15 @@ export default function Home() {
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [proImage, SetProImage] = useState();
 
-  //_________________________________________________________________________________________________//
+//_________________________________________________________________________________________________//
+
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
+
+//_________________________________________________________________________________________________//
 
   const SendingData = {
     productName: ProName,
@@ -65,13 +73,6 @@ export default function Home() {
     productId: ProId,
     imageProduct: proImage
   };
-
-  //_________________________________________________________________________________________________//
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleOpenEdit = () => setOpenEdit(true);
-  const handleCloseEdit = () => setOpenEdit(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -252,7 +253,7 @@ export default function Home() {
               {/* ................................ */}
               {Fetchdata ? (
                 Fetchdata.map((e) => (
-                  <TableRow key={e._id} className="border-b">
+                  <TableRow  className="border-b">
                     <TableCell component="th" scope="row">
                       <img
                         src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg?w=996"

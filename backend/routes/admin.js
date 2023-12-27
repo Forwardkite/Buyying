@@ -12,78 +12,23 @@ router.get('/', (req, res) => {
   res.render('admin/batch');
 });
 
-// Define the Batch schema
-const batchSchema = new mongoose.Schema({
+/*____________________________________PRODUCT_CREATE_______________________________________________*/
 
-  productName: String,
-  productDiscription: String,
-  productPrice: Number,
-  variableproduct: Boolean,
-  startingDate: Date,
-  endingDate: Date,
-  LotteryToken: String
-  // other fields as needed
-});
+const productCreate = require('../controllers/productCreate');
 
-
-/*____________________________________ADD_PRODUCT_CREATE___________________________________________*/
-
-
-const productController = require('../controllers/productCreate');
-
-
-router.post('/create', productController.createProduct);
+router.post('/create', productCreate.createProduct);
 
 /*_______________________________________PRODUCT_DISPLAY___________________________________________*/
 
-router.get('/view', async (req, res) => {
-  try {
-    const RenderData = await ProductDB.find({});
-    res.send(RenderData);
-  } catch (error) {
-    console.log("Error in Server");
-    res.status(500).send("Internal Server Error");
-  }
-});
+const productDisplay = require('../controllers/productDisplay');
 
-/*_________________________________________PRODUCT_UPDATE___________________________________________*/
+router.get('/view', productDisplay.viewProducts);
 
-router.put('/update/:ProId', async (req, res) => {
-  const { ProId } = req.params; // Extracting the product ID from the URL
-  const {
-    productName,
-    stockNumber,
-    productDiscription,
-    productPrice,
-    startingDate, 
-    endingDate,
-  } = req.body; // Extracting updated data from the request body
+/*______________________________________PRODUCT_UPDATE______________________________________________*/
 
-  try {
-    // Find the product by ID and update its fields
-    const updatedProduct = await ProductDB.findByIdAndUpdate(
-      ProId,
-      {
-        productName,
-        stockNumber,
-        productDiscription,
-        productPrice,
-        startingDate,
-        endingDate,
-      },
-      { new: true } // To return the updated product after the update operation
-    );
+const productUpdate = require('../controllers/productUpdate'); // Import the product controller
 
-    if (!updatedProduct) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-
-    res.status(200).json({ message: 'Product updated successfully', updatedProduct });
-  } catch (error) {
-    console.error('Error updating product:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
+router.put('/update/:ProId', productUpdate.updateProduct);
 
 /*______________________________________PRODUCT_DELETE______________________________________________*/
 
@@ -91,12 +36,12 @@ const adminController = require('../controllers/productDelete');
 
 router.delete('/delete/:productIdToDelete', adminController.deleteProduct);
 
-/*______________________________________EXPORT_BUTTON_______________________________________________*/
+/*_______________________________________EXPORT_BUTTON______________________________________________*/
 
 const exportController = require('../controllers/exportController');
 
 router.get('/export', exportController.exportDataAsCSV);
 
-/*___________________________________________________________________________________________________*/
+/*__________________________________________________________________________________________________*/
 
 module.exports = router;
