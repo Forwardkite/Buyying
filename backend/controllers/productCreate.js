@@ -2,15 +2,15 @@
 const ProductDB = require('../models/productDB');
 
 const createProduct = async (req, res) => {
-  const { productName, stockNumber, productDiscription, productprice, startingdate, endingdate } = req.body;
+  const { productName, stockNumber, productDiscription, productPrice, startingDate, endingDate } = req.body;
 
   const productData = {
     productName,
     productDiscription,
     stockNumber,
-    productprice,
-    startingdate,
-    endingdate,
+    productPrice,
+    startingDate,
+    endingDate,
   };
 
   try {
