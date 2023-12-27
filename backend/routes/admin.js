@@ -26,24 +26,13 @@ const batchSchema = new mongoose.Schema({
 });
 
 
-/*____________________________________ADD_PRODUCT_CREATE_______________________________________________________*/
+/*____________________________________ADD_PRODUCT_CREATE___________________________________________*/
 
 
-// Endpoint to handle batch creation
-router.post('/create', async (req, res) => {
-  const { productName, stockNumber, productDiscription, productprice, startingdate, endingdate, } = req.body;
+const productController = require('../controllers/productCreate');
 
-  const productData = { productName: productName, productDiscription: productDiscription, stockNumber: stockNumber, productprice: productprice, startingdate: startingdate, endingdate: endingdate }
 
-  try {
-
-    await ProductDB.create(productData);
-    res.status(200).send('Batch created successfully');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error creating batch CODE:ADMINERROR');
-  }
-});
+router.post('/create', productController.createProduct);
 
 /*_______________________________________PRODUCT_DISPLAY___________________________________________*/
 
@@ -96,53 +85,18 @@ router.put('/update', async (req, res) => {
   }
 });
 
-/*_____________________________________PRODUCT_DELETE_______________________________________________________*/
+/*______________________________________PRODUCT_DELETE______________________________________________*/
 
-router.delete('/delete/:productIdToDelete', async (req, res) => {
-  try {
-    const productIdToDelete = req.params.productIdToDelete; // Get productId from route parameters
+const adminController = require('../controllers/productDelete');
 
-    // Find the product by ID and delete it from the database
-    const deletedProduct = await ProductDB.findByIdAndDelete(productIdToDelete);
+router.delete('/delete/:productIdToDelete', adminController.deleteProduct);
 
-    if (!deletedProduct) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
+/*______________________________________EXPORT_BUTTON_______________________________________________*/
 
-    return res.status(200).json({ message: 'Product deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
-});
+const exportController = require('../controllers/exportController');
 
-router.get('/export', async (req, res) => {
-  try {
-    const purchases = await ProductDB.find({}, '-_id -__v'); // Fetch all purchases, excluding _id and __v fields
-    if (purchases.length === 0) {
-      return res.status(404).json({ message: 'No data found' });
-    }
+router.get('/export', exportController.exportDataAsCSV);
 
-    // Convert data to CSV format
-    const csvFields = Object.keys(purchases[0].toJSON());
-    const csvData = [
-      csvFields.join(','),
-      ...purchases.map((purchase) =>
-        csvFields.map((field) => purchase[field]).join(',')
-      ),
-    ];
-    const csv = csvData.join('\n');
-
-    // Set response headers for CSV download
-    res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=purchase_data.csv');
-
-    // Send CSV data as response
-    res.status(200).send(csv);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server Error' });
-  }
-});
+/*___________________________________________________________________________________________________*/
 
 module.exports = router;

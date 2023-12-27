@@ -161,7 +161,7 @@ export default function Home() {
       return; // Exit function early if ProId is undefined
     }
 
-    // if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
+    if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
     try {
       const response = await fetch(`http://localhost:5000/admin/delete/${ProId}`, {
         method: "DELETE",
@@ -185,7 +185,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error deleting product:", error);
     }
-    // }
+    }
   };
 
 
@@ -510,7 +510,7 @@ export default function Home() {
               </button>
 
               <button
-                type="submit"
+                type="button"
                 onClick={() => handleEditSubmit(e)}
                 className="px-8 py-2 bg-violet-700 rounded-md text-white float-none mx-auto"
               >
