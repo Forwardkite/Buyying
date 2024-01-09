@@ -11,6 +11,29 @@ export default function Tickets() {
   const [donation, setDonation] = React.useState(0);
   const ticket = product + donation;
 
+  const incrementProduct = () => {
+    if (product < 100) {
+      setProduct(product + 1);
+    }
+  };
+
+  const decrementProduct = () => {
+    if (product > 1) {
+      setProduct(product - 1);
+    }
+  };
+  const incrementDonation = () => {
+    if (donation < product) {
+      setDonation(donation + 1);
+    }
+  };
+
+  const decrementDonation = () => {
+    if (donation > 0) {
+      setDonation(donation - 1);
+    }
+  };
+
   const handleSlot = (event, newSlot) => {
     setSlot(newSlot);
   };
@@ -40,29 +63,17 @@ export default function Tickets() {
           <div className="flex flex-col items-center">
             <h6>Number of Products</h6>
             <div className="flex mt-6">
-              <AddCircleIcon
-                fontSize="large"
-                onClick={() => setProduct(product + 1)}
-              />
+              <AddCircleIcon fontSize="large" onClick={incrementProduct} />
               <span className="text-2xl mx-4">{product}</span>
-              <RemoveCircleIcon
-                fontSize="large"
-                onClick={() => setProduct(product - 1)}
-              />
+              <RemoveCircleIcon fontSize="large" onClick={decrementProduct} />
             </div>
           </div>
           <div className="flex flex-col items-center">
             <h6>Number of Donations</h6>
             <div className="flex mt-6">
-              <AddCircleIcon
-                fontSize="large"
-                onClick={() => setDonation(donation + 1)}
-              />
+              <AddCircleIcon fontSize="large" onClick={incrementDonation} />
               <span className="text-2xl mx-4">{donation}</span>
-              <RemoveCircleIcon
-                fontSize="large"
-                onClick={() => setDonation(donation - 1)}
-              />
+              <RemoveCircleIcon fontSize="large" onClick={decrementDonation} />
             </div>
           </div>
           <div className="flex flex-col items-center">
