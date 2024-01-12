@@ -21,7 +21,9 @@ module.exports = {
         "md-0-0": "0 0 15px 2px rgba(0, 0, 0, 0.2)",
       },
       colors: {
+        "theme-gray": "#D9D9D9",
         "theme-black": "#1A1A1A",
+        "theme-light": "#11B4B7",
         theme: "#11B4B6",
       },
     },
