@@ -16,10 +16,7 @@ import Switch from "@mui/material/Switch";
 import { useEffect, useState } from "react";
 import { Message } from "@mui/icons-material";
 
-
 //_________________________________________________________________________________________________//
-
-
 
 const style = {
   position: "absolute",
@@ -39,7 +36,6 @@ const label = { inputProps: { "aria-label": "Switch demo" } };
 
 export default function Home() {
   const [open, setOpen] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
   const [Fetchdata, setData] = useState(null);
   const [productList, setProductList] = useState(Fetchdata);
   const [ProName, SetProname] = useState();
@@ -53,15 +49,12 @@ export default function Home() {
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [proImage, SetProImage] = useState();
 
-//_________________________________________________________________________________________________//
-
+  //_________________________________________________________________________________________________//
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleOpenEdit = () => setOpenEdit(true);
-  const handleCloseEdit = () => setOpenEdit(false);
 
-//_________________________________________________________________________________________________//
+  //_________________________________________________________________________________________________//
 
   const SendingData = {
     productName: ProName,
@@ -71,7 +64,7 @@ export default function Home() {
     startingDate: startDate,
     endingDate: endDate,
     productId: ProId,
-    imageProduct: proImage
+    imageProduct: proImage,
   };
 
   const handleSubmit = async (e) => {
@@ -97,10 +90,7 @@ export default function Home() {
     }
   };
 
-
-
   //_________________________________________________________________________________________________//
-
 
   const handleOpenEditing = (data) => {
     // Set the state with the data for editing
@@ -116,6 +106,8 @@ export default function Home() {
     // Open the edit modal
     setOpenEditModal(true);
   };
+  // close the edit modal
+  const handleCloseEditModal = () => setOpenEditModal(false);
 
   /*_____________________________________________________________________________________________*/
 
@@ -132,14 +124,17 @@ export default function Home() {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/admin/update/${ProId}`, {
-        method: 'PUT', // or 'POST' depending on your API
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any necessary headers like authorization token if needed
-        },
-        body: JSON.stringify(updatedData),
-      });
+      const response = await fetch(
+        `http://localhost:5000/admin/update/${ProId}`,
+        {
+          method: "PUT", // or 'POST' depending on your API
+          headers: {
+            "Content-Type": "application/json",
+            // Add any necessary headers like authorization token if needed
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
 
       if (response.ok) {
         console.log("Data updated successfully");
@@ -164,19 +159,24 @@ export default function Home() {
 
     if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
       try {
-        const response = await fetch(`http://localhost:5000/admin/delete/${ProId}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `http://localhost:5000/admin/delete/${ProId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
           console.log("Product deleted successfully:", data.message);
 
           // Fetch and log the updated product list after deletion
-          const updatedProductsResponse = await fetch("http://localhost:5000/admin/view");
+          const updatedProductsResponse = await fetch(
+            "http://localhost:5000/admin/view"
+          );
           const updatedProducts = await updatedProductsResponse.json();
           console.log("Updated product list:", updatedProducts);
           window.location.reload();
@@ -188,7 +188,6 @@ export default function Home() {
       }
     }
   };
-
 
   //_________________________________________________________________________________________________//
 
@@ -245,7 +244,7 @@ export default function Home() {
                 <TableCell align="right">Price</TableCell>
                 <TableCell align="right">Sale Date</TableCell>
                 <TableCell align="right">Stock Left</TableCell>
-                <TableCell align="right">Action  </TableCell>
+                <TableCell align="right">Action </TableCell>
                 <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>
@@ -253,7 +252,7 @@ export default function Home() {
               {/* ................................ */}
               {Fetchdata ? (
                 Fetchdata.map((e) => (
-                  <TableRow  className="border-b">
+                  <TableRow className="border-b">
                     <TableCell component="th" scope="row">
                       <img
                         src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg?w=996"
@@ -402,11 +401,10 @@ export default function Home() {
 
       {/*______________________________________PRODUCT_EDITING_MODAL___________________________________ */}
 
-
       <Modal
         className="left-[16.666667%]"
         open={openEditModal}
-        onClose={handleCloseEdit}
+        onClose={handleCloseEditModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -517,7 +515,6 @@ export default function Home() {
               >
                 Update
               </button>
-
             </div>
           </form>
         </Box>
