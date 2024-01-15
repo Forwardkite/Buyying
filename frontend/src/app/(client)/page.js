@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -29,7 +30,7 @@ export default function Home() {
                 <p className="text-sm justify-start">Set of 30</p>
               </div>
               <button className="bg-theme-grad-dual font-bold text-white w-full rounded-full py-4 mt-8">
-                Buy Now
+                <Link href="/tickets">Buy Now</Link>
               </button>
             </div>
           </div>
@@ -48,7 +49,7 @@ export default function Home() {
                 <p className="text-sm justify-start">Set of 30</p>
               </div>
               <button className="bg-theme-grad-dual font-bold text-white w-full rounded-full py-4 mt-8">
-                Buy Now
+                <Link href="/tickets">Buy Now</Link>
               </button>
             </div>
           </div>
@@ -67,7 +68,7 @@ export default function Home() {
                 <p className="text-sm justify-start">Set of 30</p>
               </div>
               <button className="bg-theme-grad-dual font-bold text-white w-full rounded-full py-4 mt-8">
-                Buy Now
+                <Link href="/tickets">Buy Now</Link>
               </button>
             </div>
           </div>
@@ -86,7 +87,7 @@ export default function Home() {
                 <p className="text-sm justify-start">Set of 30</p>
               </div>
               <button className="bg-theme-grad-dual font-bold text-white w-full rounded-full py-4 mt-8">
-                Buy Now
+                <Link href="/tickets">Buy Now</Link>
               </button>
             </div>
           </div>

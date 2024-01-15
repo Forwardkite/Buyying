@@ -17,11 +17,13 @@ export default function Navbar() {
       }`}
     >
       <nav className="max-w-[1600px] mx-auto">
-        <img
-          src="../assets/img/Buyyinn-logo.png"
-          className="h-[40px] w-auto"
-          alt=""
-        />
+        <Link href="/">
+          <img
+            src="../assets/img/Buyyinn-logo.png"
+            className="h-[40px] w-auto"
+            alt=""
+          />
+        </Link>
         <ul className="list-none flex">
           <li className="mr-4">
             <Link

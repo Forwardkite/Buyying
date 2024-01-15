@@ -42,7 +42,7 @@ export default function Tickets() {
       setSlot(slot.filter((button) => button !== value));
     } else {
       // If the selectedButtons array has fewer than 3 values, add the new value
-      if (slot.length < 3 && slot.includes(value)) {
+      if (slot.length < 3) {
         setSlot([...slot, value]);
       }
     }
