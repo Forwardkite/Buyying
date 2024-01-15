@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <header
       className={`w-full  py-4 bg-black navbar ${
-        pathname === "/login" ? "hidden" : ""
+        pathname === "/login" || pathname === "/register" ? "hidden" : ""
       }`}
     >
       <nav className="max-w-[1600px] mx-auto">
