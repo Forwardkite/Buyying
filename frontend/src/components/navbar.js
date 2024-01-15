@@ -7,7 +7,6 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import PersonIcon from "@mui/icons-material/Person";
-import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -26,9 +25,9 @@ export default function Navbar() {
         <ul className="list-none flex">
           <li className="mr-4">
             <Link
-              href="/dashboard/profile"
+              href="/login"
               className={`flex link text-theme ${
-                pathname === "/dashboard/profile" ? "active" : ""
+                pathname === "/dashboard/login" ? "active" : ""
               }`}
             >
               <PersonIcon />

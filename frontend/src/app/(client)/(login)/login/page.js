@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Login() {
   return (
@@ -23,7 +24,10 @@ export default function Login() {
             className="py-2 px-4 bg-violet-700 text-white mx-auto  rounded w-full text-center"
             type="submit"
           >
-            Login
+            <Link href="/">Login</Link>
+          </button>
+          <button className="mx-auto text-center flex mt-4 hover:text-violet-700">
+            <Link href="/register">Create Account</Link>
           </button>
         </form>
       </div>
