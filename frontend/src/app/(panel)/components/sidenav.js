@@ -47,13 +47,13 @@ export default function Sidenav() {
         </li>
         <li>
           <Link
-            href="/dashboard/products"
+            href="/dashboard/purchase"
             className={`flex link ${
-              pathname === "/dashboard/products" ? "active" : ""
+              pathname === "/dashboard/purchase" ? "active" : ""
             }`}
           >
             <PlaylistAddCheckIcon />
-            <span className="ms-2">Purchased</span>
+            <span className="ms-2">Purchase</span>
           </Link>
         </li>
         <li>

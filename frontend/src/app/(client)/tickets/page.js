@@ -8,7 +8,7 @@ import ShuffleIcon from "@mui/icons-material/Shuffle";
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function Tickets() {
-  const [slot, setSlot] = React.useState(null);
+  const [slot, setSlot] = React.useState([]);
   const [product, setProduct] = React.useState(1);
   const [donation, setDonation] = React.useState(0);
   const ticket = product + donation;
@@ -36,9 +36,18 @@ export default function Tickets() {
     }
   };
 
-  const handleSlot = (event, newSlot) => {
-    setSlot(newSlot);
+  const handleButtonToggle = (value) => {
+    // If the selectedButtons array already contains the value, remove it
+    if (slot.includes(value)) {
+      setSlot(slot.filter((button) => button !== value));
+    } else {
+      // If the selectedButtons array has fewer than 3 values, add the new value
+      if (slot.length < 3) {
+        setSlot([...slot, value]);
+      }
+    }
   };
+  console.log("Selected Buttons:", slot);
 
   return (
     <>
@@ -125,8 +134,7 @@ export default function Tickets() {
           <div className="slot-box bg-theme-gray rounded-lg">
             <ToggleButtonGroup
               value={slot}
-              exclusive
-              onChange={handleSlot}
+              onChange={(_, value) => handleButtonToggle(value)}
               aria-label="slot"
               size="large"
               className="slot-group "

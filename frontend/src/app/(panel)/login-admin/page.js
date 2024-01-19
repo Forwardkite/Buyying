@@ -2,41 +2,35 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-
-
 export default function Login() {
-  const [user, Setuser] = useState('');
-  const [pass, SetPass] = useState('');
+  const [user, Setuser] = useState("");
+  const [pass, SetPass] = useState("");
   const router = useRouter();
-
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const SendingData = {
       email: user,
-      password: pass
-    }
+      password: pass,
+    };
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(SendingData),
       });
 
       if (response.redirected) {
-        router.replace("/dashboard")
-
+        router.replace("/dashboard");
       } else {
-        console.error('Failed to login:', response.statusText);
-        alert('Neither Email or Password Error');
+        console.error("Failed to login:", response.statusText);
+        alert("Neither Email or Password Error");
       }
     } catch (error) {
-      console.error('Error sending data:', error);
-
+      console.error("Error sending data:", error);
     }
   };
   return (
@@ -47,24 +41,29 @@ export default function Login() {
           alt=""
           className="mx-auto w-full mb-10"
         />
-        <h1 className="text-center font-bold mb-8">Login</h1>
+        <h1 className="text-center font-bold mb-8 text-2xl">Login</h1>
         <form onSubmit={handleLogin}>
           <div className="input flex flex-col mb-4">
             <label htmlFor="">User ID</label>
-            <input type="email" className="border p-2 rounded mt-1"
-            value={user}
-            onChange={e=> Setuser(e.target.value)}
+            <input
+              type="email"
+              className="border p-2 rounded mt-1"
+              value={user}
+              onChange={(e) => Setuser(e.target.value)}
             />
           </div>
           <div className="input flex flex-col mb-6">
             <label htmlFor="">Password</label>
-            <input type="password" className="border p-2 rounded mt-1" 
-            value={pass}
-            onChange={e=> SetPass(e.target.value)}
+            <input
+              type="password"
+              className="border p-2 rounded mt-1"
+              value={pass}
+              onChange={(e) => SetPass(e.target.value)}
             />
           </div>
-          <button className="py-2 px-4 bg-violet-700 text-white mx-auto  rounded w-full text-center"
-          type="submit"
+          <button
+            className="py-2 px-4 bg-violet-700 text-white mx-auto  rounded w-full text-center"
+            type="submit"
           >
             Login
           </button>
