@@ -1,0 +1,15 @@
+const Handlebars = require('handlebars');
+
+// Register a helper named 'base64' to convert data to a Base64 string
+Handlebars.registerHelper('base64', function(data) {
+  return new Handlebars.SafeString(Buffer.from(data).toString('base64'));
+});
+
+
+
+<!-- imageGallery.hbs - Display uploaded images -->
+<h1>Image Gallery</h1>
+{{#each images}}
+  <img src="data:{{contentType}};base64,{{base64 data}}" alt="{{filename}}">
+{{/each}}
+
