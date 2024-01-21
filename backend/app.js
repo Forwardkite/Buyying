@@ -46,7 +46,7 @@ app.use('/uploads', express.static('uploads'));
 
 /*__________________________________________________*ROUTES*____________________________________________*/
 
-
+// for testing text 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const registrationRoutes = require('./routes/registration')
