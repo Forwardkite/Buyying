@@ -41,8 +41,8 @@ app.use(passport.session());
 
 const adminRouter = require('./routes/admin')
 app.use('/admin', adminRouter);
-
-
+    
+app.use('/uploads', express.static('uploads'));
 
 /*__________________________________________________*ROUTES*____________________________________________*/
 

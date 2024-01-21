@@ -6,7 +6,21 @@ const ProductDB = require('../models/productDB')
 const router = express.Router();
 const app = express();
 const authMiddleware = require('../middleware/authMiddleware')
+const multer = require('multer');
 connectionDB();
+
+// Set up multer storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // Define the destination folder for uploaded files
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname); // Set unique file name
+  },
+});
+
+// Set up multer upload
+const upload = multer({ storage: storage });
 
 router.get('/', (req, res) => {
   res.render('admin/batch');
@@ -16,7 +30,7 @@ router.get('/', (req, res) => {
 
 const productCreate = require('../controllers/productCreate');
 
-router.post('/create', productCreate.createProduct);
+router.post('/create', upload.single('imageProduct'), productCreate.createProduct);
 
 /*_______________________________________PRODUCT_DISPLAY___________________________________________*/
 

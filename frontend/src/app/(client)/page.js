@@ -53,11 +53,10 @@ export default function Home() {
             <div className="card-content w-full flex flex-col justify-center items-center">
               <div className="detail-box w-full flex justify-center items-center flex-col">
                 {/* Assuming your image names are based on the product name */}
-                <img
-                  src={`@/../assets/img/phone.png`}
-                  alt={e.productName}
-                  className="mb-8 max-w-[160px] w-[80%]"
-                />
+                
+                {e.imageProduct && (
+            <img src={`http://localhost:5000/uploads/${e.imageProduct}`} alt="" className="w-[100px]" />
+          )}
                 <div className="flex justify-between w-full gap-x-4 mb-2">
                   <h6 className="font-bold text-lg">{e.productName}</h6>
                   <p className="font-bold text-lg">Rs {e.productPrice}</p>
