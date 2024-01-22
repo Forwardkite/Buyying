@@ -47,7 +47,10 @@ export default function Home() {
   const [variablePro, SetVariablePro] = useState(false);
   const [ProId, setProId] = useState();
   const [openEditModal, setOpenEditModal] = React.useState(false);
-  const [proImage, SetProImage] = useState();
+  // const [proImage, SetProImage] = useState();
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [ProImage, setProImage] = useState(null);
 
   //_________________________________________________________________________________________________//
 
@@ -64,21 +67,71 @@ export default function Home() {
     startingDate: startDate,
     endingDate: endDate,
     productId: ProId,
-    imageProduct: proImage,
+    imageProduct: ProImage,
   };
+
+
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+
+    // Preview the selected image
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const response = await fetch("http://localhost:5000/admin/create", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(SendingData),
+  //     });
+
+  //     if (response.ok) {
+  //       console.log("Data sent successfully");
+  //       window.location.reload(false);
+  //     } else {
+  //       console.error("Failed to send data:", response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error sending data:", error);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    const formData = new FormData();
+    formData.append("productName", ProName);
+    formData.append("stockNumber", ProNum);
+    formData.append("productDiscription", ProDis);
+    formData.append("productPrice", ProPrice);
+    formData.append("startingDate", startDate);
+    formData.append("endingDate", endDate);
+    formData.append("productId", ProId);
+    formData.append("imageProduct", selectedFile); // Make sure this matches your backend field name
+  
     try {
       const response = await fetch("http://localhost:5000/admin/create", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(SendingData),
+        body: formData,
       });
-
+  
       if (response.ok) {
         console.log("Data sent successfully");
         window.location.reload(false);
@@ -101,7 +154,7 @@ export default function Home() {
     SetStartDate(data.startingDate);
     SetEndDate(data.endingDate);
     setProId(data._id);
-    SetProImage(data.proImage);
+    // SetProImage(data.proImage);
 
     // Open the edit modal
     setOpenEditModal(true);
@@ -249,16 +302,20 @@ export default function Home() {
               </TableRow>
             </TableHead>
             <TableBody>
+
+
+
               {/* ................................ */}
+
+
+              
               {Fetchdata ? (
                 Fetchdata.map((e) => (
                   <TableRow className="border-b">
                     <TableCell component="th" scope="row">
-                      <img
-                        src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg?w=996"
-                        alt=""
-                        className="w-[100px]"
-                      />
+                    {e.imageProduct && (
+            <img src={`http://localhost:5000/uploads/${e.imageProduct}`} alt="" className="w-[100px]" />
+          )}
                     </TableCell>
                     <TableCell>{e.productName}</TableCell>
                     <TableCell align="right">₹{e.productPrice}</TableCell>
@@ -333,10 +390,13 @@ export default function Home() {
             <div className="flex gap-6 w-full">
               <div className="input flex flex-col w-1/2 input-image">
                 <h6>Product Image</h6>
+                {ProImage && <img src={ProImage} alt="Preview" className="w-[100px]" />}
                 <label htmlFor="imgupload">
                   <span>Upload Image</span>
                 </label>
-                <input type="file" className="border" id="imgupload" />
+                
+                <input type="file" className="border" id="imgupload" onChange={handleFileChange} />
+                
               </div>
               <div className="input flex flex-col w-1/2">
                 <label htmlFor="">Product Description</label>

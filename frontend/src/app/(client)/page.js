@@ -1,7 +1,35 @@
+"use client";
+
 import Image from "next/image";
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 
+
 export default function Home() {
+
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/admin/view");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const result = await response.json();
+        setProducts(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);   
+
+  
+
   return (
     <>
       <section>
@@ -13,86 +41,39 @@ export default function Home() {
           />
         </div>
       </section>
+
+
+
+
+
       <section className="home-prizes mt-12">
-        <div className="flex gap-x-8 justify-between items-center">
-          <div className="card w-4/12 rounded-[30px]  border border-theme p-8 flex">
+      <div className="flex gap-x-8 justify-between items-center">
+        {products.map((e) => (
+          <div key={e.id} className="card w-4/12 rounded-[30px] border border-theme p-8 flex">
             <div className="card-content w-full flex flex-col justify-center items-center">
               <div className="detail-box w-full flex justify-center items-center flex-col">
-                <img
-                  src="@/../assets/img/phone.png"
-                  alt="i-phone"
-                  className="mb-8 max-w-[160px] w-[80%]"
-                />
+                {/* Assuming your image names are based on the product name */}
+                
+                {e.imageProduct && (
+            <img src={`http://localhost:5000/uploads/${e.imageProduct}`} alt="" className="w-[100px]" />
+          )}
                 <div className="flex justify-between w-full gap-x-4 mb-2">
-                  <h6 className="font-bold text-lg">i Phone</h6>
-                  <p className="font-bold text-lg">Rs 30,000</p>
+                  <h6 className="font-bold text-lg">{e.productName}</h6>
+                  <p className="font-bold text-lg">Rs {e.productPrice}</p>
                 </div>
-                <p className="text-sm justify-start">Set of 30</p>
+                <p className="text-sm justify-start">{e.productDiscription}</p>
+              </div>
+              <div>
+              <p className="text-sm">Stock: {e.stockNumber}</p>
               </div>
               <button className="bg-theme-grad-dual font-bold text-white w-full rounded-full py-4 mt-8">
                 <Link href="/tickets">Buy Now</Link>
               </button>
             </div>
           </div>
-          <div className="card w-4/12 rounded-[30px]  border border-theme p-8 flex">
-            <div className="card-content w-full flex flex-col justify-center items-center">
-              <div className="detail-box w-full flex justify-center items-center flex-col">
-                <img
-                  src="@/../assets/img/phone.png"
-                  alt="i-phone"
-                  className="mb-8 max-w-[160px] w-[80%]"
-                />
-                <div className="flex justify-between w-full gap-x-4 mb-2">
-                  <h6 className="font-bold text-lg">i Phone</h6>
-                  <p className="font-bold text-lg">Rs 30,000</p>
-                </div>
-                <p className="text-sm justify-start">Set of 30</p>
-              </div>
-              <button className="bg-theme-grad-dual font-bold text-white w-full rounded-full py-4 mt-8">
-                <Link href="/tickets">Buy Now</Link>
-              </button>
-            </div>
-          </div>
-          <div className="card w-4/12 rounded-[30px]  border border-theme p-8 flex">
-            <div className="card-content w-full flex flex-col justify-center items-center">
-              <div className="detail-box w-full flex justify-center items-center flex-col">
-                <img
-                  src="@/../assets/img/phone.png"
-                  alt="i-phone"
-                  className="mb-8 max-w-[160px] w-[80%]"
-                />
-                <div className="flex justify-between w-full gap-x-4 mb-2">
-                  <h6 className="font-bold text-lg">i Phone</h6>
-                  <p className="font-bold text-lg">Rs 30,000</p>
-                </div>
-                <p className="text-sm justify-start">Set of 30</p>
-              </div>
-              <button className="bg-theme-grad-dual font-bold text-white w-full rounded-full py-4 mt-8">
-                <Link href="/tickets">Buy Now</Link>
-              </button>
-            </div>
-          </div>
-          <div className="card w-4/12 rounded-[30px]  border border-theme p-8 flex">
-            <div className="card-content w-full flex flex-col justify-center items-center">
-              <div className="detail-box w-full flex justify-center items-center flex-col">
-                <img
-                  src="@/../assets/img/phone.png"
-                  alt="i-phone"
-                  className="mb-8 max-w-[160px] w-[80%]"
-                />
-                <div className="flex justify-between w-full gap-x-4 mb-2">
-                  <h6 className="font-bold text-lg">i Phone</h6>
-                  <p className="font-bold text-lg">Rs 30,000</p>
-                </div>
-                <p className="text-sm justify-start">Set of 30</p>
-              </div>
-              <button className="bg-theme-grad-dual font-bold text-white w-full rounded-full py-4 mt-8">
-                <Link href="/tickets">Buy Now</Link>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+        ))}
+      </div>
+    </section>
       <section>
         <h4 className="font-bold text-theme text-6xl mx-auto mt-16 mb-8 text-center">
           Explore Future campaigns
@@ -205,3 +186,4 @@ export default function Home() {
     </>
   );
 }
+
