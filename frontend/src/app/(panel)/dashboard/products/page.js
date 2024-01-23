@@ -70,8 +70,6 @@ export default function Home() {
     imageProduct: ProImage,
   };
 
-
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
@@ -85,10 +83,6 @@ export default function Home() {
       reader.readAsDataURL(file);
     }
   };
-
-
-
-
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -115,7 +109,7 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const formData = new FormData();
     formData.append("productName", ProName);
     formData.append("stockNumber", ProNum);
@@ -125,13 +119,13 @@ export default function Home() {
     formData.append("endingDate", endDate);
     formData.append("productId", ProId);
     formData.append("imageProduct", selectedFile); // Make sure this matches your backend field name
-  
+
     try {
       const response = await fetch("http://localhost:5000/admin/create", {
         method: "POST",
         body: formData,
       });
-  
+
       if (response.ok) {
         console.log("Data sent successfully");
         window.location.reload(false);
@@ -302,20 +296,19 @@ export default function Home() {
               </TableRow>
             </TableHead>
             <TableBody>
-
-
-
               {/* ................................ */}
 
-
-              
               {Fetchdata ? (
                 Fetchdata.map((e) => (
                   <TableRow className="border-b">
                     <TableCell component="th" scope="row">
-                    {e.imageProduct && (
-            <img src={`http://localhost:5000/uploads/${e.imageProduct}`} alt="" className="w-[100px]" />
-          )}
+                      {e.imageProduct && (
+                        <img
+                          src={`http://localhost:5000/uploads/${e.imageProduct}`}
+                          alt=""
+                          className="w-[100px]"
+                        />
+                      )}
                     </TableCell>
                     <TableCell>{e.productName}</TableCell>
                     <TableCell align="right">₹{e.productPrice}</TableCell>
@@ -390,13 +383,19 @@ export default function Home() {
             <div className="flex gap-6 w-full">
               <div className="input flex flex-col w-1/2 input-image">
                 <h6>Product Image</h6>
-                {ProImage && <img src={ProImage} alt="Preview" className="w-[100px]" />}
+                {ProImage && (
+                  <img src={ProImage} alt="Preview" className="w-[100px]" />
+                )}
                 <label htmlFor="imgupload">
                   <span>Upload Image</span>
                 </label>
-                
-                <input type="file" className="border" id="imgupload" onChange={handleFileChange} />
-                
+
+                <input
+                  type="file"
+                  className="border"
+                  id="imgupload"
+                  onChange={handleFileChange}
+                />
               </div>
               <div className="input flex flex-col w-1/2">
                 <label htmlFor="">Product Description</label>
@@ -441,6 +440,10 @@ export default function Home() {
                   value={ProPrice}
                   onChange={(e) => SetProprice(e.target.value)}
                 />
+              </div>
+              <div className="flex flex-col w-2/6">
+                <span>Donation</span>
+                <Switch {...label} />
               </div>
               <div className="flex flex-col w-2/6">
                 <span>Variable product</span>
@@ -553,6 +556,10 @@ export default function Home() {
                   value={ProPrice}
                   onChange={(e) => SetProprice(e.target.value)}
                 />
+              </div>
+              <div className="flex flex-col w-2/6">
+                <span>Donation</span>
+                <Switch {...label} />
               </div>
               <div className="flex flex-col w-2/6">
                 <span>Variable product</span>
