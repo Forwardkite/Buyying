@@ -38,6 +38,8 @@ const productDisplay = require('../controllers/productDisplay');
 
 router.get('/view', productDisplay.viewProducts);
 
+router.get('/view/:id', productDisplay.viewProductById);
+
 /*______________________________________PRODUCT_UPDATE______________________________________________*/
 
 const productUpdate = require('../controllers/productUpdate'); // Import the product controller
