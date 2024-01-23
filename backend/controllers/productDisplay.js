@@ -11,6 +11,24 @@ const viewProducts = async (req, res) => {
   }
 };
 
+// Function to handle '/admin/view/:id' route
+const viewProductById = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const product = await ProductDB.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   viewProducts,
+  viewProductById,
 };
