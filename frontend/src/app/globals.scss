@@ -65,6 +65,22 @@ nav li {
     }
   }
 }
+
+.btn-theme-dual {
+  background-image: linear-gradient(
+    to right,
+    #e48039 0%,
+    #12b4b9 51%,
+    #e48039 100%
+  );
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  &:hover {
+    background-position: right center;
+  }
+}
 .slot-box {
   width: 25%;
   max-width: 472px;

@@ -1,4 +1,4 @@
-const multer = require('multer')
+const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/uploads");
@@ -16,7 +16,7 @@ const fileFilter = (req, file, cb) => {
   ) {
     cb(null, true);
   } else
-    ({ error: "Unsupported file format. Upload only JPEG/JPG or PNG" }, false);
+    ({ error: "Unsupported file format. Upload only JPEG/JPG or PNG" }), false;
 };
 
 const upload = multer({
@@ -26,4 +26,3 @@ const upload = multer({
 });
 
 module.exports = upload;
-
