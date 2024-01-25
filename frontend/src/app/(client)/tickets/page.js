@@ -54,32 +54,14 @@ export default function Tickets() {
       <section>
         <div className="w-full bg-[url('/assets/img/page-title.png')] p-12 bg-no-repeat bg-cover rounded-b-[50px]">
           <h4 className="font-bold text-white text-6xl mx-auto mb-4 text-center">
-            Pen
+            Tickets
           </h4>
           <p className="text-base text-white text-center ">
             Scratch the card and get your surprise ticket. Best of Luck
           </p>
         </div>
       </section>
-      <section className="py-8 mt-16 mb-8">
-        <div className="flex items-center w-11/12 mx-auto gap-x-8">
-          <div className="w-1/2">
-            <h1>Excited to win</h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur. A porta euismod a non eu
-              donec duis. Quam risus amet malesuada tincidunt egestas vitae.
-            </p>
-          </div>
-          <div className="w-1/2">
-            <img
-              src="../../../../assets/img/pen.png"
-              alt=""
-              className="rounded-lg"
-            />
-          </div>
-        </div>
-      </section>
-      <section className="mb-16">
+      <section className="my-16 ">
         <div className="flex justify-between w-11/12 mx-auto">
           <div className="flex flex-col items-center">
             <h6 className="text-theme-light text-lg font-medium">
