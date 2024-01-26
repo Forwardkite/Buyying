@@ -1,5 +1,5 @@
 async function getProducts() {
-  const res = await fetch("http://localhost:5000/admin/view");
+  const res = await fetch("https://forwardkite-deployment-server-dp.onrender.com/admin/view");
   return res.json();
 }
 

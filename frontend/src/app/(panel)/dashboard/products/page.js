@@ -121,7 +121,7 @@ export default function Home() {
     formData.append("imageProduct", selectedFile); // Make sure this matches your backend field name
 
     try {
-      const response = await fetch("http://localhost:5000/admin/create", {
+      const response = await fetch("https://forwardkite-deployment-server-dp.onrender.com/admin/create", {
         method: "POST",
         body: formData,
       });
@@ -172,7 +172,7 @@ export default function Home() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/admin/update/${ProId}`,
+        `https://forwardkite-deployment-server-dp.onrender.com/admin/update/${ProId}`,
         {
           method: "PUT", // or 'POST' depending on your API
           headers: {
@@ -207,7 +207,7 @@ export default function Home() {
     if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
       try {
         const response = await fetch(
-          `http://localhost:5000/admin/delete/${ProId}`,
+          `https://forwardkite-deployment-server-dp.onrender.com/admin/delete/${ProId}`,
           {
             method: "DELETE",
             headers: {
@@ -222,7 +222,7 @@ export default function Home() {
 
           // Fetch and log the updated product list after deletion
           const updatedProductsResponse = await fetch(
-            "http://localhost:5000/admin/view"
+            "https://forwardkite-deployment-server-dp.onrender.com/admin/view"
           );
           const updatedProducts = await updatedProductsResponse.json();
           console.log("Updated product list:", updatedProducts);
@@ -243,7 +243,7 @@ export default function Home() {
 
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/admin/view");
+        const response = await fetch("https://forwardkite-deployment-server-dp.onrender.com/admin/view");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

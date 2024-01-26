@@ -40,7 +40,7 @@ export default function Purchase() {
 
   const handleExport = async () => {
     try {
-      const response = await fetch('http://localhost:5000/admin/export'); // Fetch the export endpoint
+      const response = await fetch('https://forwardkite-deployment-server-dp.onrender.com/admin/export'); // Fetch the export endpoint
       const blob = await response.blob(); // Get the response as a Blob
 
       // Create a download link and trigger the download

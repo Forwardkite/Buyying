@@ -10,7 +10,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/admin/view");
+        const response = await fetch("https://forwardkite-deployment-server-dp.onrender.com/admin/view");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -50,7 +50,7 @@ export default function Home() {
 
                   {e.imageProduct && (
                     <img
-                      src={`http://localhost:5000/uploads/${e.imageProduct}`}
+                      src={`https://forwardkite-deployment-server-dp.onrender.com/uploads/${e.imageProduct}`}
                       alt=""
                       className="mb-4 aspect-square rounded-[10px] object-cover w-[100%]"
                     />
