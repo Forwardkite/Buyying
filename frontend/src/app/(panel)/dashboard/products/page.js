@@ -304,7 +304,7 @@ export default function Home() {
                     <TableCell component="th" scope="row">
                       {e.imageProduct && (
                         <img
-                          src={`http://localhost:5000/uploads/${e.imageProduct}`}
+                          src={`https://forwardkite-deployment-server-dp.onrender.com/uploads/${e.imageProduct}`}
                           alt=""
                           className="w-[100px]"
                         />
