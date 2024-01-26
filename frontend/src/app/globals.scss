@@ -82,7 +82,7 @@ nav li {
   }
 }
 .slot-box {
-  width: 25%;
+  width: calc(25% - 0.6rem);
   max-width: 472px;
   padding: 1rem;
   gap: 0.5rem;
@@ -99,7 +99,7 @@ nav li {
       }
     }
     .slot {
-      width: 2.5rem;
+      width: 2.4rem;
       height: auto;
       aspect-ratio: 1 / 1;
       cursor: pointer;
@@ -139,7 +139,7 @@ nav li {
     }
     .action {
       cursor: pointer;
-      width: 2.5rem;
+      width: 2.4rem;
       height: auto;
       aspect-ratio: 1 / 1;
       background-color: rgb(255, 255, 255);
