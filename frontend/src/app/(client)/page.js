@@ -5,12 +5,17 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Home() {
+
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/admin/view");
+        const response = await fetch(`${apiUrl}/admin/view`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -50,7 +55,7 @@ export default function Home() {
 
                   {e.imageProduct && (
                     <img
-                      src={`http://localhost:5000/uploads/${e.imageProduct}`}
+                      src={`${apiUrl}/uploads/${e.imageProduct}`}
                       alt=""
                       className="mb-4 aspect-square rounded-[10px] object-cover w-[100%]"
                     />
