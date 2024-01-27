@@ -41,9 +41,11 @@ export default async function Product({ params }) {
               className="rounded-lg"
             />
           </div>
-          <button className="btn-theme-dual font-bold text-white w-1/4 rounded-full py-4 mt-12 ml-auto ">
-            <Link href="/tickets">Proceed</Link>
-          </button>
+          <Link href="/ticket-selection" className="w-1/4  ml-auto ">
+            <button className="btn-theme-dual font-bold text-white w-full rounded-full py-4 mt-12">
+              Proceed
+            </button>
+          </Link>
         </div>
       </section>
     </>
