@@ -71,9 +71,11 @@ export default function Home() {
                 <div>
                   <p className="text-sm">Stock: {e.stockNumber}</p>
                 </div>
-                <button className="btn-theme-dual font-bold text-white w-full rounded-full py-4 mt-4">
-                  <Link href={`/products/${e._id}`}>Buy Now</Link>
-                </button>
+                <Link href={`/products/${e._id}`} className="w-full">
+                  <button className="btn-theme-dual font-bold text-white w-full rounded-full py-4 mt-4">
+                    Buy Now
+                  </button>
+                </Link>
               </div>
             </div>
           ))}
