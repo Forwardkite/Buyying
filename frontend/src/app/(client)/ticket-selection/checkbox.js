@@ -39,8 +39,9 @@ const CheckBoxGroup = ({ data }) => {
     setSelectedNumbers(updatedCheckedIds); // Update selected numbers regardless of count
   
     if (updatedCheckedIds.length >= 3) {
+      validateNumberCombination(updatedCheckedIds); // Validate the selected numbers
       setContinueVisible(true); // Set the button visible if 3 or more checkboxes are selected
-      sendSelectedNumbersToBackend(updatedCheckedIds); // Send the selected numbers to the backend
+     
     } else {
       setContinueVisible(false);
     }
@@ -48,33 +49,89 @@ const CheckBoxGroup = ({ data }) => {
     dispatch({ id });
   };
   
-  
-  const sendSelectedNumbersToBackend = (numbers) => {
-    fetch('http://localhost:5000/admin/slot', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ numbers }) // Wrap numbers in an object
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+
+//______________________________________________SLOT_VALIDATION_____________________________________________________//
+
+// Frontend function to validate number combination
+const validateNumberCombination = async (selectedNumbers) => {
+  try {
+      // Make a POST request to the backend route that handles validation
+      const response = await fetch('http://localhost:5000/admin/slot/check', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ numbers: selectedNumbers })
+      });
+
+      // Check if the response is successful
+      if (response.ok) {
+          // Parse the JSON response
+          const data = await response.json();
+          
+          // Check if the combination exists
+          if (data.exists) {
+              // Combination exists, show a message
+              console.log('Combination exists');
+              // Show your message to the user
+          } else {
+              // Combination does not exist, show a message
+              console.log('Combination does not exist');
+              // Show your message to the user
+          }
+      } else {
+          // If the response is not successful, throw an error
+          throw new Error('Error validating number combination');
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Response from backend:', data);
-    })
-    .catch(error => {
-      console.error('Error sending data to the backend:', error);
-    });
+  } catch (error) {
+      // If an error occurs during the request, log the error
+      console.error('Error validating number combination:', error);
+      // Show your error message to the user
+  }
+};
+
+//__________________________________________SLOT_SAVING_FUNCTION_____________________________________________________//
+
+const sendSelectedNumbersToBackend = (numbers) => {
+  // Combine numbers into a string
+  const combinedNumbers = numbers.join('');
+
+  // Wrap the combined numbers in an object with a key named "numbers"
+  const requestBody = {
+    numbers: combinedNumbers
   };
+
+  // Send a POST request to the backend server
+  fetch('http://localhost:5000/admin/slot', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestBody)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Response from backend:', data);
+  })
+  .catch(error => {
+    console.error('Error sending data to the backend:', error);
+  });
+};
+
+//_____________________________________________________________________________________________________________//
 
   const handleProceedClick = () => {
     // Handle proceed action here
     console.log("Proceed clicked");
+    sendSelectedNumbersToBackend(selectedNumbers);
   };
+
+  //_____________________________________________________________________________________________________________//
 
   return (
     <div className="slot-box  bg-theme-gray rounded-lg">
@@ -113,3 +170,5 @@ const CheckBoxGroup = ({ data }) => {
 };
 
 export default CheckBoxGroup;
+
+

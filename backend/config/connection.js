@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const connectionDB = async () => {
   try {
     await mongoose.connect(
-      "mongodb+srv://abhinavshyjupc:97fvTcy1zllzpUcY@cluster0.0j5pjr2.mongodb.net/?retryWrites=true&w=majority",
+      "mongodb+srv://sreerajmack7:VDQ0UXJE8kPVFl8s@cluster0.w9rwknn.mongodb.net/?retryWrites=true&w=majority",
       {}
     );
 
@@ -18,5 +18,8 @@ module.exports = connectionDB;
 // 97fvTcy1zllzpUcY
 // I7nfqAXi6kTt518y
 // 0WnAhdaletmY6FAF
+// XORJNaCZ0pM63gJU
+// VDQ0UXJE8kPVFl8s
 //mongodb+srv://sreeraj:jsusZU6OJsLzpYVO@cluster0.wdcchv9.mongodb.net/?retryWrites=true&w=majority//
+// mongodb+srv://sreerajmack7:VDQ0UXJE8kPVFl8s@cluster0.w9rwknn.mongodb.net/?retryWrites=true&w=majority
 //mongodb+srv://abhinavshyjupc:97fvTcy1zllzpUcY@cluster0.0j5pjr2.mongodb.net/?retryWrites=true&w=majority

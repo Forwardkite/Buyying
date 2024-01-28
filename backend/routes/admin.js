@@ -66,7 +66,7 @@ router.post("/slot",SlotNumbers.saveSlot);
 
 const SlotValidator = require("../controllers/slotValidatorController");
 
-router.post("/slot-validator",SlotValidator.validator);
+router.post("/slot/check",SlotValidator.checkNumberCombination);
 
 /*_________________________________________SLOT_VIEW_________________________________________________*/
 
