@@ -8,6 +8,7 @@ async function getProduct(id) {
   return res.json();
 }
 export default async function Product({ params }) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const product = await getProduct(params.id);
   return (
     <>
@@ -39,7 +40,8 @@ export default async function Product({ params }) {
           </div>
           <div className="w-5/12">
             <img
-              src="../../../../assets/img/pen.png"
+              // src="../../../../assets/img/pen.png"
+              src={`${apiUrl}/uploads/${product.imageProduct}`}
               alt=""
               className="rounded-lg"
             />
