@@ -1,7 +1,10 @@
 import Link from "next/link";
 
 async function getProduct(id) {
-  const res = await fetch(`http://localhost:5000/admin/view/${id}`);
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const res = await fetch(`${apiUrl}/admin/view/${id}`);
   return res.json();
 }
 export default async function Product({ params }) {

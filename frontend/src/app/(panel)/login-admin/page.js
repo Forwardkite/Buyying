@@ -7,6 +7,8 @@ export default function Login() {
   const [pass, SetPass] = useState("");
   const router = useRouter();
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     const SendingData = {
@@ -15,7 +17,7 @@ export default function Login() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch(`${apiUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
