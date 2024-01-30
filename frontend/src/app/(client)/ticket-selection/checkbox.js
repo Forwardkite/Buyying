@@ -174,11 +174,11 @@ const CheckBoxGroup = ({ data }) => {
           <ShuffleIcon />
         </label>
       </div>
-      {/* {continueVisible && (
+      {continueVisible && (
         <button className="btn-theme-dual font-bold text-white w-full rounded-full py-4 mt-12" onClick={handleProceedClick}>
           Continue
         </button>
-      )} */}
+      )}
 
       <div className="message">{message}</div>
     </div>
