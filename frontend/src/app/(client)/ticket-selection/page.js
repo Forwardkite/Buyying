@@ -106,6 +106,11 @@ export default function TicketSelection() {
             <CheckBoxGroup key={index} data={data} />
           ))}
         </div>
+        <div className="w-11/12 mx-auto">
+          <button className="btn-theme-dual font-bold block text-white ml-auto mr-0 rounded-full py-4 px-12 mt-12">
+            Confirm Tickets
+          </button>
+        </div>
       </section>
     </>
   );
