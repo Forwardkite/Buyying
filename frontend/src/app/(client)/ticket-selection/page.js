@@ -38,6 +38,14 @@ export default function TicketSelection() {
       setDonation(donation - 1);
     }
   };
+
+
+  const handleProceedClick = () => {
+    // Handle proceed action here
+    console.log("Proceed clicked");
+    // sendSelectedNumbersToBackend(selectedNumbers);
+  };
+
   return (
     <>
       <section>
@@ -107,7 +115,7 @@ export default function TicketSelection() {
           ))}
         </div>
         <div className="w-11/12 mx-auto">
-          <button className="btn-theme-dual font-bold block text-white ml-auto mr-0 rounded-full py-4 px-12 mt-12">
+          <button onClick={handleProceedClick} className="btn-theme-dual font-bold block text-white ml-auto mr-0 rounded-full py-4 px-12 mt-12">
             Confirm Tickets
           </button>
         </div>
