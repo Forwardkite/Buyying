@@ -20,4 +20,8 @@ router.get('/',authenticate, function(req, res) {
   res.render('dashboard');
 });
 
+router.get('/pay',authenticate, function(req, res) {
+  res.render('payment');
+});
+
 module.exports = router;

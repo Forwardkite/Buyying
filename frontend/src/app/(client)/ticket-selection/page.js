@@ -1,7 +1,6 @@
 "use client";
 // pages/index.js
-import React from "react";
-
+import React, {useState} from "react";
 import CheckBoxGroup from "./checkbox"; // Adjust the path accordingly
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -14,6 +13,7 @@ export default function TicketSelection() {
 
   const [product, setProduct] = React.useState(1);
   const [donation, setDonation] = React.useState(0);
+  const [continueVisible, setContinueVisible] = useState(false);
   const ticket = product + donation;
   const stockNumber = 12;
   const incrementProduct = () => {
@@ -44,6 +44,12 @@ export default function TicketSelection() {
     // Handle proceed action here
     console.log("Proceed clicked");
     // sendSelectedNumbersToBackend(selectedNumbers);
+  };
+
+  const [buttonVisible, setButtonVisible] = useState(false);
+
+  const handleButtonVisibility = (isVisible) => {
+    setButtonVisible(isVisible);
   };
 
   return (
@@ -111,13 +117,15 @@ export default function TicketSelection() {
         </div>
         <div className="flex flex-wrap gap-3 w-11/12 mx-auto mt-12">
           {Array.from({ length: product }, (_, index) => (
-            <CheckBoxGroup key={index} data={data} />
+            <CheckBoxGroup key={index} data={data} handleButtonVisibility={handleButtonVisibility} />
           ))}
         </div>
         <div className="w-11/12 mx-auto">
-          <button onClick={handleProceedClick} className="btn-theme-dual font-bold block text-white ml-auto mr-0 rounded-full py-4 px-12 mt-12">
-            Confirm Tickets
+        {buttonVisible && (
+          <button className="btn-theme-dual font-bold text-white w-full rounded-full py-4 mt-12" onClick={handleProceedClick}>
+            Add To Cart
           </button>
+        )}
         </div>
       </section>
     </>

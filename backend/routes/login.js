@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
     if (user && await bcrypt.compare(password, user.password)) {
         req.session.userId = user._id;
-        res.redirect('/dashboardq1');
+        res.redirect('/dashboard');
     } else {
         // res.send('');
         // alert('Error');
