@@ -4,10 +4,11 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
+
 export default function Home() {
 
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
   const [products, setProducts] = useState([]);

@@ -21,11 +21,10 @@ const reducer = (state, action) => {
   };
 };
 
-const CheckBoxGroup = ({ data }) => {
+const CheckBoxGroup = ({ data, handleButtonVisibility }) => {
   const initialState = { checkedIds: [] };
   const [state, dispatch] = useReducer(reducer, initialState);
   const [selectedNumbers, setSelectedNumbers] = useState([]);
-  const [continueVisible, setContinueVisible] = useState(false);
   const [message, setMessage] = useState("Please select any 3 numbers");
 
   //__________________________________________________API_ENV__________________________________________//
@@ -49,10 +48,11 @@ const CheckBoxGroup = ({ data }) => {
 
     if (updatedCheckedIds.length >= 3) {
       validateNumberCombination(updatedCheckedIds); // Validate the selected numbers
-      // setContinueVisible(true); // Set the button visible if 3 or more checkboxes are selected
+      handleButtonVisibility(false);
     } else {
       setMessage("Please select any 3 numbers");
-      setContinueVisible(false);
+      
+      handleButtonVisibility(false); // Hide the button
     }
 
     dispatch({ id });
@@ -76,25 +76,21 @@ const CheckBoxGroup = ({ data }) => {
         body: JSON.stringify(requestBody),
       });
 
-      // Check if the response is successful
       if (response.ok) {
         // Parse the JSON response
         const data = await response.json();
 
         // Check if the combination exists
         if (data.exists) {
-          // Combination exists, hide the button
-          console.log("Combination exists");
           setMessage("Oops! This combination already exists");
-          setContinueVisible(false);
+          handleButtonVisibility(false); // Hide the button
         } else {
-          // Combination does not exist, show the button
-          console.log("Combination does not exist");
           setMessage("Valid combination. Proceed!");
-          setContinueVisible(true);
+          handleButtonVisibility(true); // Show the button only if exactly 3 numbers are selected
         }
+    
       } else {
-        // If the response is not successful, throw an error
+        
         throw new Error("Error validating number combination");
       }
     } catch (error) {
@@ -104,7 +100,8 @@ const CheckBoxGroup = ({ data }) => {
     }
   };
 
-  //__________________________________________SLOT_SAVING_FUNCTION_____________________________________________________//
+  //_________________________________________SLOT_SAVING_FUNCTION_____________________________________________________//
+
 
   const sendSelectedNumbersToBackend = (numbers) => {
     // Combine numbers into a string
@@ -174,12 +171,6 @@ const CheckBoxGroup = ({ data }) => {
           <ShuffleIcon />
         </label>
       </div>
-      {continueVisible && (
-        <button className="btn-theme-dual font-bold text-white w-full rounded-full py-4 mt-12" onClick={handleProceedClick}>
-          Continue
-        </button>
-      )}
-
       <div className="message">{message}</div>
     </div>
   );

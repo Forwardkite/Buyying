@@ -39,7 +39,7 @@ export default function Login() {
     <div className="h-screen flex ">
       <div className="w-2/3 md:w-2/5 lg:w-1/5 m-auto p-8 rounded-md shadow-0-0">
         <img
-          src="../../../../assets/img/buyyinn-logo.png"
+          src="/assets/img/Buyyinn-logo.png"
           alt=""
           className="mx-auto w-full mb-10"
         />
