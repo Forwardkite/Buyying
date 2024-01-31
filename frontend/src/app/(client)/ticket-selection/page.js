@@ -120,9 +120,9 @@ export default function TicketSelection() {
             <CheckBoxGroup key={index} data={data} handleButtonVisibility={handleButtonVisibility} />
           ))}
         </div>
-        <div className="w-11/12 mx-auto">
+        <div className="w-11/12 mx-auto flex justify-end mt-4">
         {buttonVisible && (
-          <button className="btn-theme-dual font-bold text-white w-full rounded-full py-4 mt-12" onClick={handleProceedClick}>
+          <button className="btn-theme-dual font-bold text-white rounded-full py-2 px-4 mt-12" onClick={handleProceedClick}>
             Add To Cart
           </button>
         )}
