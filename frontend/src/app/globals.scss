@@ -155,3 +155,40 @@ nav li {
     }
   }
 }
+.ticket-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 0.8rem;
+  .ticket {
+    display: flex;
+    font-size: 0.8rem;
+    font-weight: 400;
+    gap: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    // background-color: #12b4b9;
+    border: 1px solid#eee;
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    span {
+      width: 2rem;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      padding: 0.5rem;
+      background-color: #eee;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.donate {
+  display: none;
+  &.donatable {
+    display: block;
+  }
+}

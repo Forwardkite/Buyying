@@ -175,17 +175,14 @@ export default function Home() {
     };
 
     try {
-      const response = await fetch(
-        `${apiUrl}/admin/update/${ProId}`,
-        {
-          method: "PUT", // or 'POST' depending on your API
-          headers: {
-            "Content-Type": "application/json",
-            // Add any necessary headers like authorization token if needed
-          },
-          body: JSON.stringify(updatedData),
-        }
-      );
+      const response = await fetch(`${apiUrl}/admin/update/${ProId}`, {
+        method: "PUT", // or 'POST' depending on your API
+        headers: {
+          "Content-Type": "application/json",
+          // Add any necessary headers like authorization token if needed
+        },
+        body: JSON.stringify(updatedData),
+      });
 
       if (response.ok) {
         console.log("Data updated successfully");
@@ -210,15 +207,12 @@ export default function Home() {
 
     if (window.confirm(`Are You Sure Want To Delete ${ProName}`)) {
       try {
-        const response = await fetch(
-          `${apiUrl}/admin/delete/${ProId}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${apiUrl}/admin/delete/${ProId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -385,10 +379,11 @@ export default function Home() {
             <div className="flex gap-6 w-full">
               <div className="input flex flex-col w-1/2 input-image">
                 <h6>Product Image</h6>
-                {ProImage && (
-                  <img src={ProImage} alt="Preview" className="w-[100px]" />
-                )}
+
                 <label htmlFor="imgupload">
+                  {ProImage && (
+                    <img src={ProImage} alt="Preview" className=" label-img" />
+                  )}
                   <span>Upload Image</span>
                 </label>
 
