@@ -1,7 +1,7 @@
 "use client";
 // pages/index.js
 import React, {useState} from "react";
-import CheckBoxGroup from "./checkbox"; // Adjust the path accordingly
+import CheckBoxGroup, {sendSelectedNumbersToBackend} from "./checkbox"; // Adjust the path accordingly
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
@@ -43,7 +43,8 @@ export default function TicketSelection() {
   const handleProceedClick = () => {
     // Handle proceed action here
     console.log("Proceed clicked");
-    // sendSelectedNumbersToBackend(selectedNumbers);
+    window.location.href = "/cart";
+    sendSelectedNumbersToBackend();
   };
 
   const [buttonVisible, setButtonVisible] = useState(false);

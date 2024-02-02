@@ -2,6 +2,8 @@ import React, { useState, useReducer } from "react";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import CloseIcon from "@mui/icons-material/Close";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const reducer = (state, action) => {
   if (state.checkedIds.includes(action.id)) {
     return {
@@ -10,7 +12,7 @@ const reducer = (state, action) => {
     };
   }
 
-  if (state.checkedIds.length >= 3) {
+  if (state.checkedIds.length >= 2) {
     console.log("Max 3 extras allowed.");
     return state;
   }
@@ -46,12 +48,13 @@ const CheckBoxGroup = ({ data, handleButtonVisibility }) => {
 
     setSelectedNumbers(updatedCheckedIds); // Update selected numbers regardless of count
 
-    if (updatedCheckedIds.length >= 3) {
+    if (updatedCheckedIds.length >= 2) {
       validateNumberCombination(updatedCheckedIds); // Validate the selected numbers
       handleButtonVisibility(false);
+      // sendSelectedNumbersToBackend(updatedCheckedIds);
     } else {
       setMessage("Please select any 3 numbers");
-      
+      sendSelectedNumbersToBackend(updatedCheckedIds);
       handleButtonVisibility(false); // Hide the button
     }
 
@@ -103,36 +106,36 @@ const CheckBoxGroup = ({ data, handleButtonVisibility }) => {
   //_________________________________________SLOT_SAVING_FUNCTION_____________________________________________________//
 
 
-  const sendSelectedNumbersToBackend = (numbers) => {
-    // Combine numbers into a string
-    const combinedNumbers = numbers.join("");
+  // export function sendSelectedNumbersToBackend(numbers)  {
+  //   // Combine numbers into a string
+  //   const combinedNumbers = numbers.join("");
 
-    // Wrap the combined numbers in an object with a key named "numbers"
-    const requestBody = {
-      numbers: combinedNumbers,
-    };
+  //   // Wrap the combined numbers in an object with a key named "numbers"
+  //   const requestBody = {
+  //     numbers: combinedNumbers,
+  //   };
 
-    // Send a POST request to the backend server
-    fetch(`${apiUrl}/admin/slot`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Response from backend:", data);
-      })
-      .catch((error) => {
-        console.error("Error sending data to the backend:", error);
-      });
-  };
+  //   // Send a POST request to the backend server
+  //   fetch(`${apiUrl}/admin/slot`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(requestBody),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Response from backend:", data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error sending data to the backend:", error);
+  //     });
+  // };
 
   //_____________________________________________________________________________________________________________//
 
@@ -175,5 +178,37 @@ const CheckBoxGroup = ({ data, handleButtonVisibility }) => {
     </div>
   );
 };
+
+export function sendSelectedNumbersToBackend(numbers)  {
+  // Combine numbers into a string
+  const combinedNumbers = numbers.join("");
+
+  // Wrap the combined numbers in an object with a key named "numbers"
+  const requestBody = {
+    numbers: combinedNumbers,
+  };
+
+  // Send a POST request to the backend server
+  fetch(`${apiUrl}/admin/slot`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Response from backend:", data);
+    })
+    .catch((error) => {
+      console.error("Error sending data to the backend:", error);
+    });
+};
+
 
 export default CheckBoxGroup;
