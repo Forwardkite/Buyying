@@ -1,14 +1,14 @@
 "use client";
 // pages/index.js
-import React, {useState} from "react";
+import React, { useState } from "react";
 import CheckBoxGroup from "./checkbox"; // Adjust the path accordingly
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 export default function TicketSelection() {
-  const data = Array.from({ length: 49 }, (_, i) => ({
-    id: (i + 1).toString().padStart(2, "0"),
-    label: (i + 1).toString().padStart(2, "0"),
+  const data = Array.from({ length: 100 }, (_, i) => ({
+    id: (i + 1).toString(),
+    label: i.toString().padStart(2, "0"),
   }));
 
   const [product, setProduct] = React.useState(1);
@@ -38,7 +38,6 @@ export default function TicketSelection() {
       setDonation(donation - 1);
     }
   };
-
 
   const handleProceedClick = () => {
     // Handle proceed action here
@@ -115,17 +114,24 @@ export default function TicketSelection() {
             </span>
           </div>
         </div>
-        <div className="flex flex-wrap gap-3 w-11/12 mx-auto mt-12">
+        <div className="flex justify-start flex-wrap gap-2 w-11/12 mx-auto mt-12">
           {Array.from({ length: product }, (_, index) => (
-            <CheckBoxGroup key={index} data={data} handleButtonVisibility={handleButtonVisibility} />
+            <CheckBoxGroup
+              key={index}
+              data={data}
+              handleButtonVisibility={handleButtonVisibility}
+            />
           ))}
         </div>
         <div className="w-11/12 mx-auto flex justify-end mt-4">
-        {buttonVisible && (
-          <button className="btn-theme-dual font-bold text-white rounded-full py-2 px-4 mt-12" onClick={handleProceedClick}>
-            Add To Cart
-          </button>
-        )}
+          {buttonVisible && (
+            <button
+              className="btn-theme-dual font-bold text-white rounded-full py-2 px-4 mt-12"
+              onClick={handleProceedClick}
+            >
+              Add To Cart
+            </button>
+          )}
         </div>
       </section>
     </>

@@ -51,7 +51,7 @@ const CheckBoxGroup = ({ data, handleButtonVisibility }) => {
       handleButtonVisibility(false);
     } else {
       setMessage("Please select any 3 numbers");
-      
+
       handleButtonVisibility(false); // Hide the button
     }
 
@@ -88,9 +88,7 @@ const CheckBoxGroup = ({ data, handleButtonVisibility }) => {
           setMessage("Valid combination. Proceed!");
           handleButtonVisibility(true); // Show the button only if exactly 3 numbers are selected
         }
-    
       } else {
-        
         throw new Error("Error validating number combination");
       }
     } catch (error) {
@@ -101,7 +99,6 @@ const CheckBoxGroup = ({ data, handleButtonVisibility }) => {
   };
 
   //_________________________________________SLOT_SAVING_FUNCTION_____________________________________________________//
-
 
   const sendSelectedNumbersToBackend = (numbers) => {
     // Combine numbers into a string
