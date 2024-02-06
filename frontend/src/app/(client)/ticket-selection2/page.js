@@ -89,7 +89,7 @@ export default function TicketSelection() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
-        credentials: 'include' // Send cookies,
+        credentials: 'include' // Send cooki
       });
 
       if (response.ok) {
