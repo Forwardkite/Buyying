@@ -13,8 +13,9 @@ router.post('/', async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && await bcrypt.compare(password, user.password)) {
-        req.session.userId = user._id;
+        req.session.userId = user._id; // Set session data
         res.redirect('/dashboard');
+        console.log("HERE IS IT:",user._id)
     } else {
         // res.send('');
         // alert('Error');

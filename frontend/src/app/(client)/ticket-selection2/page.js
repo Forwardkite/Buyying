@@ -16,8 +16,8 @@ const reducer = (state, action) => {
     };
   }
 
-  if (state.checkedIds.length >= 3) {
-    console.log("Max 3 extras allowed.");
+  if (state.checkedIds.length >= 2) {
+    console.log("Max 2 extras allowed.");
     return state;
   }
 
@@ -47,7 +47,7 @@ export default function TicketSelection() {
     setOpenToast(false);
   };
 
-  const [message, setMessage] = useState("Please select any 3 numbers");
+  const [message, setMessage] = useState("Please select any 2 numbers");
   const ticket = product + donation;
   const stockNumber = 12;
   const incrementProduct = () => {
@@ -89,6 +89,7 @@ export default function TicketSelection() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
+        credentials: 'include' // Send cookies,
       });
 
       if (response.ok) {
@@ -119,6 +120,8 @@ export default function TicketSelection() {
     // Handle proceed action here
     console.log("Proceed clicked");
     sendSelectedNumbersToBackend(selectedNumbers);
+    // window.location.href = "/cart";
+    
   };
   //_________________________________________SLOT_SAVING_FUNCTION_____________________________________________________//
 
@@ -147,6 +150,7 @@ export default function TicketSelection() {
       })
       .then((data) => {
         console.log("Response from backend:", data);
+        window.location.href = "/cart";
       })
       .catch((error) => {
         console.error("Error sending data to the backend:", error);
@@ -167,11 +171,11 @@ export default function TicketSelection() {
 
     setSelectedNumbers(updatedCheckedIds); // Update selected numbers regardless of count
 
-    if (updatedCheckedIds.length >= 3) {
+    if (updatedCheckedIds.length >= 2) {
       validateNumberCombination(updatedCheckedIds); // Validate the selected numbers
       handleButtonVisibility(false);
     } else {
-      setMessage("Please select any 3 numbers");
+      setMessage("Please select any 2 numbers");
 
       handleButtonVisibility(false); // Hide the button
     }
