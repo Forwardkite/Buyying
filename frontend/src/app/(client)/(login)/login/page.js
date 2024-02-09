@@ -19,6 +19,7 @@ export default function Login() {
     try {
       const response = await fetch(`${apiUrl}/login`, {
         method: "POST",
+        credentials: 'include', // Include cookies
         headers: {
           "Content-Type": "application/json",
         },

@@ -7,6 +7,7 @@ import ShuffleIcon from "@mui/icons-material/Shuffle";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
+import useAuth from "../utilis/authUser";
 
 const reducer = (state, action) => {
   if (state.checkedIds.includes(action.id)) {
@@ -27,6 +28,9 @@ const reducer = (state, action) => {
   };
 };
 export default function TicketSelection() {
+
+  useAuth();
+  
   const data = Array.from({ length: 100 }, (_, i) => ({
     id: i.toString(),
     label: i.toString().padStart(2, "0"),
@@ -89,7 +93,6 @@ export default function TicketSelection() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
-        credentials: 'include' // Send cookies,
       });
 
       if (response.ok) {

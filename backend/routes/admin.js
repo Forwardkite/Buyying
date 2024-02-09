@@ -5,7 +5,6 @@ const LotteryGenerator = require("../components/LotteryGenerator");
 const ProductDB = require("../models/productDB");
 const router = express.Router();
 const app = express();
-const authMiddleware = require("../middleware/authMiddleware");
 const multer = require("multer");
 connectionDB();
 

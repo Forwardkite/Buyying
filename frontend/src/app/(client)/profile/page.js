@@ -1,5 +1,38 @@
+"use client";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { useState } from "react";
 export default function Profile() {
+
+  const [logoutMessage, setLogoutMessage] = useState(''); // State to store logout message
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const handleProceedClick = async () => {
+    try {
+      // Make a POST request to logout the user
+      const response = await fetch(`${apiUrl}/login/out`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Check if the request was successful
+      if (response.status === 200) {
+        setLogoutMessage('Logged out successfully'); // Set the logout message
+      } else {
+        setLogoutMessage('Logout failed. Please try again.'); // Set the error message
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setLogoutMessage('An error occurred. Please try again.'); // Set the error message
+    }
+  }
+
+  
+
+
+
+  
+
   return (
     <>
       <section>
@@ -16,7 +49,7 @@ export default function Profile() {
             <h6>Tickets</h6>
             <div className="w-full">
               <div className="w-4/12 flex flex-col items-center justify-center">
-                <p className="text-sm">Ticket No</p>
+                <p className="text-sm"></p>
                 <h5 className="text-lg font-bold">SHT123456</h5>
                 <p className="text-sm">Active</p>
               </div>
@@ -38,8 +71,8 @@ export default function Profile() {
                 <p className="text-base">Kerala - 682036</p>
               </div>
               <div className="w-full flex mt-12 ">
-                <button className="rounded-[4px] text-theme-purple bg-transparent py-2 border border-theme-purple px-4 mr-4">
-                  Other
+                <button onClick={handleProceedClick} className="rounded-[4px] text-theme-purple bg-transparent py-2 border border-theme-purple px-4 mr-4">
+                  Log Out
                 </button>
                 <button className="rounded-[4px] text-white bg-theme-purple py-2 px-4 flex  ">
                   <span className="mr-2">Edit Profile</span>{" "}
