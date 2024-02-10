@@ -1,20 +1,22 @@
 "use client";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import axios from "axios";
 import { useState } from "react";
 export default function Profile() {
 
   const [logoutMessage, setLogoutMessage] = useState(''); // State to store logout message
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+
+  axios.defaults.withCredentials = true;
+
+
   const handleProceedClick = async () => {
+
     try {
       // Make a POST request to logout the user
-      const response = await fetch(`${apiUrl}/login/out`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
+      const response = await axios.get(`${apiUrl}/logout`)
+      console.log(response)
       // Check if the request was successful
       if (response.status === 200) {
         setLogoutMessage('Logged out successfully'); // Set the logout message

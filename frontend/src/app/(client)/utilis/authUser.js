@@ -1,24 +1,24 @@
-// src/utils/authUser.js
-
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie'; // Import the library directly
+import { useRouter } from 'next/navigation'; // Correct import path
 
 const useAuth = () => {
     const router = useRouter();
 
     useEffect(() => {
-        const cookieStore = cookies()
-        const token = cookieStore.get('token');
+        // Don't call Cookies() as a function
+        const token = Cookies.get('token');
 
         if (!token) {
             router.push('/login');
         }
     }, [router]);
 
-    return null; // This hook doesn't render anything; it's only for route protection
+    return null;
 };
 
 export default useAuth;
+
 
 
 

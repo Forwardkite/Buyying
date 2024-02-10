@@ -20,17 +20,9 @@ router.post('/', async (req, res) => {
 
     if (user && await bcrypt.compare(password, user.password)) {
         // Generate JWT token
-        const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1m' });
-        const oneMinuteInMilliseconds = 60000; // 1 minute in milliseconds
-        const currentTime = new Date();
-        const expirationTime = new Date(currentTime.getTime() + oneMinuteInMilliseconds);
+        const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
 
-        res.cookie('token', token, {
-            expires: expirationTime, // 1 minute in milliseconds
-            httpOnly: true, // Ensures cookie is only accessible via HTTP(S) and not JavaScript
-            secure: true, // Ensures cookie is only sent over HTTPS
-            sameSite: 'strict' // Restricts the cookie to be sent only to the same site
-        });
+        res.cookie('token', token);
         // Send token to the client
         res.json({ token });
 
@@ -41,13 +33,7 @@ router.post('/', async (req, res) => {
 
 });
 
-router.post('/out', (req, res) => {
-    // Clear the token cookie by setting its expiration time to a past date
-    res.clearCookie('token');
 
-    // Send a response indicating successful logout
-    res.json({ message: 'Logged out successfully' });
-});
 
 module.exports = router;
 
