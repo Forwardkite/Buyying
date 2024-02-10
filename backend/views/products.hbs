@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Show Batches</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>List of Batches for "{{batchName}}"</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Product Discription</th>
+        <th>Product Price</th>
+        <th>Starting Date</th>
+        <th>Ending Date</th>
+        {{!-- <th>Lottery Token</th> --}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each batches}}
+        <tr>
+          <td>{{this.productName}}</td>
+          <td>{{this.productDiscription}}</td>
+          <td>{{this.productprice}}</td>
+          <td>{{this.startingdate}}</td>
+          <td>{{this.endingdate}}</td>
+          {{!-- <td>{{this.LotteryToken}}</td> --}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</body>
+</html>
+
+
