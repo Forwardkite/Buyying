@@ -52,6 +52,8 @@ export default function Profile() {
     fetchUserData();
   }, []);
 
+  axios.defaults.withCredentials = true;
+
   const handleProceedClick = async () => {
     try {
       const response = await axios.get(`${apiUrl}/logout`, {
@@ -62,6 +64,7 @@ export default function Profile() {
 
       if (response.status === 200) {
         setLogoutMessage('Logged out successfully');
+        window.location.href = "/";
       } else {
         setLogoutMessage('Logout failed. Please try again.');
       }
