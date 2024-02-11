@@ -15,7 +15,7 @@ connectionDB();
 const clientOrigin = process.env.REACT_APP_CLIENT_ORIGIN;
 
 app.use(cors({
-  origin: ["http://localhost:3000"],
+  origin: [clientOrigin],
   methods: ["POST", "GET", "DELETE"],
   credentials: true
 }));
