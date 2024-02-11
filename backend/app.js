@@ -15,9 +15,8 @@ connectionDB();
 const clientOrigin = process.env.REACT_APP_CLIENT_ORIGIN;
 
 app.use(cors({
-  origin: [clientOrigin],
-  methods: ["POST", "GET", "DELETE"],
-  credentials: true
+  origin: 'http://localhost:3000',
+  credentials: true // Allow credentials if needed (e.g., cookies)
 }));
 
 /*_________________________________________VIEW ENGINE SETUP________________________________________*/
