@@ -26,7 +26,15 @@ router.post('/', async (req, res) => {
         const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
 
         // Set the cookie in the response
-        res.setHeader('Set-Cookie', `token=${token}; SameSite=None; Secure`);
+        // res.setHeader('Set-Cookie', `token=${token}; SameSite=None; Secure`);
+        res.cookie("token", token, {
+            path: "/",
+            httpOnly: false,
+            expires: new Date(Date.now() + 900000),
+            sameSite: "Strict",
+            secure: true,
+              }); 
+        
 
           
         // Send token to the client
