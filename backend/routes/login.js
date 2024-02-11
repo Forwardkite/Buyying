@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
         const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
 
         // Set the cookie in the response
-        // res.setHeader('Set-Cookie', `token=${token}; SameSite=None; Secure`);
+        res.setHeader('token', `token=${token}; SameSite=None; Secure`);
         res.cookie("token", token); 
         
 
