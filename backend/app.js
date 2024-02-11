@@ -14,10 +14,13 @@ connectionDB();
 
 const clientOrigin = process.env.REACT_APP_CLIENT_ORIGIN;
 
-app.use(cors({
-  origin: 'https://buyying-forwardkite.vercel.app',
-  credentials: true // Allow credentials if needed (e.g., cookies)
-}));
+// app.use(cors({
+//   origin: 'http://localhost:3000',
+//   credentials: true // Allow credentials if needed (e.g., cookies)
+// }));
+app.use(
+  cors({ credentials: true, origin: 'https://buyying-forwardkite.vercel.app', exposedHeaders: ["set-cookie"] })
+  ); 
 
 /*_________________________________________VIEW ENGINE SETUP________________________________________*/
 
