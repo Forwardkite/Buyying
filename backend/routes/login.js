@@ -27,13 +27,7 @@ router.post('/', async (req, res) => {
 
         // Set the cookie in the response
         // res.setHeader('Set-Cookie', `token=${token}; SameSite=None; Secure`);
-        res.cookie("token", token, {
-            path: "/",
-            httpOnly: true,
-            expires: new Date(Date.now() + 900000),
-            sameSite: "None",
-            secure: true,
-              }); 
+        res.cookie("token", token); 
         
 
           
