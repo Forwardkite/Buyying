@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
         const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
 
         // Set the cookie in the response
-        res.setHeader('token', `token=${token}; Secure; HttpOnly; SameSite=None; Domain=.vercel.app`);
+        res.setHeader('token', `token=${token}; Secure; HttpOnly; SameSite=None;`);
         
 
           
