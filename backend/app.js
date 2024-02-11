@@ -12,10 +12,10 @@ const passport = require("./controllers/passport");
 const app = express();
 connectionDB();
 
-
+const clientOrigin = process.env.REACT_APP_CLIENT_ORIGIN || "http://localhost:3000";
 
 app.use(cors({
-  origin: ["http://localhost:3000"],
+  origin: [clientOrigin],
   methods: ["POST", "GET", "DELETE"],
   credentials: true
 }));
