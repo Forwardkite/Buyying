@@ -19,7 +19,7 @@ const clientOrigin = process.env.REACT_APP_CLIENT_ORIGIN;
 //   credentials: true // Allow credentials if needed (e.g., cookies)
 // }));
 app.use(
-  cors({ credentials: true, origin: 'https://buyying-forwardkite.vercel.app', exposedHeaders: ["token"] })
+  cors({ credentials: true, origin: 'http://localhost:3000', exposedHeaders: ["token"] })
   ); 
 
 /*_________________________________________VIEW ENGINE SETUP________________________________________*/
