@@ -9,6 +9,9 @@ const cookieParser = require("cookie-parser");
 const crypto = require('crypto');
 const secretKey = crypto.randomBytes(32).toString('hex');
 
+router.use(cookieParser());
+
+
 // Login route
 router.get('/', (req, res) => {
     res.render('login');
@@ -24,6 +27,8 @@ router.post('/', async (req, res) => {
 
         // Set the cookie in the response
         res.setHeader('Set-Cookie', `token=${token}; SameSite=None; Secure`);
+
+          
         // Send token to the client
         res.json({ token });
 
