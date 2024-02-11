@@ -5,7 +5,10 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import useAuth from "../utilis/authUser";
 
 export default function Profile() {
+
+  //user authentication middleware
   useAuth();
+  
   const [logoutMessage, setLogoutMessage] = useState('');
   const [email, setEmail] = useState(''); // State to store user email
   const [name, setName] = useState(''); // State to store user email

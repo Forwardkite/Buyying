@@ -3,6 +3,8 @@ import React from 'react';
 import useAuth from '../utilis/authUser';
 
 const ShoppingCart = () => {
+
+  //user authentication middleware
   useAuth();
   return (
     <div className="container">
