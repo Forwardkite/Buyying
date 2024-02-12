@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from 'react';
-import Link from 'next/link'; // Import Link component
+import { useState, useEffect } from "react";
+import Link from "next/link"; // Import Link component
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ export default function Login() {
     try {
       const response = await fetch(`${apiUrl}/login`, {
         method: "POST",
-        credentials: 'include', // Include cookies
+        credentials: "include", // Include cookies
         headers: {
           "Content-Type": "application/json",
         },
@@ -99,8 +99,7 @@ export default function Login() {
             Login
           </button>
           <p className="mx-auto text-center flex mt-4 hover:text-violet-700">
-            Don't have an account?{" "}
-            <Link href="/register">Create Account</Link>
+            Don't have an account? <Link href="/register">Create Account</Link>
           </p>
         </form>
       </div>

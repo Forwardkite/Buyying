@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 export const metadata = {
   title: "Buyyinn",
@@ -10,6 +11,7 @@ export default function Client({ children }) {
     <>
       <Navbar />
       <main className="w-full max-w-[1600px] mx-auto">{children}</main>
+      <Footer />
     </>
   );
 }

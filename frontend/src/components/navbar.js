@@ -2,10 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import ReceiptIcon from "@mui/icons-material/Receipt";
-import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import PersonIcon from "@mui/icons-material/Person";
 
 export default function Navbar() {

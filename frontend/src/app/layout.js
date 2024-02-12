@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
- const metadata = {
+const metadata = {
   title: "Buyyinn",
   description: "Buy n Win exciting prizes.",
 };

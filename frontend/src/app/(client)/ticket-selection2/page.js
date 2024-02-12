@@ -1,13 +1,12 @@
 "use client";
 // pages/index.js
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useReducer } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
-import useAuth from "../utilis/authUser";
 
 const reducer = (state, action) => {
   if (state.checkedIds.includes(action.id)) {
@@ -27,22 +26,7 @@ const reducer = (state, action) => {
     checkedIds: [...state.checkedIds, action.id],
   };
 };
-
-let userEmailCopy = ""; // Declare variable outside of useEffect
-let userNameCopy = ""; // Declare variable outside of useEffect
 export default function TicketSelection() {
-  //_________________________________________________________________________________________//
-
-  const [email, setEmail] = useState(""); // State to store user email
-  const [name, setName] = useState(""); // State to store user email
-
-  // const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  //_________________________________________________________________________________________//
-
-  //user authentication middleware
-  // useAuth();
-
   const data = Array.from({ length: 100 }, (_, i) => ({
     id: i.toString(),
     label: i.toString().padStart(2, "0"),
@@ -88,15 +72,12 @@ export default function TicketSelection() {
       setDonation(donation - 1);
     }
   };
-
-  //______________________________________________SLOT_VALIDATION_____________________________________________________//
-
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  //______________________________________________SLOT_VALIDATION_____________________________________________________//
 
   const validateNumberCombination = async (selectedNumbers) => {
     const combinedNumbers = selectedNumbers.join("");
 
-    console.log("Email:", userNameCopy);
     const requestBody = {
       numbers: combinedNumbers,
     };
@@ -108,6 +89,7 @@ export default function TicketSelection() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
+        credentials: 'include' // Send cookies,
       });
 
       if (response.ok) {
@@ -139,51 +121,9 @@ export default function TicketSelection() {
     console.log("Proceed clicked");
     sendSelectedNumbersToBackend(selectedNumbers);
     // window.location.href = "/cart";
+    
   };
   //_________________________________________SLOT_SAVING_FUNCTION_____________________________________________________//
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const cookie = document.cookie;
-        const cookieParts = cookie.split(";");
-        let userId;
-
-        cookieParts.forEach((part) => {
-          const keyValue = part.trim().split("=");
-          const key = keyValue[0];
-          const value = keyValue[1];
-          if (key === "token") {
-            const tokenParts = value.split(".");
-            const payload = JSON.parse(atob(tokenParts[1]));
-            userId = payload.userId;
-          }
-        });
-
-        const response = await fetch(`${apiUrl}/admin/user/view/${userId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const user = await response.json();
-        setEmail(user.email); // Set the email fetched from the API
-        setName(user.name); // Set the name fetched from the API
-
-        // Assign values to other variables
-        userEmailCopy = user.email;
-        userNameCopy = user.name;
-      } catch (error) {
-        console.error("There was a problem with your fetch operation:", error);
-      }
-    };
-    fetchUserData();
-  }, []);
 
   const sendSelectedNumbersToBackend = (numbers) => {
     // Combine numbers into a string
@@ -192,8 +132,6 @@ export default function TicketSelection() {
     // Wrap the combined numbers in an object with a key named "numbers"
     const requestBody = {
       numbers: combinedNumbers,
-      email: userEmailCopy,
-      name: userNameCopy,
     };
 
     // Send a POST request to the backend server
@@ -218,7 +156,6 @@ export default function TicketSelection() {
         console.error("Error sending data to the backend:", error);
       });
   };
-
   //__________________________________________________________________________________________________//
 
   const handleCheckboxClick = (id) => {
@@ -354,7 +291,7 @@ export default function TicketSelection() {
         <div className="w-11/12 mx-auto flex justify-end mt-4">
           {buttonVisible && (
             <button
-              className="btn-theme-dual font-bold text-white rounded-full py-2 px-20"
+              className="btn-theme-dual font-bold text-white rounded-full py-2 px-4 mt-12"
               onClick={handleProceedClick}
             >
               Add To Cart

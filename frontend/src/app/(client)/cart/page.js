@@ -1,10 +1,9 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import useAuth from "../utilis/authUser";
 import { initializeCashfree } from "@/cashfree";
 
 export default function Cart() {
-
   //user authentication middleware
   useAuth();
 
@@ -27,10 +26,9 @@ export default function Cart() {
     return () => {
       setCashfree(null);
     };
-  }, []); 
+  }, []);
 
   const handleProceedClick = () => {
-
     if (!cashfree) {
       console.error("Cashfree is not initialized yet.");
       return;
@@ -51,7 +49,6 @@ export default function Cart() {
       }
     });
   };
-
 
   return (
     <div className="flex mt-12">
@@ -143,13 +140,13 @@ export default function Cart() {
 
         <h6 className="font-bold text-2xl">Total Payable: 2000</h6>
 
-        <button onClick={handleProceedClick} className="btn-theme-dual font-bold text-white rounded-full py-3 px-40 mt-12">
+        <button
+          onClick={handleProceedClick}
+          className="btn-theme-dual font-bold text-white rounded-full py-3 px-40 mt-12"
+        >
           Pay
         </button>
-
       </div>
-
-
     </div>
   );
 }

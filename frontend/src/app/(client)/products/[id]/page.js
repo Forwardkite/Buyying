@@ -9,19 +9,18 @@ const checkIfAuthenticated = () => {
 };
 
 async function getProduct(id) {
- 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const res = await fetch(`${apiUrl}/admin/view/${id}`);
   return res.json();
 }
 
 function Product({ params }) {
-  useAuth();
+  // useAuth();
   const [product, setProduct] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Initialize isLoggedIn state
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const productData = await getProduct(params.id);
@@ -99,4 +98,3 @@ function Product({ params }) {
 }
 
 export default Product;
-

@@ -7,7 +7,7 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import PersonIcon from "@mui/icons-material/Person";
-import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 export default function Sidenav() {
   const pathname = usePathname();
@@ -34,17 +34,7 @@ export default function Sidenav() {
             <span className="ms-2">Products</span>
           </Link>
         </li>
-        <li>
-          <Link
-            href="/dashboard/products"
-            className={`flex link ${
-              pathname === "/dashboard/products" ? "active" : ""
-            }`}
-          >
-            <ReceiptIcon />
-            <span className="ms-2">Tickets</span>
-          </Link>
-        </li>
+
         <li>
           <Link
             href="/dashboard/purchase"
@@ -54,6 +44,17 @@ export default function Sidenav() {
           >
             <PlaylistAddCheckIcon />
             <span className="ms-2">Purchase</span>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/dashboard/winners"
+            className={`flex link ${
+              pathname === "/dashboard/winners" ? "active" : ""
+            }`}
+          >
+            <EmojiEventsIcon />
+            <span className="ms-2">Winners</span>
           </Link>
         </li>
         <li>

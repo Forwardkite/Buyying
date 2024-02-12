@@ -29,7 +29,11 @@ router.get("/", (req, res) => {
 
 const productCreate = require("../controllers/productCreate");
 
-router.post("/create",upload.single("imageProduct"),productCreate.createProduct);
+router.post(
+  "/create",
+  upload.single("imageProduct"),
+  productCreate.createProduct
+);
 
 /*_______________________________________PRODUCT_DISPLAY___________________________________________*/
 
@@ -37,7 +41,7 @@ const productDisplay = require("../controllers/productDisplay");
 
 router.get("/view", productDisplay.viewProducts);
 
-router.get('/view/:id', productDisplay.viewProductById);
+router.get("/view/:id", productDisplay.viewProductById);
 
 /*______________________________________PRODUCT_UPDATE______________________________________________*/
 
@@ -61,27 +65,27 @@ router.get("/export", exportController.exportDataAsCSV);
 
 const SlotNumbers = require("../controllers/slotNumbers");
 
-router.post("/slot",SlotNumbers.saveSlot);
+router.post("/slot", SlotNumbers.saveSlot);
 
 /*_______________________________________SLOT_VALIDATION________________________________________________*/
 
 const SlotValidator = require("../controllers/slotValidatorController");
 
-router.post("/slot/check",SlotValidator.checkNumberCombination);
+router.post("/slot/check", SlotValidator.checkNumberCombination);
 
 /*_________________________________________SLOT_VIEW_________________________________________________*/
 
 const SlotDisplay = require("../controllers/displaySlotData");
 
-router.get("/slot/view",SlotDisplay.displaySlotData);
+router.get("/slot/view", SlotDisplay.displaySlotData);
 
 /*________________________________________User_Display_______________________________________________*/
 
 const UserDisplay = require("../controllers/displayUserData");
 
-router.get("/user/view",UserDisplay.displayUserData);
+router.get("/user/view", UserDisplay.displayUserData);
 
-router.get("/user/view/:id",UserDisplay.displayUserDataById);
+router.get("/user/view/:id", UserDisplay.displayUserDataById);
 
 /*__________________________________________________________________________________________________*/
 
