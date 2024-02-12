@@ -16,9 +16,6 @@ router.get("/", (req, res) => {
   res.render("login");
 });
 
-router.post("/", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
     // Generate JWT token

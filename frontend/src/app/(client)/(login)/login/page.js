@@ -26,9 +26,14 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        console.log(document.cookie);
-        // window.location.href = "/"; // Redirect to dashboard on successful login
-      } else {
+      const cookies = document.cookie.split(';');
+      cookies.forEach(cookie => {
+        const [name, value] = cookie.split('=');
+        if (name.trim() === 'token') {
+          console.log('Token:', value);
+        }
+      });
+    }  else {
         const errorMessage = await response.text();
         alert(errorMessage); // Display error message to user
       }
@@ -36,6 +41,26 @@ export default function Login() {
       console.error("Error logging in:", error);
     }
   };
+//   try {
+//     const response = await fetch(`${apiUrl}/login`, {
+//       method: "POST",
+//       credentials: 'include', // Include cookies
+//     });
+//     if (response.ok) {
+//       const cookies = document.cookie.split(';');
+//       cookies.forEach(cookie => {
+//         const [name, value] = cookie.split('=');
+//         if (name.trim() === 'token') {
+//           console.log('Token:', value);
+//         }
+//       });
+//     } else {
+//       console.error('Failed to fetch token:', response.status);
+//     }
+//   } catch (error) {
+//     console.error('Error fetching token:', error);
+//   }
+// };
 
   return (
     <div className="h-screen flex">
