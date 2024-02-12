@@ -27,7 +27,7 @@ export default function Login() {
       });
       if (response.ok) {
         console.log(document.cookie);
-        // window.location.href = "/"; // Redirect to dashboard on successful login
+        window.location.href = "/"; // Redirect to dashboard on successful login
       } else {
         const errorMessage = await response.text();
         alert(errorMessage); // Display error message to user
