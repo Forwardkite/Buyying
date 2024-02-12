@@ -28,7 +28,12 @@ router.post('/', async (req, res) => {
         // Set the cookie in the response
         // res.setHeader('token', `token=${token}; Secure; SameSite=None`);
         res.cookie("token",token)
-
+        // res.cookie("token", token, {
+        //     httpOnly: true, // Ensures the cookie is only accessible via HTTP(S) and not client-side JavaScript
+        //     secure: true, // Ensures the cookie is only sent over HTTPS
+        //     sameSite: 'none', // Helps mitigate CSRF attacks
+        //     maxAge: 3600000 // Expires in 1 hour (in milliseconds)
+        // });
         
         
 
