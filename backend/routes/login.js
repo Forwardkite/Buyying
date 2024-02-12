@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
     });
 
     // Set the cookie in the response
-    res.setHeader("token", `token=${token}; Secure; HttpOnly; SameSite=None;`);
+    res.setHeader("token", `token=${token}; Secure; SameSite=None`);
 
     // Send token to the client
     res.json({ token });
