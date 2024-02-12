@@ -26,6 +26,7 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
+        console.log(document.cookie);
         // window.location.href = "/"; // Redirect to dashboard on successful login
       } else {
         const errorMessage = await response.text();
