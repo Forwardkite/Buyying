@@ -506,6 +506,10 @@ export default function Home() {
               <div className="input flex flex-col w-1/2 input-image">
                 <h6>Product Image</h6>
                 <label htmlFor="imgupload">
+                  {ProImage && (
+                    <img src={ProImage} alt="Preview" className=" label-img" />
+                  )}
+
                   <span>Upload Image</span>
                 </label>
                 <input type="file" className="border" id="imgupload" />

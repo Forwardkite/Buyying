@@ -1,6 +1,55 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
+import useAuth from "../utilis/authUser";
+import { initializeCashfree } from "@/cashfree";
 
 export default function Cart() {
+  //user authentication middleware
+  useAuth();
+
+  const [cashfree, setCashfree] = useState(null); // State to hold cashfree instance
+
+  // Initialize Cashfree on component mount
+  useEffect(() => {
+    const initializeCashfreeInstance = async () => {
+      try {
+        const cashfreeInstance = await initializeCashfree();
+        setCashfree(cashfreeInstance);
+      } catch (error) {
+        console.error("Error initializing Cashfree:", error);
+      }
+    };
+
+    initializeCashfreeInstance();
+
+    // Clean up function to handle unmount or re-initialization
+    return () => {
+      setCashfree(null);
+    };
+  }, []);
+
+  const handleProceedClick = () => {
+    if (!cashfree) {
+      console.error("Cashfree is not initialized yet.");
+      return;
+    }
+
+    let checkoutOptions = {
+      paymentSessionId: "payment-session-id",
+      returnUrl:
+        "https://test.cashfree.com/pgappsdemos/v3success.php?myorder={order_id}",
+    };
+
+    cashfree.checkout(checkoutOptions).then(function (result) {
+      if (result.error) {
+        alert(result.error.message);
+      }
+      if (result.redirect) {
+        console.log("Redirection");
+      }
+    });
+  };
+
   return (
     <div className="flex mt-12">
       <div className="w-3/4">
@@ -90,6 +139,13 @@ export default function Cart() {
         <p className="text-lg">Total Price: 1400</p>
 
         <h6 className="font-bold text-2xl">Total Payable: 2000</h6>
+
+        <button
+          onClick={handleProceedClick}
+          className="btn-theme-dual font-bold text-white rounded-full py-3 px-40 mt-12"
+        >
+          Pay
+        </button>
       </div>
     </div>
   );
