@@ -14,10 +14,12 @@ connectionDB();
 
 const clientOrigin = process.env.REACT_APP_CLIENT_ORIGIN;
 
-app.use(cors({
-  origin: 'https://buyying-forwardkite.vercel.app',
-  credentials: true // Allow credentials if needed (e.g., cookies)
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true, // Allow credentials if needed (e.g., cookies)
+  })
+);
 /*_________________________________________VIEW ENGINE SETUP________________________________________*/
 
 app.set("views", path.join(__dirname, "views"));
@@ -45,11 +47,11 @@ const registrationRoutes = require("./routes/registration");
 const productsRoutes = require("./routes/products");
 const loginRoutes = require("./routes/login");
 const dashboardRoutes = require("./routes/dashboard");
-const logoutRoute = require("./routes/logoutRoute")
+const logoutRoute = require("./routes/logoutRoute");
 
 app.use("/", indexRouter);
 app.use("/registration", registrationRoutes);
-app.use("/logout",logoutRoute);
+app.use("/logout", logoutRoute);
 app.use("/login", loginRoutes);
 app.use("/users", usersRouter);
 app.use("/products", productsRoutes);

@@ -41,7 +41,7 @@ export default function TicketSelection() {
   //_________________________________________________________________________________________//
 
   //user authentication middleware
-  useAuth();
+  // useAuth();
 
   const data = Array.from({ length: 100 }, (_, i) => ({
     id: i.toString(),
