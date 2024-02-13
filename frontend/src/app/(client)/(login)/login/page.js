@@ -26,20 +26,31 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
+      // Extract token from cookies
       const cookies = document.cookie.split(';');
+      let token = null;
       cookies.forEach(cookie => {
-        const [name, value] = cookie.split('=');
-        if (name.trim() === 'token') {
-          console.log('Token:', value);
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'token') {
+          token = value;
         }
       });
-    }  else {
-        const errorMessage = await response.text();
-        alert(errorMessage); // Display error message to user
+
+      if (token) {
+        console.log('Token:', token);
+        // You can store the token in local storage or session storage for later use
+        localStorage.setItem('token', token);
+        // Alternatively, you can use the token directly for further API requests
+      } else {
+        console.error('Token not found in cookies');
       }
-    } catch (error) {
-      console.error("Error logging in:", error);
+    } else {
+      const errorMessage = await response.text();
+      alert(errorMessage); // Display error message to user
     }
+  } catch (error) {
+    console.error("Error logging in:", error);
+  }
   };
 //   try {
 //     const response = await fetch(`${apiUrl}/login`, {
