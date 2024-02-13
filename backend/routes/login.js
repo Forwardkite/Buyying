@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
 
           
         // Send token to the client
-        res.json({ token });
+        // res.json({ token });
 
     } else {
         res.status(401).json({ message: 'Incorrect email or password' });
