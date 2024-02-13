@@ -10,8 +10,8 @@ const reducer = (state, action) => {
     };
   }
 
-  if (state.checkedIds.length >= 3) {
-    console.log("Max 3 extras allowed.");
+  if (state.checkedIds.length >= 2) {
+    console.log("Max 2 extras allowed.");
     return state;
   }
 
@@ -50,7 +50,7 @@ const CheckBoxGroup = ({ data, handleButtonVisibility }) => {
       validateNumberCombination(updatedCheckedIds); // Validate the selected numbers
       handleButtonVisibility(false);
     } else {
-      setMessage("Please select any 3 numbers");
+      setMessage("Please select any 2 numbers");
 
       handleButtonVisibility(false); // Hide the button
     }
