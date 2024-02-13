@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link"; // Import Link component
+import Cookies from 'js-cookie';
 
 export default function Login() {
   const [email, setEmail] = useState("");
