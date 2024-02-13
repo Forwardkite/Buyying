@@ -13,17 +13,18 @@ router.use(cookieParser());
 
 
 // Login route
-router.post('/', (req, res) => {
+router.get('/', (req, res) => {
     res.render('login');
 });
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
     if (user && await bcrypt.compare(password, user.password)) {
         // Generate JWT token
         const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+        res.json(token);
 
         // Set the cookie in the response
         // res.setHeader('token', `token=${token}; Secure; SameSite=None`);

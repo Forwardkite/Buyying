@@ -18,7 +18,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await fetch(`${apiUrl}/login`, {
-        method: "GET",
+        method: "POST",
         credentials: "include", // Include cookies
         headers: {
           "Content-Type": "application/json",
@@ -26,31 +26,16 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-      // Extract token from cookies
-      const cookies = document.cookie.split(';');
-      let token = null;
-      cookies.forEach(cookie => {
-        const [name, value] = cookie.trim().split('=');
-        if (name === 'token') {
-          token = value;
-        }
-      });
-
-      if (token) {
-        console.log('Token:', token);
+        const { token } = await response.json();
+        console.log('Token here:', token);
         // You can store the token in local storage or session storage for later use
         localStorage.setItem('token', token);
-        // Alternatively, you can use the token directly for further API requests
       } else {
-        console.error('Token not found in cookies');
+        console.error('Failed to fetch token');
       }
-    } else {
-      const errorMessage = await response.text();
-      alert(errorMessage); // Display error message to user
+    } catch (error) {
+      console.error('Error fetching token:', error);
     }
-  } catch (error) {
-    console.error("Error logging in:", error);
-  }
   };
 //   try {
 //     const response = await fetch(`${apiUrl}/login`, {
