@@ -16,7 +16,7 @@ const clientOrigin = process.env.REACT_APP_CLIENT_ORIGIN;
 
 app.use(
   cors({
-    origin: "https://buyying-forwardkite.vercel.app/",
+    origin: "https://buyying-forwardkite.vercel.app",
     credentials: true, // Allow credentials if needed (e.g., cookies)
   })
 );
