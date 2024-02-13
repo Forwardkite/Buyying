@@ -36,12 +36,11 @@ export default function TicketSelection() {
   const [email, setEmail] = useState(""); // State to store user email
   const [name, setName] = useState(""); // State to store user email
 
-  // const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   //_________________________________________________________________________________________//
 
-  //user authentication middleware
-  // useAuth();
+  // user authentication middleware
+  useAuth();
 
   const data = Array.from({ length: 100 }, (_, i) => ({
     id: i.toString(),
