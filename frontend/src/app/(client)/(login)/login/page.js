@@ -30,7 +30,8 @@ export default function Login() {
         console.log('Token here:', token);
         // You can store the token in local storage or session storage for later use
         // localStorage.setItem('token', token);
-        Cookies.setItem('token', token);
+        Cookies.set('token', token, { expires: 1, secure: true, sameSite: 'none' });
+        window.location.href = "/";
       } else {
         console.error('Failed to fetch token');
       }
