@@ -26,7 +26,7 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        const { token } = await response.json();
+        const token  = await response.json();
         console.log('Token here:', token);
         // You can store the token in local storage or session storage for later use
         localStorage.setItem('token', token);
