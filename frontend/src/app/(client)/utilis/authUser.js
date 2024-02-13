@@ -7,7 +7,7 @@ const useAuth = () => {
 
     useEffect(() => {
         // Don't call Cookies() as a function
-        const token = Cookies.get('token');
+        const token = Cookies.get(token);
 
         if (!token) {
             router.push('/login');
