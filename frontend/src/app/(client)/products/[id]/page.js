@@ -15,7 +15,7 @@ async function getProduct(id) {
 }
 
 function Product({ params }) {
-  // useAuth();
+  useAuth();
   const [product, setProduct] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Initialize isLoggedIn state
 
