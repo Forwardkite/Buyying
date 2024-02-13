@@ -28,8 +28,8 @@ export default function Login() {
       });
       if (response.ok) {
         const token  = await response.json();
-        console.log('Token here:', token);
-        Cookies.set('token', token, { expires: 1/24, secure: true, sameSite: 'none', httpOnly: true });
+        // console.log('Token here:', token);
+        Cookies.set('token', token, { expires: 1/24, secure: true, sameSite: 'none' });
         window.location.href = "/";
       } else {
         console.error('Failed to fetch token');
