@@ -29,9 +29,7 @@ export default function Login() {
       if (response.ok) {
         const token  = await response.json();
         console.log('Token here:', token);
-        // You can store the token in local storage or session storage for later use
-        // localStorage.setItem('token', token);
-        Cookies.set('token', token, { expires: 1, secure: true, sameSite: 'none' });
+        Cookies.set('token', token, { expires: 1/24, secure: true, sameSite: 'none', httpOnly: true });
         window.location.href = "/";
       } else {
         console.error('Failed to fetch token');
@@ -40,26 +38,6 @@ export default function Login() {
       console.error('Error fetching token:', error);
     }
   };
-//   try {
-//     const response = await fetch(`${apiUrl}/login`, {
-//       method: "POST",
-//       credentials: 'include', // Include cookies
-//     });
-//     if (response.ok) {
-//       const cookies = document.cookie.split(';');
-//       cookies.forEach(cookie => {
-//         const [name, value] = cookie.split('=');
-//         if (name.trim() === 'token') {
-//           console.log('Token:', value);
-//         }
-//       });
-//     } else {
-//       console.error('Failed to fetch token:', response.status);
-//     }
-//   } catch (error) {
-//     console.error('Error fetching token:', error);
-//   }
-// };
 
   return (
     <div className="h-screen flex">
