@@ -18,7 +18,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await fetch(`${apiUrl}/login`, {
-        method: "POST",
+        method: "GET",
         credentials: "include", // Include cookies
         headers: {
           "Content-Type": "application/json",

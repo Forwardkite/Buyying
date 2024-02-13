@@ -13,11 +13,11 @@ router.use(cookieParser());
 
 
 // Login route
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
     res.render('login');
 });
 
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
