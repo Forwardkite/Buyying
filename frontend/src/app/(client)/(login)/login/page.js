@@ -30,8 +30,11 @@ export default function Login() {
         const token  = await response.json();
         // console.log('Token here:', token);
         Cookies.set('token', token, { expires: 1/24, secure: true, sameSite: 'none' });
-        window.location.href = "/";
+        window.location.href = "/ticket-selection";
       } else {
+        const errorMessage = await response.text();
+        const formattedErrorMessage = errorMessage.replace(/"/g, '');
+        alert(formattedErrorMessage); // Display error message to user
         console.error('Failed to fetch token');
       }
     } catch (error) {
