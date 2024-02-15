@@ -36,7 +36,7 @@ function Product({ params }) {
   const handleProceed = () => {
     // Check if isLoggedIn is true (i.e., user is authenticated)
     if (isLoggedIn) {
-      window.location.href = "/ticket-selection";
+      window.location.href = `/products/${params.id}/ticket-selection`;
       console.log("ALREADY LOGGED IN");
     } else {
       window.location.href = "/login";
