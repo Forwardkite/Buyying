@@ -7,8 +7,8 @@ import ShuffleIcon from "@mui/icons-material/Shuffle";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
-import useAuth from "../utilis/authUser";
-import { useRouter } from 'next/navigation';
+import useAuth from "../../../utilis/authUser";
+import { useRouter } from "next/navigation";
 
 const reducer = (state, action) => {
   if (state.checkedIds.includes(action.id)) {
@@ -33,11 +33,8 @@ let userEmailCopy = ""; // Declare variable outside of useEffect
 let userNameCopy = ""; // Declare variable outside of useEffect
 
 export default function TicketSelection() {
-
-
   const [email, setEmail] = useState(""); // State to store user email
   const [name, setName] = useState(""); // State to store user email
-
 
   //_________________________________________________________________________________________//
 
@@ -56,7 +53,7 @@ export default function TicketSelection() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [selectedNumbers, setSelectedNumbers] = useState([]);
   const [openToast, setOpenToast] = useState(false);
-   const router = useRouter();
+  const router = useRouter();
   const handleClose = (reason) => {
     if (reason === "clickaway") {
       return;
@@ -141,9 +138,9 @@ export default function TicketSelection() {
     console.log("Proceed clicked ok");
     sendSelectedNumbersToBackend(selectedNumbers);
     // Pass selected slots to the next page
-   
-    const selectedSlots = state.checkedIds.join(',');
-    console.log("GETTING IT:",selectedSlots)
+
+    const selectedSlots = state.checkedIds.join(",");
+    console.log("GETTING IT:", selectedSlots);
     router.push(`/cart?slots=${selectedSlots}`);
 
     // window.location.href = "/cart";
