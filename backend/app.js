@@ -1,27 +1,33 @@
+//server
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-// const session = require("express-session");
-const bcrypt = require("bcryptjs");
 const connectionDB = require("./config/connection");
 const cors = require("cors");
-const passport = require("./controllers/passport");
+
+/*____________________________________________________________________________________________________*/
 
 const app = express();
 connectionDB();
 
+/*____________________________________________________________________________________________________*/
+
+//origin source
 const clientOrigin = process.env.REACT_APP_CLIENT_ORIGIN;
 
+//cors setting
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    // origin: "https://buyying-forwardkite.vercel.app",
-    credentials: true, // Allow credentials if needed (e.g., cookies)
+    origin: clientOrigin,
+    credentials: true,
   })
 );
-/*_________________________________________VIEW ENGINE SETUP________________________________________*/
+
+app.use(cookieParser());
+
+/*_________________________________________VIEW_ENGINE_SETUP________________________________________*/
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
@@ -30,7 +36,6 @@ app.set("view engine", "hbs");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
