@@ -141,7 +141,7 @@ export default function TicketSelection() {
 
     const selectedSlots = state.checkedIds.join(",");
     console.log("GETTING IT:", selectedSlots);
-    router.push(`/cart?slots=${selectedSlots}`);
+    router.push(`./ticket-selection/cart?slots=${selectedSlots}`);
 
     // window.location.href = "/cart";
   };

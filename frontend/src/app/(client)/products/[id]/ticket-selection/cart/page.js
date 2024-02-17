@@ -1,14 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import useAuth from "../utilis/authUser";
+import useAuth from "../../../../utilis/authUser";
 import { initializeCashfree } from "@/cashfree";
 import Cookies from "js-cookie";
-import { useRouter } from 'next/navigation';
-
+import { useRouter } from "next/navigation";
 
 export default function Cart() {
-
-
   //user authentication middleware
   useAuth();
 
@@ -59,14 +56,13 @@ export default function Cart() {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const slots = queryParams.get('slots');
+    const slots = queryParams.get("slots");
 
     if (slots) {
-      const numbers = slots.split(',').map(Number); // Convert strings to numbers
+      const numbers = slots.split(",").map(Number); // Convert strings to numbers
       setSlotNumbers(numbers);
     }
   }, []);
-
 
   return (
     <div className="flex mt-12">
@@ -97,7 +93,7 @@ export default function Cart() {
                 ))}
               </div>
             </div>
-            
+
             <div className="flex mt-4">
               <button className="bg-red-400  py-2 px-4 rounded-md mr-4">
                 Remove
@@ -108,7 +104,6 @@ export default function Cart() {
             </div>
           </div>
         </div>
-
       </div>
       <div className="w-1/4">
         <p className="text-lg">Delivery Charge: 400</p>
