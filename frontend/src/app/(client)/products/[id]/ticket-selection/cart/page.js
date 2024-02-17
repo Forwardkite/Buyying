@@ -39,7 +39,7 @@ export default function Cart() {
     let checkoutOptions = {
       paymentSessionId: "payment-session-id",
       returnUrl:
-        "https://test.cashfree.com/pgappsdemos/v3success.php?myorder={order_id}",
+        "https://test.cashfree.com/pgappsdemos/v3success.php?myorder={joenodend}",
     };
 
     cashfree.checkout(checkoutOptions).then(function (result) {
