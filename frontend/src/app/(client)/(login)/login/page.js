@@ -30,7 +30,7 @@ export default function Login() {
         const token  = await response.json();
         // console.log('Token here:', token);
         Cookies.set('token', token, { expires: 1/24, secure: true, sameSite: 'none' });
-        window.location.href = "/ticket-selection";
+        window.location.href = "/";
       } else {
         const errorMessage = await response.text();
         const formattedErrorMessage = errorMessage.replace(/"/g, '');

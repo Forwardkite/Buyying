@@ -8,8 +8,12 @@ import { useRouter } from "next/navigation";
 export default function Cart() {
   //user authentication middleware
   useAuth();
-
+  const router = useRouter();
   const [cashfree, setCashfree] = useState(null); // State to hold cashfree instance
+  const [productName, setProductName] = useState("");
+  const [productPrice, setProductPrice] = useState(0);
+  const [imageProduct, setProductImage] = useState("");
+  const [imageReal, setProductImageReal] = useState("");
 
   // Initialize Cashfree on component mount
   useEffect(() => {
@@ -62,7 +66,37 @@ export default function Cart() {
       const numbers = slots.split(",").map(Number); // Convert strings to numbers
       setSlotNumbers(numbers);
     }
-  }, []);
+
+    // Fetch product details based on product ID from URL
+    const productId = router.query?.productId; // Use optional chaining to access router.query
+    const pathname = window.location.pathname; // Get the pathname from the URL
+    const id = pathname.split('/')[2]; // Split the pathname and get the third segment (index 2) which represents the id
+    console.log("ID:", id);
+    if (id) {
+      // Fetch product details from backend using productId
+      fetchProductDetails(id);
+    }
+  }, [router.query?.id]);
+
+  // Function to fetch product details from backend
+  const fetchProductDetails = async (id) => {
+    try {
+      // Make a fetch request to your backend API to get product details based on productId
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`${apiUrl}/admin/view/${id}`); // Adjust the API endpoint as per your backend
+      const productData = await response.json();
+
+      // Update product name and price
+      setProductName(productData.productName);
+      setProductPrice(productData.productPrice);
+      setProductImage(productData.imageProduct);
+
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    }
+  };
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   return (
     <div className="flex mt-12">
@@ -70,16 +104,16 @@ export default function Cart() {
         <div className="flex items-start flex-wrap mb-4 py-8 border-b">
           <div className="flex items-start flex-wrap w-1/2">
             <img
-              src="@/../assets/img/biryani.png"
-              alt=""
+              src={`${apiUrl}/uploads/${imageProduct}`} // Display the fetched product image
+              alt={productName} // Use product name as alt text
               className="rounded-full max-w-[100px] h-auto aspect-square object-cover"
             />
             <div className="details px-8">
-              <h6 className="text-2xl font-bold">Biryani</h6>
+              <h6 className="text-2xl font-bold">Name: {productName}</h6>
               <p className="text-lg">Quantity: 6</p>
               <p className="text-lg donate">Donation: 2</p>
-              <p className="text-lg">Rate: 100</p>
-              <p className="text-lg">Total Price: 600</p>
+              <p className="text-lg">Rate: {productPrice}</p>
+              <p className="text-lg">Total Price: {productPrice * 6}</p>
             </div>
           </div>
 
