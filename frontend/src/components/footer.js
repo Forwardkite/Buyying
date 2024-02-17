@@ -13,13 +13,13 @@ export default function footer() {
           </div>
         </div>
         <img
-          src="@/../assets/img/banner-footer2.svg"
+          src="/assets/img/banner-footer2.svg"
           alt=""
           className="w-full bg-black"
         />
       </div>
       <img
-        src="@/../assets/img/banner-footer.svg"
+        src="/assets/img/banner-footer.svg"
         alt=""
         className="w-full bg-black"
       />

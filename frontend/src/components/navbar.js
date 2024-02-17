@@ -16,7 +16,7 @@ export default function Navbar() {
       <nav className="max-w-[1600px] mx-auto">
         <Link href="/">
           <img
-            src="../assets/img/Buyyinn-logo.png"
+            src="/assets/img/Buyyinn-logo.png"
             className="h-[40px] w-auto"
             alt=""
           />

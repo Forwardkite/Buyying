@@ -14,7 +14,6 @@ connectionDB();
 
 /*____________________________________________________________________________________________________*/
 
-
 //origin source
 const clientOrigin = process.env.REACT_APP_CLIENT_ORIGIN;
 
