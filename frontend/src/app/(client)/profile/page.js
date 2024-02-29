@@ -8,11 +8,13 @@ export default function Profile() {
 
   //user authentication middleware
   useAuth();
-  
+  const [combinedStrings, setCombinedStrings] = useState([]);
   const [logoutMessage, setLogoutMessage] = useState('');
   const [email, setEmail] = useState(''); // State to store user email
   const [name, setName] = useState(''); // State to store user email
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -55,6 +57,23 @@ export default function Profile() {
     fetchUserData();
   }, []);
 
+  useEffect(() => {
+    const fetchCombinedStrings = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/lottery/${email}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setCombinedStrings(data.combinedStrings);
+      } catch (error) {
+        console.error('Error fetching combined strings:', error);
+      }
+    };
+
+    fetchCombinedStrings();
+  }, [apiUrl, email]);
+
   axios.defaults.withCredentials = true;
 
   const handleProceedClick = async () => {
@@ -90,13 +109,11 @@ return (
       <div className="w-11/12 flex flex-wrap  justify-between mx-auto">
         <div className="w-8/12">
           <h6>Tickets</h6>
-          <div className="w-full">
-            <div className="w-4/12 flex flex-col items-center justify-center">
-              <p className="text-sm"></p>
-              <h5 className="text-lg font-bold">SHT123456</h5>
-              <p className="text-sm">Active</p>
-            </div>
-          </div>
+      <ul>
+        {combinedStrings.map((combinedString, index) => (
+          <li key={index}>{combinedString}</li>
+        ))}
+      </ul>
         </div>
         <div className="w-4/12">
           <div className="flex flex-col items-center rounded-[30px] bg-[#f0f0f0]  p-16">

@@ -54,7 +54,8 @@ const productsRoutes = require("./routes/products");
 const loginRoutes = require("./routes/login");
 const dashboardRoutes = require("./routes/dashboard");
 const logoutRoute = require("./routes/logoutRoute");
-
+const payment = require("./routes/payment");
+const lotteryRoute = require("./routes/lotteryRoutes");
 app.use("/", indexRouter);
 app.use("/registration", registrationRoutes);
 app.use("/logout", logoutRoute);
@@ -62,6 +63,8 @@ app.use("/login", loginRoutes);
 app.use("/users", usersRouter);
 app.use("/products", productsRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/", payment);
+app.use("/",lotteryRoute)
 // app.use('/api',routesMiddleware);
 
 /*_________________________________________________ERROR HANDLERS____________________________________________*/

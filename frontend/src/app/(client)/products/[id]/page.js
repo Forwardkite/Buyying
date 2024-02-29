@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../utilis/authUser";
 
+
 // Mock authentication function, replace with your actual authentication logic
 const checkIfAuthenticated = () => {
   // Example: Check if the user is authenticated from your authentication context
