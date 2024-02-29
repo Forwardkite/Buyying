@@ -1,12 +1,12 @@
 
 // Import the ProductDB model
-const Slot = require('../models/slotDB');
+const Slote = require('../models/lotteryTokenDB');
 
 // Function to handle '/admin/view' route
 const displaySlotData = async (req, res) => {
   try {
     // Retrieve all products from the database
-    const slots = await Slot.find({});
+    const slots = await Slote.find({});
 
     // Send the retrieved products as a response
     res.json(slots);
