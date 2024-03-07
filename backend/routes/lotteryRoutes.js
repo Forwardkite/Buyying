@@ -27,4 +27,5 @@ router.get('/lottery/:email', async (req, res) => {
   }
 });
 
+
 module.exports = router;

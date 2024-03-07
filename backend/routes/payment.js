@@ -35,13 +35,12 @@ router.post("/payment-verify", async(req,res) => {
 
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
-        const sign = razorpay_order_id + "|" + razorpay_payment_id;
-        const expectedSign = crypto
-        .createHmac("sha256", process.env.KEY_SECRET)
-        .update(sign.toString())
-        .digest("hex");
+        const sha = crypto.createHmac("sha256", process.env.KEY_SECRET);
+        sha.update(`${razorpay_order_id}|${razorpay_payment_id}`);
+        const digest = sha.digest("hex");
 
-        if (razorpay_signature === expectedSign) {
+
+        if (digest == razorpay_signature) {
 
             res.status(200).json({ message: "Payment Verified Successfully"});
             

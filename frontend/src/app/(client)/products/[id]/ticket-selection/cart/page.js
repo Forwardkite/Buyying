@@ -2,135 +2,220 @@
 import React, { useEffect, useState } from "react";
 import Script from "next/script";
 import useAuth from "../../../../utilis/authUser";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-// import RenderRazorpay from "@/app/razorpay";
 
 export default function Cart() {
+
   //user authentication middleware
   useAuth();
+
   const router = useRouter();
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState(0);
   const [imageProduct, setProductImage] = useState("");
-  const [displayRazorpay, setDisplayRazorpay] = useState(false);
+  const [slotNumbers, setSlotNumbers] = useState([]);
+  const [email, setEmail] = useState(""); // State to store user email
+  const [name, setName] = useState(""); // State to store user email
+
   const [orderDetails, setOrderDetails] = useState({
     orderId: null,
     currency: null,
     amount: null,
   });
 
+  // Fetching Email and User Name of Authenticated User 
 
-  const handleProceedClick = async (amount, currency) => {
+  let userEmailCopy = "";
+  let userNameCopy = ""; 
+
+  const fetchUserData = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const requestData = {
-        productName: productName,
-        amount: amount * 100,
-        currency,
-        keyId: process.env.REACT_APP_RAZORPAY_KEY_ID,
-        KeySecret: process.env.REACT_APP_RAZORPAY_KEY_SECRET,
-      };
-  
-      const response = await fetch(`${apiUrl}/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      });
-  
-      const data = await response.json();
-      console.log("CODE:",data)
+      const cookie = document.cookie;
+      const cookieParts = cookie.split(";");
+      let userId;
 
-      const orderId = data.order.id;  
-  
-      setOrderDetails({
-        orderId: orderId,
-        currency: currency,
-        amount: data.amount,
+      cookieParts.forEach((part) => {
+        const keyValue = part.trim().split("=");
+        const key = keyValue[0];
+        const value = keyValue[1];
+        if (key === "token") {
+          const tokenParts = value.split(".");
+          const payload = JSON.parse(atob(tokenParts[1]));
+          userId = payload.userId;
+        }
       });
-  
-      const options = {
-        key: 'rzp_test_iCvzKiw8EqvAQg',
-        amount: productPrice * 100,
-        currency: 'INR',
-        name: 'BUYYING CORP Private Ltd',
-        description: 'Test Transaction',
-        image: 'https://media.istockphoto.com/id/1331491686/vector/element-design.jpg?s=612x612&w=0&k=20&c=QIMRS2IPiQyyTZJR_G1JAjH_ErBBkrDPtQe2GBNgm2w=',
-        order_id:orderId, // Use the orderId received from the backend
-        callback_url: 'http://localhost:3000/profile',
-        prefill: {
-          name: '',
-          email: 'gaurav.kumar@example.com',
-          contact: '9000090000',
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+      const response = await fetch(`${apiUrl}/admin/user/view/${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
         },
-        notes: {
-          address: 'Razorpay Corporate Office',
-        },
-        theme: {
-          color: '#3399cc',
-        },
-      };
-  
-      const rzp1 = new Razorpay(options);
-  
-      document.getElementById('rzp-button1').addEventListener('click', function (e) {
-        rzp1.open();
-        e.preventDefault();
       });
-  
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const user = await response.json();
+      setEmail(user.email); // Set the email fetched from the API
+      setName(user.name); // Set the name fetched from the API
+
+      // Assign values to other variables
+      userEmailCopy = user.email;
+      userNameCopy = user.name;
+      console.log("RAMI:", userEmailCopy)
     } catch (error) {
-      console.error("Error:", error);
+      console.error("There was a problem with your fetch operation:", error);
     }
   };
+  fetchUserData();
 
+  useEffect(() => {
+    const handlePayment = async () => {
+      try {
 
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const requestData = {
+          productName: productName,
+          amount: productPrice * 100, // assuming the price is already in the smallest currency unit
+          currency: 'INR', // Assuming you are always using INR
+          // Other necessary data for order creation
+        };
 
-const handlePaymentVerification = async () => {
-  try {
-      const response = await fetch(`${apiUrl}/payment-verify`, {
+        const response = await fetch(`${apiUrl}/orders`, {
           method: 'POST',
           headers: {
-              'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-              razorpay_order_id: '...', // Replace with the actual order ID
-              razorpay_payment_id: '...', // Replace with the actual payment ID
-              razorpay_signature: '...', // Replace with the actual signature
-          }),
-      });
+          body: JSON.stringify(requestData),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
+        const orderId = data.order.id;
 
-      if (response.ok) {
-          // Payment verified successfully
-          console.log(data.message); // Log success message or update UI accordingly
-      } else {
-          // Payment verification failed
-          console.error(data.message); // Log error message or display error to the user
+        setOrderDetails({
+          orderId: orderId,
+          currency: requestData.currency,
+          amount: requestData.amount,
+        });
+
+        const options = {
+          key: 'rzp_test_iCvzKiw8EqvAQg', // Your Razorpay test key
+          amount: requestData.amount,
+          currency: requestData.currency,
+          name: 'BUYYING CORP Private Ltd',
+          description: 'Test Transaction',
+          image: 'https://media.istockphoto.com/id/1331491686/vector/element-design.jpg?s=612x612&w=0&k=20&c=QIMRS2IPiQyyTZJR_G1JAjH_ErBBkrDPtQe2GBNgm2w=',
+          order_id: orderId,
+          
+          handler: async function (response) {
+            const body = {
+              ...response,
+            };
+            const validateResponse = await fetch(
+              `${apiUrl}/payment-verify`,
+              {
+                method: "POST",
+                body: JSON.stringify(body),
+                headers: {
+                  "Content-Type": "application/json",
+
+                },
+              }
+            );
+            if (validateResponse.ok) {
+
+              window.location.href = '/profile';
+              // Function to extract numbers from the URL query parameters
+              const getNumbersFromURL = () => {
+                const queryParams = new URLSearchParams(window.location.search);
+                const slots = queryParams.get("slots");
+                fetchUserData();
+
+                if (slots) {
+                  return slots.split(",").map(Number);
+                } else {
+                  return [];
+                }
+              };
+
+              // Function to send selected numbers to the backend
+              const sendSelectedNumbersToBackend = (numbers, userEmail, userName) => {
+
+                const concatenatedNumbers = numbers.join('');
+                // Wrap the selected numbers in an object with other required data
+                const requestBody = {
+                  numbers: concatenatedNumbers,
+                  email: userEmailCopy,
+                  name: userNameCopy,
+
+                };
+
+                // Send a POST request to the backend server
+                fetch(`${apiUrl}/admin/slot`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(requestBody),
+                })
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                  })
+                  .then((data) => {
+                    console.log("Response from backend:", data);
+                    // Perform any additional actions based on the response
+                  })
+                  .catch((error) => {
+                    console.error("Error sending data to the backend:", error);
+                  });
+              };
+
+              // Fetch numbers from the URL and send them to the backend
+              const numbersFromURL = getNumbersFromURL();
+              sendSelectedNumbersToBackend(numbersFromURL);
+            } else {
+              // Payment verification failed
+              const errorData = await validateResponse.json();
+              console.error('Error verifying payment:', errorData.message);
+
+              // Handle the error condition, such as displaying an error message to the user
+            }
+          },
+          callback_url: `${window.location.origin}/profile`,
+          prefill: {
+            name: '',
+            email: '',
+            contact: '',
+          },
+          notes: {
+            address: 'Razorpay Corporate Office',
+          },
+          theme: {
+            color: '#3399cc',
+          },
+        };
+
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+
+      } catch (error) {
+        console.error("Error:", error);
       }
-  } catch (error) {
-      console.error('Error during payment verification:', error);
-      // Handle network errors or other exceptions
-  }
-};
+    };
 
-// Call handlePaymentVerification after the payment is completed successfully
-// For example, after the user returns from the Razorpay checkout page
-useEffect(() => {
-  // Check if the user has returned from the Razorpay checkout page
-  const urlParams = new URLSearchParams(window.location.search);
-  const paymentStatus = urlParams.get('payment_status');
-
-  if (paymentStatus === 'success') {
-    // Payment was successful, initiate payment verification
-    handlePaymentVerification();
-  }
-}, []);
-
-
-  const [slotNumbers, setSlotNumbers] = useState([]);
+    const rzpButton = document.getElementById('rzp-button1');
+    if (rzpButton) {
+      rzpButton.addEventListener('click', handlePayment);
+      return () => {
+        rzpButton.removeEventListener('click', handlePayment);
+      };
+    }
+  }, [productName, productPrice, userEmailCopy, userNameCopy]);
 
 
   useEffect(() => {
@@ -223,7 +308,6 @@ useEffect(() => {
           src="https://checkout.razorpay.com/v1/checkout.js"
         />
         <button id="rzp-button1"
-          onClick={() => handleProceedClick(productPrice, 'INR')}
           className="btn-theme-dual font-bold text-white rounded-full py-3 px-40 mt-12"
         >
           Pay

@@ -94,6 +94,7 @@ export default function TicketSelection() {
 
   const validateNumberCombination = async (selectedNumbers) => {
     const combinedNumbers = selectedNumbers.join("");
+    
 
     console.log("Email:", userNameCopy);
     const requestBody = {
@@ -136,7 +137,7 @@ export default function TicketSelection() {
   const handleProceedClick = () => {
     // Handle proceed action here
     console.log("Proceed clicked ok");
-    sendSelectedNumbersToBackend(selectedNumbers);
+    // sendSelectedNumbersToBackend(selectedNumbers);
     // Pass selected slots to the next page
 
     const selectedSlots = state.checkedIds.join(",");
@@ -190,39 +191,39 @@ export default function TicketSelection() {
     fetchUserData();
   }, []);
 
-  const sendSelectedNumbersToBackend = (numbers) => {
-    // Combine numbers into a string
-    const combinedNumbers = numbers.join("");
+  // const sendSelectedNumbersToBackend = (numbers) => {
+  //   // Combine numbers into a string
+  //   const combinedNumbers = numbers.join("");
 
-    // Wrap the combined numbers in an object with a key named "numbers"
-    const requestBody = {
-      numbers: combinedNumbers,
-      email: userEmailCopy,
-      name: userNameCopy,
-    };
+  //   // Wrap the combined numbers in an object with a key named "numbers"
+  //   const requestBody = {
+  //     numbers: combinedNumbers,
+  //     email: userEmailCopy,
+  //     name: userNameCopy,
+  //   };
 
-    // Send a POST request to the backend server
-    fetch(`${apiUrl}/admin/slot`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Response from backend:", data);
-        // window.location.href = "/cart";
-      })
-      .catch((error) => {
-        console.error("Error sending data to the backend:", error);
-      });
-  };
+  //   // Send a POST request to the backend server
+  //   fetch(`${apiUrl}/admin/slot`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(requestBody),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Response from backend:", data);
+  //       // window.location.href = "/cart";
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error sending data to the backend:", error);
+  //     });
+  // };
 
   //__________________________________________________________________________________________________//
 
