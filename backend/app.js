@@ -56,16 +56,20 @@ const dashboardRoutes = require("./routes/dashboard");
 const logoutRoute = require("./routes/logoutRoute");
 const payment = require("./routes/payment");
 const lotteryRoute = require("./routes/lotteryRoutes");
+const { displayLotteryData } = require("./controllers/displayLotteryData");
+
 app.use("/", indexRouter);
+app.use("/", payment);
+app.use("/",lotteryRoute)
+
 app.use("/registration", registrationRoutes);
 app.use("/logout", logoutRoute);
 app.use("/login", loginRoutes);
 app.use("/users", usersRouter);
 app.use("/products", productsRoutes);
 app.use("/dashboard", dashboardRoutes);
-app.use("/", payment);
-app.use("/",lotteryRoute)
-// app.use('/api',routesMiddleware);
+app.use("/lottery",displayLotteryData)
+
 
 /*_________________________________________________ERROR HANDLERS____________________________________________*/
 
