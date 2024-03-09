@@ -26,7 +26,7 @@ export default function Cart() {
   // Fetching Email and User Name of Authenticated User 
 
   let userEmailCopy = "";
-  let userNameCopy = ""; 
+  let userNameCopy = "";
 
   const fetchUserData = async () => {
     try {
@@ -64,7 +64,7 @@ export default function Cart() {
       // Assign values to other variables
       userEmailCopy = user.email;
       userNameCopy = user.name;
-      console.log("RAMI:", userEmailCopy)
+
     } catch (error) {
       console.error("There was a problem with your fetch operation:", error);
     }
@@ -108,7 +108,7 @@ export default function Cart() {
           description: 'Test Transaction',
           image: 'https://media.istockphoto.com/id/1331491686/vector/element-design.jpg?s=612x612&w=0&k=20&c=QIMRS2IPiQyyTZJR_G1JAjH_ErBBkrDPtQe2GBNgm2w=',
           order_id: orderId,
-          
+
           handler: async function (response) {
             const body = {
               ...response,
@@ -141,7 +141,14 @@ export default function Cart() {
               };
 
               // Function to send selected numbers to the backend
-              const sendSelectedNumbersToBackend = (numbers, userEmail, userName) => {
+              const sendSelectedNumbersToBackend = (numbers) => {
+
+                // Get the current date
+                const currentDate = new Date();
+
+                // Format the date to DD-MM-YYYY
+                const formattedDate = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;  
+                console.log(formattedDate)
 
                 const concatenatedNumbers = numbers.join('');
                 // Wrap the selected numbers in an object with other required data
@@ -149,6 +156,9 @@ export default function Cart() {
                   numbers: concatenatedNumbers,
                   email: userEmailCopy,
                   name: userNameCopy,
+                  product: productName,
+                  cost: productPrice,
+                  date: formattedDate,
 
                 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import React, { useState, useEffect } from 'react';
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -30,12 +30,56 @@ const style = {
 
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
+
+
+
 export default function Winners() {
   const [sort, setSort] = React.useState("");
-
+  const [lotteryData, setLotteryData] = useState([]);
+  
   const handleChange = (event) => {
     setSort(event.target.value);
   };
+
+  // Function to download CSV
+  const downloadCSV = () => {
+    let csvContent = "Token,Name,Email,Date,Product,Quantity,Price,Action\n";
+  
+    // Add table data
+    lotteryData.forEach((item) => {
+      csvContent += `${item.combinedString},${item.name},${item.email},${item.date},${item.product},${item.quantity},₹${item.cost}/-,\n`;
+    });
+  
+    // Create a Blob and initiate download
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'lottery_data.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+
+  useEffect(() => {
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/lottery`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setLotteryData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -127,6 +171,9 @@ export default function Winners() {
               </FormControl>
             </Box>
           </div>
+          <button className="px-4 py-2 bg-violet-700 text-white rounded-md flex" onClick={downloadCSV}>
+            <span className="mr-2">Export</span>
+          </button>
           <button className="px-4 py-2 bg-violet-700 text-white rounded-md flex">
             <span className="mr-2">Select Winner</span> <EmojiEventsIcon />
           </button>
@@ -135,213 +182,29 @@ export default function Winners() {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  Ticket No
-                </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell align="">Email</TableCell>
-                <TableCell align="">Mobile</TableCell>
-                <TableCell align="">Status</TableCell>
-                <TableCell align="">Action</TableCell>
+                <TableCell>Token String</TableCell>
+                <TableCell >Name</TableCell>
+                <TableCell >Email</TableCell>
+                <TableCell >Date</TableCell>
+                <TableCell >Product</TableCell>
+                <TableCell >Quantity</TableCell>
+                <TableCell >Price</TableCell>
+                <TableCell >Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow className="border-b bg-cyan-100">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-red-700 font-bold">
-                  Winner
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b">
-                <TableCell component="th" scope="row">
-                  456123
-                </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell align="">john@gmail.com</TableCell>
-                <TableCell align="">9876543210</TableCell>
-                <TableCell align="" className="text-theme-gray font-bold">
-                  Lost
-                </TableCell>
-                <TableCell align="" className="text-theme-purple font-bold">
-                  View More
-                </TableCell>
-              </TableRow>
+              {lotteryData.map((item) => (
+                <TableRow key={item._id} className="border-b">
+                  <TableCell>{item.combinedString}</TableCell>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.email}</TableCell>
+                  <TableCell>{item.date}</TableCell>
+                  <TableCell>{item.product}</TableCell>
+                  <TableCell>{item.quantity}</TableCell>
+                  <TableCell>₹{item.cost}/-</TableCell>
+                  <TableCell>More Details</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

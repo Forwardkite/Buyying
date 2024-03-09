@@ -108,7 +108,7 @@ export default function Profile() {
           <div className="w-8/12">
             <h6>Tickets</h6>
             <div className="w-full">
-              {combinedStrings.map((combinedString, index) => (
+              {combinedStrings && combinedStrings.map((combinedString, index) => (
                 <div key={index} className="w-4/12 flex flex-col items-center justify-center">
                   <p className="text-sm"></p> {/* You can put your content here */}
                   <h5 className="text-lg font-bold">{combinedString}</h5> {/* Assuming combinedString is the ticket code */}

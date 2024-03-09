@@ -181,7 +181,7 @@ export default function TicketSelection() {
         setEmail(user.email); // Set the email fetched from the API
         setName(user.name); // Set the name fetched from the API
 
-        // Assign values to other variables
+        // Assign values to other variables 
         userEmailCopy = user.email;
         userNameCopy = user.name;
       } catch (error) {
