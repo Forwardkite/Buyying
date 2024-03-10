@@ -57,6 +57,7 @@ const logoutRoute = require("./routes/logoutRoute");
 const payment = require("./routes/payment");
 const lotteryRoute = require("./routes/lotteryRoutes");
 const { displayLotteryData } = require("./controllers/displayLotteryData");
+const slotDelete = require("./controllers/stockDelete")
 
 app.use("/", indexRouter);
 app.use("/", payment);
@@ -69,6 +70,7 @@ app.use("/users", usersRouter);
 app.use("/products", productsRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/lottery",displayLotteryData)
+app.use("/",slotDelete)
 
 
 /*_________________________________________________ERROR HANDLERS____________________________________________*/

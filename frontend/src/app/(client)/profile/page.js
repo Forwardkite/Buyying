@@ -105,18 +105,37 @@ export default function Profile() {
       </section>
       <section className="mt-12">
         <div className="w-11/12 flex flex-wrap  justify-between mx-auto">
-          <div className="w-8/12">
-            <h6>Tickets</h6>
-            <div className="w-full">
-              {combinedStrings && combinedStrings.map((combinedString, index) => (
-                <div key={index} className="w-4/12 flex flex-col items-center justify-center">
-                  <p className="text-sm"></p> {/* You can put your content here */}
-                  <h5 className="text-lg font-bold">{combinedString}</h5> {/* Assuming combinedString is the ticket code */}
-                  <p className="text-sm">Active</p> {/* Assuming the ticket status is always "Active" */}
-                </div>
-              ))}
-            </div>
+        <div className="w-8/12">
+  <h6 className="mb-4">Tickets</h6>
+  <div className="flex flex-wrap -mx-2">
+    {combinedStrings && combinedStrings.map((combinedString, index) => (
+      <div key={index} className="w-1/3 px-2 mb-4 relative">
+        <div className="bg-white rounded-lg shadow-md p-4 border border-gray-300">
+          {/* Content for each token */}
+          <h5 className="text-lg font-bold mb-2">{combinedString}</h5>
+          <p className="text-sm text-gray-600">Active</p>
+          {/* Add any additional content or design here */}
+        </div>
+        {/* Designs for rectangle edges */}
+        <div className="absolute inset-0 overflow-hidden rounded-lg pointer-events-none" aria-hidden="true">
+          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <svg className="absolute bottom-full left-0 mb-8 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 283" fill="none">
+              <defs>
+                <pattern id="diagonal-lines" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="10" stroke="#3182CE" strokeWidth="2" />
+                </pattern>
+              </defs>
+              <rect width="375" height="283" fill="url(#diagonal-lines)" />
+            </svg>
           </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+
+
           <div className="w-4/12">
             <div className="flex flex-col items-center rounded-[30px] bg-[#f0f0f0]  p-16">
               <img

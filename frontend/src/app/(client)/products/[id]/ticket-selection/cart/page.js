@@ -16,6 +16,7 @@ export default function Cart() {
   const [slotNumbers, setSlotNumbers] = useState([]);
   const [email, setEmail] = useState(""); // State to store user email
   const [name, setName] = useState(""); // State to store user email
+  const [deleted, setDeleted] = useState(false);
 
   const [orderDetails, setOrderDetails] = useState({
     orderId: null,
@@ -127,6 +128,53 @@ export default function Cart() {
             if (validateResponse.ok) {
 
               window.location.href = '/profile';
+
+              
+
+
+
+              const deleteProductNumbers = async () => {
+                try {
+
+                  // Fetch product details based on product ID from URL
+                  const Id = router.query?.productId; // Use optional chaining to access router.query
+                  const pathname = window.location.pathname; // Get the pathname from the URL
+                  const id = pathname.split('/')[2];
+
+                  
+                  const amountToDelete = 1;
+                  // Make an API call to delete product numbers
+                  const deleteResponse = await fetch(
+                    `${apiUrl}/products/${id}/stock`,
+                    {
+                      method: "DELETE",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ amount: amountToDelete }),
+                    }
+                  );
+
+                  if (deleteResponse.ok) {
+                    // Numbers deleted successfully
+                    console.log("Product numbers deleted successfully");
+                  } else {
+                    // Error deleting product numbers
+                    console.error("Error deleting product numbers:", deleteResponse.statusText);
+                  }
+                } catch (error) {
+                  console.error("Error deleting product numbers:", error);
+                }
+              };
+
+              // Call the function to delete product numbers
+              await deleteProductNumbers();
+
+
+
+
+
+
               // Function to extract numbers from the URL query parameters
               const getNumbersFromURL = () => {
                 const queryParams = new URLSearchParams(window.location.search);
@@ -147,8 +195,8 @@ export default function Cart() {
                 const currentDate = new Date();
 
                 // Format the date to DD-MM-YYYY
-                const formattedDate = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;  
-                console.log(formattedDate)
+                const formattedDate = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
+
 
                 const concatenatedNumbers = numbers.join('');
                 // Wrap the selected numbers in an object with other required data
@@ -184,6 +232,7 @@ export default function Cart() {
                     console.error("Error sending data to the backend:", error);
                   });
               };
+
 
               // Fetch numbers from the URL and send them to the backend
               const numbersFromURL = getNumbersFromURL();
@@ -235,6 +284,7 @@ export default function Cart() {
     if (slots) {
       const numbers = slots.split(",").map(Number); // Convert strings to numbers
       setSlotNumbers(numbers);
+
     }
 
     // Fetch product details based on product ID from URL
@@ -244,6 +294,7 @@ export default function Cart() {
     if (id) {
       // Fetch product details from backend using productId
       fetchProductDetails(id);
+
     }
   }, [router.query?.id]);
 

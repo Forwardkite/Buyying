@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const productDatabase = new mongoose.Schema({
   productName: String,
   stockNumber: Number,
+  stockLeft: Number,
   productDiscription: String,
   productPrice: Number,
   startingDate: String, // Change the type to String for formatted dates

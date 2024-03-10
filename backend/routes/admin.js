@@ -1,8 +1,5 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const connectionDB = require("../config/connection");
-const LotteryGenerator = require("../components/LotteryGenerator");
-const ProductDB = require("../models/productDB");
 const router = express.Router();
 const app = express();
 const multer = require("multer");
@@ -25,7 +22,7 @@ router.get("/", (req, res) => {
   res.render("admin/batch");
 });
 
-/*____________________________________PRODUCT_CREATE_______________________________________________*/
+/*_______________________________________PRODUCT_CREATE__________________________________________*/
 
 const productCreate = require("../controllers/productCreate");
 
@@ -39,13 +36,13 @@ router.post(
 
 const productDisplay = require("../controllers/productDisplay");
 
-router.get("/view", productDisplay.viewProducts);
+router.get("/view", productDisplay.viewProducts); //display products
 
-router.get("/view/:id", productDisplay.viewProductById);
+router.get("/view/:id", productDisplay.viewProductById); //display product by id
 
 /*______________________________________PRODUCT_UPDATE______________________________________________*/
 
-const productUpdate = require("../controllers/productUpdate"); // Import the product controller
+const productUpdate = require("../controllers/productUpdate");
 
 router.put("/update/:ProId", productUpdate.updateProduct);
 
@@ -79,7 +76,7 @@ const SlotDisplay = require("../controllers/displaySlotData");
 
 router.get("/slot/view", SlotDisplay.displaySlotData);
 
-/*________________________________________User_Display_______________________________________________*/
+/*________________________________________USER_DISPLAY_______________________________________________*/
 
 const UserDisplay = require("../controllers/displayUserData");
 
