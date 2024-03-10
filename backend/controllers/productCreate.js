@@ -34,6 +34,7 @@ const createProduct = async (req, res) => {
     startingDate,
     endingDate,
     imageProduct,
+    stockLeft: stockNumber,
   };
 
   try {
