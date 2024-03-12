@@ -72,7 +72,7 @@ export default function Winners() {
           throw new Error('Failed to fetch data');
         }
         const data = await response.json();
-        setLotteryData(data);
+        setLotteryData(data.reverse());
       } catch (error) {
         console.error('Error fetching data:', error);
       }
