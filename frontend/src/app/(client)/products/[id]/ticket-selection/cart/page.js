@@ -127,67 +127,6 @@ export default function Cart() {
             );
             if (validateResponse.ok) {
 
-              window.location.href = '/profile';
-
-              
-
-
-
-              const deleteProductNumbers = async () => {
-                try {
-
-                  // Fetch product details based on product ID from URL
-                  const Id = router.query?.productId; // Use optional chaining to access router.query
-                  const pathname = window.location.pathname; // Get the pathname from the URL
-                  const id = pathname.split('/')[2];
-
-                  
-                  const amountToDelete = 1;
-                  // Make an API call to delete product numbers
-                  const deleteResponse = await fetch(
-                    `${apiUrl}/products/${id}/stock`,
-                    {
-                      method: "DELETE",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ amount: amountToDelete }),
-                    }
-                  );
-
-                  if (deleteResponse.ok) {
-                    // Numbers deleted successfully
-                    console.log("Product numbers deleted successfully");
-                  } else {
-                    // Error deleting product numbers
-                    console.error("Error deleting product numbers:", deleteResponse.statusText);
-                  }
-                } catch (error) {
-                  console.error("Error deleting product numbers:", error);
-                }
-              };
-
-              // Call the function to delete product numbers
-              await deleteProductNumbers();
-
-
-
-
-
-
-              // Function to extract numbers from the URL query parameters
-              const getNumbersFromURL = () => {
-                const queryParams = new URLSearchParams(window.location.search);
-                const slots = queryParams.get("slots");
-                fetchUserData();
-
-                if (slots) {
-                  return slots.split(",").map(Number);
-                } else {
-                  return [];
-                }
-              };
-
               // Function to send selected numbers to the backend
               const sendSelectedNumbersToBackend = (numbers) => {
 
@@ -233,10 +172,75 @@ export default function Cart() {
                   });
               };
 
+              
+
+              
+
+
+
+
+
+
+              // Function to extract numbers from the URL query parameters
+              const getNumbersFromURL = () => {
+                const queryParams = new URLSearchParams(window.location.search);
+                const slots = queryParams.get("slots");
+                fetchUserData();
+
+                if (slots) {
+                  return slots.split(",").map(Number);
+                } else {
+                  return [];
+                }
+              };
+
+              
+
 
               // Fetch numbers from the URL and send them to the backend
               const numbersFromURL = getNumbersFromURL();
               sendSelectedNumbersToBackend(numbersFromURL);
+
+
+              const deleteProductNumbers = async () => {
+                try {
+
+                  // Fetch product details based on product ID from URL
+                  const Id = router.query?.productId; // Use optional chaining to access router.query
+                  const pathname = window.location.pathname; // Get the pathname from the URL
+                  const id = pathname.split('/')[2];
+
+                  
+                  const amountToDelete = 1;
+                  // Make an API call to delete product numbers
+                  const deleteResponse = await fetch(
+                    `${apiUrl}/products/${id}/stock`,
+                    {
+                      method: "DELETE",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ amount: amountToDelete }),
+                    }
+                  );
+
+                  if (deleteResponse.ok) {
+                    // Numbers deleted successfully
+                    console.log("Product numbers deleted successfully");
+                  } else {
+                    // Error deleting product numbers
+                    console.error("Error deleting product numbers:", deleteResponse.statusText);
+                  }
+                } catch (error) {
+                  console.error("Error deleting product numbers:", error);
+                }
+              };
+
+              // Call the function to delete product numbers
+              await deleteProductNumbers();
+
+              window.location.href = '/profile';
+
             } else {
               // Payment verification failed
               const errorData = await validateResponse.json();
