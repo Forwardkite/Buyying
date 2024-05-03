@@ -17,6 +17,12 @@ module.exports = {
           " linear-gradient(90deg, #E48039 0.02%, #12B4B9 99.98%)",
         "theme-grad":
           " linear-gradient(89.64deg, #15B4BB 2.6%, #399AC2 60.28%, #518AC6 97.5%)",
+        "theme-grad-cyan":
+          " linear-gradient(270deg, #5287C6 2.6%,  #12B4B9 97.5%)",
+        "theme-grad-orange":
+          " linear-gradient(89.64deg, #EE6C74 2.6%,  #F39751 97.5%)",
+        pattern: "url('/assets/img/pattern-theme.svg')",
+        "pattern-orange": "url('/assets/img/pattern-theme-orange.svg')",
       },
       boxShadow: {
         "0-0": "0 0 10px 3px rgba(0, 0, 0, 0.1)",
