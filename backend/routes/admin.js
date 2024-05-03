@@ -84,6 +84,25 @@ router.get("/user/view", UserDisplay.displayUserData);
 
 router.get("/user/view/:id", UserDisplay.displayUserDataById);
 
+/*__________________________________________ORDER_DISPLAY_____________________________________________*/
+
+const PurchaseDisplay = require("../controllers/displayPaymentOrder");
+
+router.get("/order/view", PurchaseDisplay.displayPurchaseData);
+
+/*____________________________________REGISTRATION_EMAIL_CHECKER________________________________________*/
+
+const registrationEmailChecker = require("../controllers/registrationEmailChecker");
+
+router.post("/check/details", registrationEmailChecker.checkEmailDuplication);
+
+
+/*____________________________________REGISTRATION_PHONE_CHECKER________________________________________*/
+
+const registrationPhoneChecker = require("../controllers/registrationPhoneChecker");
+
+router.post("/check/phone", registrationPhoneChecker.checkPhoneDuplication);
+
 /*__________________________________________________________________________________________________*/
 
 module.exports = router;

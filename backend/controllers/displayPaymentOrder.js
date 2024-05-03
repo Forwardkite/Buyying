@@ -1,14 +1,14 @@
 // Import the ProductDB model
-const Slot = require('../models/usersDB');
+const Purchase = require('../models/transactionsPayment');
 
 // Function to handle '/admin/view' route
-const displaySlotData = async (req, res) => {
+const displayPurchaseData = async (req, res) => {
   try {
     // Retrieve all products from the database
-    const slots = await Slot.find({});
+    const purchase = await Purchase.find({});
 
     // Send the retrieved products as a response
-    res.json(slots);
+    res.json(purchase);
   } catch (error) {
     console.error("Error in Server:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -16,5 +16,5 @@ const displaySlotData = async (req, res) => {
 };
 
 module.exports = {
-    displaySlotData
+    displayPurchaseData
 };
