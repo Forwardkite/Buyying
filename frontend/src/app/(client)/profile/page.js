@@ -63,7 +63,10 @@ export default function Profile() {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setCombinedStrings(data.combinedStrings);
+        
+        // Reverse the combinedStrings array before setting it in the state
+    const reversedCombinedStrings = data.combinedStrings.slice().reverse();
+    setCombinedStrings(reversedCombinedStrings);  
       } catch (error) {
         console.error('Error fetching combined strings:', error);
       }

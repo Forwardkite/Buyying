@@ -11,12 +11,13 @@ router.get('/', (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phoneNumber } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
       name,
       email,
+      phoneNumber,
       password: hashedPassword
     });
 
