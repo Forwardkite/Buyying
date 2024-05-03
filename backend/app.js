@@ -59,9 +59,11 @@ const lotteryRoute = require("./routes/lotteryRoutes");
 const { displayLotteryData } = require("./controllers/displayLotteryData");
 const slotDelete = require("./controllers/stockDelete")
 
+
 app.use("/", indexRouter);
 app.use("/", payment);
 app.use("/",lotteryRoute)
+
 
 app.use("/registration", registrationRoutes);
 app.use("/logout", logoutRoute);

@@ -10,7 +10,7 @@ import Slide from "@mui/material/Slide";
 import useAuth from "../../../utilis/authUser";
 import { useRouter } from "next/navigation";
 
-const reducer = (state, action) => {
+const reducer1 = (state, action) => {
   if (state.checkedIds.includes(action.id)) {
     return {
       ...state,
@@ -29,8 +29,27 @@ const reducer = (state, action) => {
   };
 };
 
-let userEmailCopy = ""; // Declare variable outside of useEffect
-let userNameCopy = ""; // Declare variable outside of useEffect
+const reducer2 = (state, action) => {
+  if (state.checkedIds.includes(action.id)) {
+    return {
+      ...state,
+      checkedIds: state.checkedIds.filter((id) => id !== action.id),
+    };
+  }
+
+  if (state.checkedIds.length >= 2) {
+    console.log("Max 2 extras allowed.");
+    return state;
+  }
+
+  return {
+    ...state,
+    checkedIds: [...state.checkedIds, action.id],
+  };
+};
+
+let userEmailCopy = ""; // Global Variable
+let userNameCopy = ""; // Global Variable
 
 export default function TicketSelection() {
   const [email, setEmail] = useState(""); // State to store user email
@@ -49,9 +68,12 @@ export default function TicketSelection() {
   const [product, setProduct] = React.useState(1);
   const [donation, setDonation] = React.useState(0);
   const [continueVisible, setContinueVisible] = useState(false);
-  const initialState = { checkedIds: [] };
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [selectedNumbers, setSelectedNumbers] = useState([]);
+  const initialState1 = { checkedIds: [] };
+  const initialState2 = { checkedIds: [] };
+  const [state1, dispatch1] = useReducer(reducer1, initialState1);
+  const [state2, dispatch2] = useReducer(reducer2, initialState2);
+  const [selectedNumbers1, setSelectedNumbers1] = useState([]);
+  const [selectedNumbers2, setSelectedNumbers2] = useState([]);
   const [openToast, setOpenToast] = useState(false);
   const router = useRouter();
   const handleClose = (reason) => {
@@ -64,7 +86,7 @@ export default function TicketSelection() {
 
   const [message, setMessage] = useState("Please select any 2 numbers");
   const ticket = product + donation;
-  const stockNumber = 12;
+  const stockNumber = 9;
   const incrementProduct = () => {
     if (product < stockNumber) {
       setProduct(product + 1);
@@ -95,7 +117,6 @@ export default function TicketSelection() {
   const validateNumberCombination = async (selectedNumbers) => {
     const combinedNumbers = selectedNumbers.join("");
     
-
     console.log("Email:", userNameCopy);
     const requestBody = {
       numbers: combinedNumbers,
@@ -140,7 +161,7 @@ export default function TicketSelection() {
     // sendSelectedNumbersToBackend(selectedNumbers);
     // Pass selected slots to the next page
 
-    const selectedSlots = state.checkedIds.join(",");
+    const selectedSlots = state1.checkedIds.join(",");
     console.log("GETTING IT:", selectedSlots);
     router.push(`./ticket-selection/cart?slots=${selectedSlots}`);
 
@@ -191,65 +212,46 @@ export default function TicketSelection() {
     fetchUserData();
   }, []);
 
-  // const sendSelectedNumbersToBackend = (numbers) => {
-  //   // Combine numbers into a string
-  //   const combinedNumbers = numbers.join("");
-
-  //   // Wrap the combined numbers in an object with a key named "numbers"
-  //   const requestBody = {
-  //     numbers: combinedNumbers,
-  //     email: userEmailCopy,
-  //     name: userNameCopy,
-  //   };
-
-  //   // Send a POST request to the backend server
-  //   fetch(`${apiUrl}/admin/slot`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(requestBody),
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log("Response from backend:", data);
-  //       // window.location.href = "/cart";
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error sending data to the backend:", error);
-  //     });
-  // };
-
   //__________________________________________________________________________________________________//
 
-  const handleCheckboxClick = (id) => {
+  const handleCheckboxClick = (id, chart) => {
     let updatedCheckedIds;
 
-    if (state.checkedIds.includes(id)) {
-      updatedCheckedIds = state.checkedIds.filter(
-        (checkedId) => checkedId !== id
-      );
-    } else {
-      updatedCheckedIds = [...state.checkedIds, id];
+    if (chart === 1) {
+      if (state1.checkedIds.includes(id)) {
+        updatedCheckedIds = state1.checkedIds.filter(
+          (checkedId) => checkedId !== id
+        );
+      } else {
+        updatedCheckedIds = [...state1.checkedIds, id];
+      }
+      setSelectedNumbers1(updatedCheckedIds); // Update selected numbers regardless of count
+      if (updatedCheckedIds.length >= 2) {
+        validateNumberCombination(updatedCheckedIds); // Validate the selected numbers
+        handleButtonVisibility(false);
+      } else {
+        setMessage("Please select any 2 numbers");
+        handleButtonVisibility(false); // Hide the button
+      }
+      dispatch1({ id });
+    } else if (chart === 2) {
+      if (state2.checkedIds.includes(id)) {
+        updatedCheckedIds = state2.checkedIds.filter(
+          (checkedId) => checkedId !== id
+        );
+      } else {
+        updatedCheckedIds = [...state2.checkedIds, id];
+      }
+      setSelectedNumbers2(updatedCheckedIds); // Update selected numbers regardless of count
+      if (updatedCheckedIds.length >= 2) {
+        validateNumberCombination(updatedCheckedIds); // Validate the selected numbers
+        handleButtonVisibility(false);
+      } else {
+        setMessage("Please select any 2 numbers");
+        handleButtonVisibility(false); // Hide the button
+      }
+      dispatch2({ id });
     }
-
-    setSelectedNumbers(updatedCheckedIds); // Update selected numbers regardless of count
-
-    if (updatedCheckedIds.length >= 2) {
-      validateNumberCombination(updatedCheckedIds); // Validate the selected numbers
-      handleButtonVisibility(false);
-    } else {
-      setMessage("Please select any 2 numbers");
-
-      handleButtonVisibility(false); // Hide the button
-    }
-
-    dispatch({ id });
   };
 
   const [buttonVisible, setButtonVisible] = useState(false);
@@ -332,13 +334,13 @@ export default function TicketSelection() {
                 {data.map(({ id, label }) => (
                   <div className="slot" key={id}>
                     <input
-                      onClick={() => handleCheckboxClick(id)}
-                      checked={state.checkedIds.includes(id)}
+                      onClick={() => handleCheckboxClick(id, 1)}
+                      checked={state1.checkedIds.includes(id)}
                       type="checkbox"
-                      id={id + index}
+                      id={id + index + "1"}
                       readOnly
                     />
-                    <label htmlFor={id + index}>{label}</label>
+                    <label htmlFor={id + index + "1"}>{label}</label>
                   </div>
                 ))}
               </div>
@@ -378,4 +380,4 @@ export default function TicketSelection() {
       />
     </>
   );
-}
+          }

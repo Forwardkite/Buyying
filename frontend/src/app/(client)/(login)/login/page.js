@@ -27,9 +27,9 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        const token  = await response.json();
+        const token = await response.json();
         // console.log('Token here:', token);
-        Cookies.set('token', token, { expires: 1/24, secure: true, sameSite: 'none' });
+        Cookies.set('token', token, { expires: 1 / 24, secure: true, sameSite: 'none' });
         window.location.href = "/";
       } else {
         const errorMessage = await response.text();
@@ -78,9 +78,9 @@ export default function Login() {
           >
             Login
           </button>
-          <p className="mx-auto text-center flex mt-4 hover:text-violet-700">
-            Don't have an account? <Link href="/register">Create Account</Link>
-          </p>
+          <div className="mx-auto text-center flex mt-4 hover:text-violet-700">
+            <Link href="/register"> Don't have an account? Create Account</Link>
+          </div>
         </form>
       </div>
     </div>
