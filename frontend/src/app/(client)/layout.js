@@ -11,11 +11,10 @@ export default function Client({ children }) {
   return (
     <>
       <Navbar />
-      <main className="w-full max-w-[1600px] mx-auto">{children}</main>
+      <main className="w-full max-w-[1600px] px-4 md:px-0 mx-auto">
+        {children}
+      </main>
       <Footer />
-
-      
-
-        </>
+    </>
   );
 }
