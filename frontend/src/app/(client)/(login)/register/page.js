@@ -37,14 +37,14 @@ export default function Register() {
         ...prevFormData,
         [name]: phoneNumber // Update the state with the sanitized phone number
       }));
-      
+
     }
 
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value
     }));
-    
+
     if (name === "email") {
       if (!validateEmail(value)) {
         setEmailExists(false); // Clear email existence state if email format is invalid
@@ -61,7 +61,7 @@ export default function Register() {
   };
 
 
-//______________________________________EMAIL_DUPLICATION_CHECKING_API_______________________________________//
+  //______________________________________EMAIL_DUPLICATION_CHECKING_API_______________________________________//
 
   const checkEmailDuplication = async (email) => {
     try {
@@ -93,7 +93,7 @@ export default function Register() {
   };
 
   //______________________________________PHONE_DUPLICATION_CHECKING_API_______________________________________//
-  
+
   const checkPhoneNumberDuplication = async (phoneNumber) => {
     try {
       const response = await fetch(`${apiUrl}/admin/check/phone`, {
@@ -116,28 +116,60 @@ export default function Register() {
   };
 
 
-  
 
-//____________________________________OTP_SECTION__________________________________________//
 
-  const handleSendOtp = () => {
-    // Here you can send the OTP to the phone number
-    // Implement your logic to send OTP
-    setOtpSent(true); // Mark OTP as sent
+  //____________________________________OTP_SECTION__________________________________________//
+
+  const handleSendOtp = (phoneNumber) => {
+    // Ensure phoneNumber is a string
+    const formattedPhoneNumber = String(phoneNumber);
+    console.log("Sending OTP to:", formattedPhoneNumber); // Log the formattedPhoneNumber
+
+    fetch(`${apiUrl}/admin/api/send-otp`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ phoneNumber: formattedPhoneNumber }) // Send phoneNumber as an object
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Failed to send OTP: ' + response.status);
+        }
+      })
+      .then(data => {
+        if (data.success) {
+          setOtpSent(true);
+        } else {
+          console.error('Failed to send OTP:', data.error);
+        }
+      })
+      .catch(error => {
+        console.error('Error sending OTP:', error);
+      });
   };
 
+
+
   const handleVerifyOtp = () => {
-    // Here you can verify the OTP
-    // Implement your logic to verify OTP
-    if (otp === "123456") {
-      // OTP is correct
-      setOtpError("");
-      // Proceed with registration or any other action
-      console.log("OTP verified successfully");
-    } else {
-      // Incorrect OTP
-      setOtpError("Incorrect OTP");
-    }
+    fetch(`${apiUrl}/admin/api/verify-otp`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ phoneNumber, code: otp })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log('OTP verified successfully');
+        } else {
+          console.error('OTP verification failed:', data.error);
+        }
+      })
+      .catch(error => console.error('Error verifying OTP:', error));
   };
 
   const handleResendOtp = () => {
@@ -145,7 +177,7 @@ export default function Register() {
     console.log("Resending OTP...");
   };
 
-//____________________________________________________________________________________//
+  //___________________________PASSWORD _____________________________________________//
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -153,7 +185,7 @@ export default function Register() {
       ...prevFormData,
       [name]: value
     }));
-  
+
     // Check if passwords match only if both fields are not empty
     if (name === "confirmPassword" && formData.password !== "" && value !== "") {
       if (formData.password !== value) {
@@ -164,7 +196,7 @@ export default function Register() {
     }
   };
 
-  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -185,7 +217,7 @@ export default function Register() {
         });
         if (response.ok) {
           // Redirect or handle success
-          window.location.href = "/login";
+          // window.location.href = "/";
         } else {
           // Handle error response
         }
@@ -195,9 +227,9 @@ export default function Register() {
     }
   };
 
-   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-md shadow-md w-full md:max-w-md">
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="bg-gray-200 p-8 w-full md:max-w-md">
         <h1 className="text-center font-bold mb-6 text-2xl">Register</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -252,32 +284,61 @@ export default function Register() {
             />
             {passwordError && <span className="text-red-500">{passwordError}</span>}
           </div>
-          <div className="mb-4">
-            <label htmlFor="phoneNumber">Phone Number</label>
-            <div className="flex">
-              <span className="border border-r-0 p-2 rounded-l mt-1 bg-gray-200">+91</span>
-              <input
-                type="text"
-                className={`border border-l-0 p-2 rounded-r w-full mt-1 ${phoneNumberExists ? 'border-red-500' : ''}`}
-                name="phoneNumber"
-                id="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                disabled={otpSent} // Disable phone number input after OTP sent
-              />
+          <div className="mb-4 flex">
+            <div className="flex-1 mr-2">
+              <label htmlFor="phoneNumber">Phone Number</label>
+              <div className="flex">
+                <span className="border border-r-0 p-2 rounded-l mt-1 bg-gray-200">+91</span>
+                <input
+                  type="text"
+                  className={`border border-l-0 p-2 rounded-r w-full mt-1 ${phoneNumberExists ? 'border-red-500' : ''}`}
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  disabled={otpSent} // Disable phone number input after OTP sent
+                />
+              </div>
+              {phoneNumberExists && <span className="text-red-500">This Phone number already exists!</span>}
+              {formData.phoneNumber.length === 10 && !phoneNumberExists && (
+                <button
+                  onClick={() => handleSendOtp(formData.phoneNumber)}
+                  className="py-1 px-4 bg-violet-700 text-white  mt-2"
+                >
+                  Send OTP
+                </button>
+              )}
             </div>
-            {phoneNumberExists && <span className="text-red-500">Phone number already exists in the database</span>}
-            {!otpSent && (
-              <button
-                onClick={handleSendOtp}
-                className="py-1 px-4 bg-violet-700 text-white  mt-2"
-              >
-                Send OTP
-              </button>
+            {otpSent && (
+              <div className="flex-1 ml-2">
+                <label htmlFor="otp">Enter OTP</label>
+                <input
+                  type="text"
+                  className="border p-2 rounded w-full mt-1"
+                  name="otp"
+                  id="otp"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+                <button
+                  onClick={handleVerifyOtp}
+                  className="py-1 px-4 bg-violet-700 text-white  mt-2"
+                >
+                  Verify OTP
+                </button>
+                {otpError && <span className="text-red-500">{otpError}</span>}
+                <button
+                  onClick={handleResendOtp}
+                  className="py-1 px-4 text-violet-700  mt-2 ml-2 border border-violet-700"
+                >
+                  Resend OTP
+                </button>
+              </div>
             )}
           </div>
+
           {otpSent && (
-            <div className="mb-4">
+            <div className="flex-1 ml-2">
               <label htmlFor="otp">Enter OTP</label>
               <input
                 type="text"

@@ -103,6 +103,18 @@ const registrationPhoneChecker = require("../controllers/registrationPhoneChecke
 
 router.post("/check/phone", registrationPhoneChecker.checkPhoneDuplication);
 
+/*___________________________________________________SMS_API_______________________________________*/
+
+const loginOtpApi = require("../controllers/loginOtpApi");
+
+router.post("/api/send-otp", loginOtpApi.sendOTP);
+
+/*_________________________________________SMS_VERIFICATION_API_______________________________________*/
+
+const loginVerifyOtp = require("../controllers/loginOtpApi");
+
+router.post("/api/verify-otp", loginVerifyOtp.verifyOTP);
+
 /*__________________________________________________________________________________________________*/
 
 module.exports = router;

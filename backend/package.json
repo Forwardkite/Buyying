@@ -10,6 +10,7 @@
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "bson": "^6.2.0",
+    "circular-json": "^0.5.9",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -31,6 +32,7 @@
     "passport-local": "^1.0.0",
     "prompt-sync": "^4.2.0",
     "randomatic": "^3.1.1",
-    "razorpay": "^2.9.2"
+    "razorpay": "^2.9.2",
+    "twilio": "^5.0.4"
   }
 }
