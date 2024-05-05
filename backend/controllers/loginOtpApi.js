@@ -9,9 +9,9 @@ const client = twilio(accountSid, authToken);
 
 
 // Function to send OTP
-const sendOTP = async (res,req) => {
+const sendOTP = async (req, res) => {
     try {
-        const { phoneNumber } = res.body;
+        const { phoneNumber } = req.body;
         // Add +91 to the beginning of phoneNumber
         const formattedPhoneNumber = "+91" + phoneNumber;
         const verification = await client.verify
@@ -21,6 +21,7 @@ const sendOTP = async (res,req) => {
                 to: formattedPhoneNumber,
                 channel: 'sms'
             });
+            
 
         // Extract relevant information for response
         const serializedVerification = {
@@ -29,10 +30,11 @@ const sendOTP = async (res,req) => {
             // Add more properties if needed
         };
 
-        return { success: true, verification: serializedVerification };
+        // Send success response with serialized verification data
+        res.status(200).json({ success: true, verification: serializedVerification });
     } catch (error) {
         console.error("Error sending OTP:", error);
-        return { success: false, error: error.message };
+        return res.status(500).json({ success: false, error: error.message });
     }
 };
 

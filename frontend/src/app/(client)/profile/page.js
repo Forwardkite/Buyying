@@ -14,6 +14,8 @@ export default function Profile() {
   const [name, setName] = useState(''); // State to store user email
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+//________________________________________PROFILE_DETAILS_FETCHING___________________________________________________//  
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -55,6 +57,8 @@ export default function Profile() {
     fetchUserData();
   }, []);
 
+//________________________________________LOTTERY_TICKET_FETCHING___________________________________________________//
+
   useEffect(() => {
     const fetchCombinedStrings = async () => {
       try {
@@ -63,10 +67,10 @@ export default function Profile() {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        
+
         // Reverse the combinedStrings array before setting it in the state
-    const reversedCombinedStrings = data.combinedStrings.slice().reverse();
-    setCombinedStrings(reversedCombinedStrings);  
+        const reversedCombinedStrings = data.combinedStrings.slice().reverse();
+        setCombinedStrings(reversedCombinedStrings);
       } catch (error) {
         console.error('Error fetching combined strings:', error);
       }
@@ -76,6 +80,10 @@ export default function Profile() {
   }, [apiUrl, email]);
 
   axios.defaults.withCredentials = true;
+
+
+  
+//________________________________________LOGOUT_BUTTON_____________________________________________________//
 
   const handleProceedClick = async () => {
     try {
@@ -108,34 +116,34 @@ export default function Profile() {
       </section>
       <section className="mt-12">
         <div className="w-11/12 flex flex-wrap  justify-between mx-auto">
-        <div className="w-8/12">
-  <h6 className="mb-4">Tickets</h6>
-  <div className="flex flex-wrap -mx-2">
-    {combinedStrings && combinedStrings.map((combinedString, index) => (
-      <div key={index} className="w-1/3 px-2 mb-4 relative">
-        <div className="bg-white rounded-lg shadow-md p-4 border border-gray-300">
-          {/* Content for each token */}
-          <h5 className="text-lg font-bold mb-2">{combinedString}</h5>
-          <p className="text-sm text-gray-600">Active</p>
-          {/* Add any additional content or design here */}
-        </div>
-        {/* Designs for rectangle edges */}
-        <div className="absolute inset-0 overflow-hidden rounded-lg pointer-events-none" aria-hidden="true">
-          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-            <svg className="absolute bottom-full left-0 mb-8 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 283" fill="none">
-              <defs>
-                <pattern id="diagonal-lines" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                  <line x1="0" y1="0" x2="0" y2="10" stroke="#3182CE" strokeWidth="2" />
-                </pattern>
-              </defs>
-              <rect width="375" height="283" fill="url(#diagonal-lines)" />
-            </svg>
+          <div className="w-8/12">
+            <h6 className="mb-4">Tickets</h6>
+            <div className="flex flex-wrap -mx-2">
+              {combinedStrings && combinedStrings.map((combinedString, index) => (
+                <div key={index} className="w-1/3 px-2 mb-4 relative">
+                  <div className="bg-white rounded-lg shadow-md p-4 border border-gray-300">
+                    {/* Content for each token */}
+                    <h5 className="text-lg font-bold mb-2">{combinedString}</h5>
+                    <p className="text-sm text-gray-600">Active</p>
+                    {/* Add any additional content or design here */}
+                  </div>
+                  {/* Designs for rectangle edges */}
+                  <div className="absolute inset-0 overflow-hidden rounded-lg pointer-events-none" aria-hidden="true">
+                    <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+                      <svg className="absolute bottom-full left-0 mb-8 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 283" fill="none">
+                        <defs>
+                          <pattern id="diagonal-lines" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                            <line x1="0" y1="0" x2="0" y2="10" stroke="#3182CE" strokeWidth="2" />
+                          </pattern>
+                        </defs>
+                        <rect width="375" height="283" fill="url(#diagonal-lines)" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
 
 
 
