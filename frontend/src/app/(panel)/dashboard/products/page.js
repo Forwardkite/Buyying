@@ -47,7 +47,6 @@ export default function Home() {
   const [variablePro, SetVariablePro] = useState(false);
   const [ProId, setProId] = useState();
   const [openEditModal, setOpenEditModal] = React.useState(false);
-  // const [proImage, SetProImage] = useState();
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [ProImage, setProImage] = useState(null);
@@ -72,6 +71,7 @@ export default function Home() {
     endingDate: endDate,
     productId: ProId,
     imageProduct: ProImage,
+
   };
 
   const handleFileChange = (e) => {
@@ -88,28 +88,6 @@ export default function Home() {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await fetch("http://localhost:5000/admin/create", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(SendingData),
-  //     });
-
-  //     if (response.ok) {
-  //       console.log("Data sent successfully");
-  //       window.location.reload(false);
-  //     } else {
-  //       console.error("Failed to send data:", response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error sending data:", error);
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -152,7 +130,17 @@ export default function Home() {
     SetStartDate(data.startingDate);
     SetEndDate(data.endingDate);
     setProId(data._id);
-    // SetProImage(data.proImage);
+    setProImage(data.proImage);
+    setProImage(data.imageProduct); // Update state with image URL
+
+    // Preview the image
+    if (data.imageProduct) {
+      const image = new Image();
+      image.src = `${apiUrl}/uploads/${data.imageProduct}`;
+      image.onload = () => {
+        setProImage(image.src);
+      };
+    }
 
     // Open the edit modal
     setOpenEditModal(true);
@@ -172,6 +160,7 @@ export default function Home() {
       productPrice: ProPrice,
       startingDate: startDate,
       endingDate: endDate,
+      imageProduct: ProImage,
     };
 
     try {
@@ -509,11 +498,22 @@ export default function Home() {
                   {ProImage && (
                     <img src={ProImage} alt="Preview" className=" label-img" />
                   )}
-
+                  {ProImage && (
+                    <div className="relative">
+                      <img src={ProImage} alt="Preview" className="label-img" />
+                      <button
+                        className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded"
+                        onClick={() => setProImage(null)}
+                      >
+                        DELETE  
+                      </button>
+                    </div>
+                  )}
                   <span>Upload Image</span>
                 </label>
                 <input type="file" className="border" id="imgupload" />
               </div>
+
               <div className="input flex flex-col w-1/2">
                 <label htmlFor="">Product Description</label>
                 <textarea

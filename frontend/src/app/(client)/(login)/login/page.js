@@ -44,7 +44,7 @@ export default function Login() {
 
   return (
     <div className="h-screen flex">
-      <div className="w-full md:w-[400px] m-auto p-8 rounded-md shadow-0-0">
+      <div className="bg-gray-200 w-full md:w-[400px] m-auto p-8 rounded-md shadow-0-0">
         <img
           src="@/assets/img/buyyinn-logo.png" // Adjust path to the image
           alt=""
