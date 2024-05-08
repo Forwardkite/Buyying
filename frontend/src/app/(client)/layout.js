@@ -11,7 +11,7 @@ export default function Client({ children }) {
   return (
     <>
       <Navbar />
-      <main className="w-full max-w-[1600px] px-4 md:px-0 mx-auto">
+      <main className="w-full max-w-[1536px] px-4 md:px-6 mx-auto">
         {children}
       </main>
       <Footer />

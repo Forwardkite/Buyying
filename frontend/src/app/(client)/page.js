@@ -33,7 +33,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="px-8 pt-8">
+      <section className=" md:px-0 ">
         <div className="home-banner">
           <img
             src="@/../assets/img/home-banner.png"
@@ -43,12 +43,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-prizes mt-12 flex flex-wrap md:flex-nowrap gap-8 w-full px-8 mb-16">
-        <div className="w-full md:w-1/2 bg-orange-500 bg-pattern-orange bg-cover rounded-3xl text-white flex flex-col justify-center items-center ">
+      <section className="home-prizes mt-4 md:mt-12 flex flex-wrap md:flex-nowrap gap-4 md:gap-8 w-full md:px-0 mb-4 md:mb-16">
+        <div className="w-full md:w-1/2 bg-orange-500 bg-pattern-orange bg-cover rounded-lg md:rounded-3xl text-white flex flex-col justify-center items-center ">
           <div className="w-full md:w-4/6 p-8">
-            <h6 className="text-5xl font-bold">
+            <h6 className="text-3xl md:text-5xl font-bold">
               Buy Now <br />
-              <span className="text-4xl font-bold">And Get Your Thar Now</span>
+              <span className="text-2xl md:text-4xl font-bold">
+                And Get Your Thar Now
+              </span>
             </h6>
             <p className="text-base w-full">
               Lorem ipsum dolor sit amet consectetur. Cursus quisque turpis
@@ -97,7 +99,7 @@ export default function Home() {
                           <img
                             src={`${apiUrl}/uploads/${e.imageProduct}`}
                             alt=""
-                            className="mb-4 aspect-video rounded-[10px] object-cover w-[100%]"
+                            className="mb-4 aspect-square md:aspect-video rounded-[10px] object-cover w-[100%]"
                           />
                         )}
                         <div className="flex justify-between w-full gap-x-4 mb-2">
@@ -114,7 +116,7 @@ export default function Home() {
                         <p className="text-sm">Stock: {e.stockNumber}</p>
                       </div>
                       <Link href={`/products/${e._id}`} className="w-full">
-                        <button className="btn-theme-dual font-bold text-white w-full rounded-full py-4 mt-4">
+                        <button className="btn-theme-dual font-bold text-white w-full rounded-full py-3 mt-4">
                           Buy Now
                         </button>
                       </Link>
@@ -127,11 +129,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-theme-grad-cyan py-16 px-8 mb-16">
-        <h4 className="font-bold text-white text-6xl mx-auto mb-8 text-center">
+      <section className="bg-theme-grad-cyan py-4 md:py-16 px-4 md:px-8 mb-4 md:mb-16">
+        <h4 className="font-bold text-white text-4xl md:text-6xl mx-auto mb-3 md:mb-8 text-center">
           Jackpot
         </h4>
-        <p className="text-lg text-white text-center mb-12 mx-auto w-4/6">
+        <p className="text-lg text-white text-center mb-4 md:mb-12 mx-auto w-4/6">
           Dive into our Prize Pool!
         </p>
         <Swiper
@@ -247,11 +249,11 @@ export default function Home() {
           </SwiperSlide>
         </Swiper>
       </section>
-      <section className="bg-theme-grad-orange py-16 px-8 mb-16">
-        <h4 className="font-bold text-white text-6xl mx-auto mb-8 text-center">
+      <section className="bg-theme-grad-orange py-4 md:py-16 px-4 md:px-8 mb-4 md:mb-16">
+        <h4 className="font-bold text-white text-4xl md:text-6xl mx-auto mb-3 md:mb-8 text-center">
           Winners
         </h4>
-        <p className="text-lg text-white text-center mb-12 mx-auto w-4/6">
+        <p className="text-lg text-white text-center mb-4 md:mb-12 mx-auto w-4/6">
           See Who's Striking It Rich!
         </p>
         <Swiper
@@ -368,11 +370,11 @@ export default function Home() {
           </SwiperSlide>
         </Swiper>
       </section>
-      <section className="bg-theme-grad-cyan py-16 px-8 mb-16">
-        <h4 className="font-bold text-white text-6xl mx-auto mb-8 text-center">
+      <section className="bg-theme-grad-cyan py-4 md:py-16 px-4 md:px-8 mb-8 md:mb-16">
+        <h4 className="font-bold text-white text-4xl md:text-6xl mx-auto mb-3 md:mb-8 text-center">
           News
         </h4>
-        <p className="text-base text-white text-center mb-12 mx-auto w-4/6">
+        <p className="text-base text-white text-center  mb-4 md:mb-12 mx-auto w-4/6">
           As per the existing procedure, when Telecom Service Providers.
         </p>
         <Swiper
