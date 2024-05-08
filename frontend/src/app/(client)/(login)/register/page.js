@@ -118,17 +118,17 @@ export default function Register() {
 
   const handleRegistrationClick = () => {
     setregistrationClicked(true);
-   // Check if all form fields are filled
-  const allFieldsFilled = Object.values(formData).every(val => val.trim() !== "");
-  if (!allFieldsFilled) {
-    // If any field is empty, set an error message for the respective field
-    setErrorMsg("Please fill in all fields");
-    return;
-  }
+    // Check if all form fields are filled
+    const allFieldsFilled = Object.values(formData).every(val => val.trim() !== "");
+    if (!allFieldsFilled) {
+      // If any field is empty, set an error message for the respective field
+      // setErrorMsg("Please fill in all fields");
+      return;
+    }
 
-  // If all fields are filled, set formCompleted to true
-  setFormCompleted(true);
-};
+    // If all fields are filled, set formCompleted to true
+    setFormCompleted(true);
+  };
 
 
 
@@ -165,7 +165,7 @@ export default function Register() {
       });
   };
 
-  
+
   //__________________________________________________________________________________//
 
 
@@ -184,47 +184,49 @@ export default function Register() {
         if (data.success) {
           setRegistrationAllowed(true);
           console.log('OTP verified successfully');
-          setIsOtpVerified(true);
+          setIsOtpVerified(true); // Update state when OTP is verified successfully
+          setisOtpNotCorrect(false);
         } else {
-          setisOtpNotCorrect(true);
+          setisOtpNotCorrect(true); // Update state when OTP verification fails
+          setIsOtpVerified(false);
           console.error('OTP verification failed:', data.error);
         }
       })
       .catch(error => console.error('Error verifying OTP:', error));
   };
 
-//__________________________________________________________________________________//
+  //__________________________________________________________________________________//
 
-const handleResendOtp = (phoneNumber) => {
-  // Ensure phoneNumber is a string
-  const formattedPhoneNumber = String(formData.phoneNumber);
-  console.log("Resending OTP to:", formattedPhoneNumber); // Log the formattedPhoneNumber
+  const handleResendOtp = (phoneNumber) => {
+    // Ensure phoneNumber is a string
+    const formattedPhoneNumber = String(formData.phoneNumber);
+    console.log("Resending OTP to:", formattedPhoneNumber); // Log the formattedPhoneNumber
 
-  fetch(`${apiUrl}/admin/api/resend-otp`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ phoneNumber: formattedPhoneNumber }) // Send phoneNumber as an object
-  })
-    .then(response => {
-      if (response.ok) {
-        console.log("Resent OTP successfully");
-        setOtpSent(true);
-        return response.json();
-      } else {
-        throw new Error('Failed to resend OTP: ' + response.status);
-      }
+    fetch(`${apiUrl}/admin/api/resend-otp`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ phoneNumber: formattedPhoneNumber }) // Send phoneNumber as an object
     })
-    .then(data => {
-      if (!data.success) {
-        console.error('Failed to resend OTP:', data.error);
-      }
-    })
-    .catch(error => {
-      console.error('Error resending OTP:', error);
-    });
-};
+      .then(response => {
+        if (response.ok) {
+          console.log("Resent OTP successfully");
+          setOtpSent(true);
+          return response.json();
+        } else {
+          throw new Error('Failed to resend OTP: ' + response.status);
+        }
+      })
+      .then(data => {
+        if (!data.success) {
+          console.error('Failed to resend OTP:', data.error);
+        }
+      })
+      .catch(error => {
+        console.error('Error resending OTP:', error);
+      });
+  };
 
   //___________________________PASSWORD _____________________________________________//
 
@@ -260,6 +262,15 @@ const handleResendOtp = (phoneNumber) => {
       setPasswordError("Passwords do not match");
       return;
     }
+
+    // Check if all required fields are filled
+    const requiredFields = ['name', 'email', 'password', 'confirmPassword', 'phoneNumber'];
+    const emptyFields = requiredFields.filter(field => !formData[field].trim()); // Filter out empty fields
+    if (emptyFields.length > 0) {
+      // setErrorMsg(``);
+      return;
+    }
+
     // Only proceed with registration if registration is allowed
     if (setFormCompleted) {
       try {
@@ -379,7 +390,7 @@ const handleResendOtp = (phoneNumber) => {
                 )}
               </div>
               <button
-               type="button"
+                type="button"
                 onClick={() => {
                   if (formData.phoneNumber.length === 10) {
                     handleSendOtp(formData.phoneNumber);
@@ -397,31 +408,34 @@ const handleResendOtp = (phoneNumber) => {
                 <span className="text-red-500">{errorMsg}</span>
               )}
             </div>
-            {otpSent && (
+            {otpSent && !isOtpVerified && (
               <div className="ml-9 flex-1">
                 <div className="mb-4">
                   <label htmlFor="otp">Enter OTP</label>
                   <div className="relative">
-                  <input
-                    type="text"
-                    className="border p-2 rounded w-full mt-1"
-                    name="otp"
-                    id="otp"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                  />
-                  {isOtpVerified && (
-                    <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-green-500 text-xl">&#10004;</span> // Render a green tick mark if OTP is verified
-                  )}
+                    <input
+                      type="text"
+                      className="border p-2 rounded w-full mt-1"
+                      name="otp"
+                      id="otp"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      pattern="[0-9]*" // Only allow numeric input
+                      inputMode="numeric" // Show numeric keyboard on mobile devices
+                      maxLength="6" // Limit input to 6 characters
+                    />
+                    {isOtpVerified && (
+                      <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-green-500 text-xl">&#10004;</span> // Render a green tick mark if OTP is verified
+                    )}
 
-                  {isOtpNotCorrect && (
-                   <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-red-500 text-xl">&#10008;</span> // Render a red cross sign if OTP is not verified
-                  )}
+                    {isOtpNotCorrect && (
+                      <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-red-500 text-xl">&#10008;</span> // Render a red cross sign if OTP is not verified
+                    )}
                   </div>
                 </div>
                 <div className="mb-4">
                   <button
-                  type="button"
+                    type="button"
                     onClick={() => handleVerifyOtp(otp)} // Pass the otp state value
                     className="py-1 px-4 mt-1 bg-violet-700 text-white"
                   >
@@ -437,7 +451,7 @@ const handleResendOtp = (phoneNumber) => {
             <div className="text-red-500 mb-4">{errorMsg}</div>
           )}
 
-          {registrationAllowed && isOtpVerified && (
+          {registrationAllowed && isOtpVerified && !emailExists && (
             <button
               className="py-2 px-4 bg-violet-700 text-white w-full mt-4"
               type="submit"
