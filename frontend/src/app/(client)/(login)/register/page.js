@@ -11,11 +11,12 @@ export default function Register() {
     phoneNumber: ""
   });
 
+  const [formCompleted, setFormCompleted] = useState(false);
+  const [isOtpNotCorrect, setisOtpNotCorrect] = useState(false);
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false);
-
-
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [registrationClicked, setregistrationClicked] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-
   const [passwordError, setPasswordError] = useState("");
   const [emailExists, setEmailExists] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -23,14 +24,9 @@ export default function Register() {
   const [otp, setOtp] = useState("");
   const [otpError, setOtpError] = useState("");
   const [registrationAllowed, setRegistrationAllowed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  useEffect(() => {
-    // Check if all details are filled correctly
-    const allDetailsFilled = Object.values(formData).every(value => value !== "");
-    setRegistrationAllowed(allDetailsFilled && otp === "123456");
-  }, [formData, otp]);
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -120,6 +116,19 @@ export default function Register() {
     }
   };
 
+  const handleRegistrationClick = () => {
+    setregistrationClicked(true);
+   // Check if all form fields are filled
+  const allFieldsFilled = Object.values(formData).every(val => val.trim() !== "");
+  if (!allFieldsFilled) {
+    // If any field is empty, set an error message for the respective field
+    setErrorMsg("Please fill in all fields");
+    return;
+  }
+
+  // If all fields are filled, set formCompleted to true
+  setFormCompleted(true);
+};
 
 
 
@@ -131,56 +140,91 @@ export default function Register() {
     console.log("Sending OTP to:", formattedPhoneNumber); // Log the formattedPhoneNumber
 
     fetch(`${apiUrl}/admin/api/send-otp`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ phoneNumber: formattedPhoneNumber }) // Send phoneNumber as an object
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ phoneNumber: formattedPhoneNumber }) // Send phoneNumber as an object
     })
-    .then(response => {
+      .then(response => {
         if (response.ok) {
           console.log("HERE IS IT:")
           setOtpSent(true);
-            return response.json();
+          return response.json();
         } else {
-            throw new Error('Failed to send OTP: ' + response.status);
+          throw new Error('Failed to send OTP: ' + response.status);
         }
-    })
-    .then(data => {
+      })
+      .then(data => {
         if (!data.success) {
-            console.error('Failed to send OTP:', data.error);
+          console.error('Failed to send OTP:', data.error);
         }
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.error('Error sending OTP:', error);
-    });
-};
+      });
+  };
+
+  
+  //__________________________________________________________________________________//
 
 
-
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = (enteredOtp) => {
+    const phoneNumber = "+91" + formData.phoneNumber; // Prepend country code
+    console.log("Verifying OTP...");
     fetch(`${apiUrl}/admin/api/verify-otp`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ phoneNumber, code: otp })
+      body: JSON.stringify({ phoneNumber, otp: enteredOtp }) // Pass phoneNumber with country code and entered OTP
     })
       .then(response => response.json())
       .then(data => {
         if (data.success) {
+          setRegistrationAllowed(true);
           console.log('OTP verified successfully');
+          setIsOtpVerified(true);
         } else {
+          setisOtpNotCorrect(true);
           console.error('OTP verification failed:', data.error);
         }
       })
       .catch(error => console.error('Error verifying OTP:', error));
   };
 
-  const handleResendOtp = () => {
-    // Resend OTP logic goes here
-    console.log("Resending OTP...");
-  };
+//__________________________________________________________________________________//
+
+const handleResendOtp = (phoneNumber) => {
+  // Ensure phoneNumber is a string
+  const formattedPhoneNumber = String(formData.phoneNumber);
+  console.log("Resending OTP to:", formattedPhoneNumber); // Log the formattedPhoneNumber
+
+  fetch(`${apiUrl}/admin/api/resend-otp`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ phoneNumber: formattedPhoneNumber }) // Send phoneNumber as an object
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log("Resent OTP successfully");
+        setOtpSent(true);
+        return response.json();
+      } else {
+        throw new Error('Failed to resend OTP: ' + response.status);
+      }
+    })
+    .then(data => {
+      if (!data.success) {
+        console.error('Failed to resend OTP:', data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error resending OTP:', error);
+    });
+};
 
   //___________________________PASSWORD _____________________________________________//
 
@@ -204,44 +248,39 @@ export default function Register() {
   const handlePhoneNumberValidation = (phoneNumber) => {
     const isValid = phoneNumber.length === 10 && /^\d+$/.test(phoneNumber);
     setIsPhoneNumberValid(isValid);
-
-    // Your logic to check if the phone number exists in the database goes here
-    // For now, let's assume it's set based on some condition or state
     const phoneNumberExists = false; // Your logic to check if the phone number exists
     setPhoneNumberExists(phoneNumberExists);
   };
 
-
-
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
     }
-
-    // if (!emailExists && !phoneNumberExists) {
-    //   try {
-    //     const response = await fetch(`${apiUrl}/registration`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json"
-    //       },
-    //       body: JSON.stringify(formData)
-    //     });
-    //     if (response.ok) {
-    //       // Redirect or handle success
-    //       // window.location.href = "/";
-    //     } else {
-    //       // Handle error response
-    //     }
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //   }
-    // }
+    // Only proceed with registration if registration is allowed
+    if (setFormCompleted) {
+      try {
+        const response = await fetch(`${apiUrl}/registration`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        });
+        if (response.ok) {
+          // Handle successful registration
+          // Redirect or handle success
+          window.location.href = "/login";
+        } else {
+          // Handle error response
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
   };
 
   return (
@@ -259,6 +298,9 @@ export default function Register() {
               value={formData.name}
               onChange={handleChange}
             />
+            {registrationClicked && formData.name === "" && (
+              <span className="text-red-500">Name is required</span>
+            )}
           </div>
           <div className="mb-4">
             <label htmlFor="email">Email</label>
@@ -270,7 +312,10 @@ export default function Register() {
               value={formData.email}
               onChange={handleChange}
             />
-            {emailExists && <span className="text-red-500">This email address already exist!</span>}
+            {registrationClicked && formData.name === "" && (
+              <span className="text-red-500">Email is required</span>
+            )}
+            {emailExists && <span className="text-red-500">This email address already exists!</span>}
           </div>
           <div className="mb-4">
             <label htmlFor="password">Password</label>
@@ -285,6 +330,9 @@ export default function Register() {
                 handlePasswordChange(e);
               }}
             />
+            {registrationClicked && formData.name === "" && (
+              <span className="text-red-500">Password is required</span>
+            )}
           </div>
           <div className="mb-4">
             <label htmlFor="confirmPassword">Confirm Password</label>
@@ -299,6 +347,9 @@ export default function Register() {
                 handlePasswordChange(e);
               }}
             />
+            {registrationClicked && formData.name === "" && (
+              <span className="text-red-500">Password is required</span>
+            )}
             {passwordError && <span className="text-red-500">{passwordError}</span>}
           </div>
           <div className="mb-4 flex">
@@ -321,23 +372,23 @@ export default function Register() {
                   inputMode="numeric"         // Show numeric keyboard on mobile devices
                   disabled={otpSent}          // Disable phone number input after OTP sent
                 />
-
               </div>
-              <div className="ml-right  "> {/* To align the right side */}
+              <div className="ml-right"> {/* To align the right side */}
                 {phoneNumberExists && formData.phoneNumber && (
                   <span className="text-red-500">This Phone number already exists!</span>
                 )}
               </div>
               <button
+               type="button"
                 onClick={() => {
                   if (formData.phoneNumber.length === 10) {
                     handleSendOtp(formData.phoneNumber);
                   } else {
-                    setErrorMsg(" Phone number must be 10 digits"); // Set error message
+                    setErrorMsg("Phone number must be 10 digits"); // Set error message
                     setTimeout(() => setErrorMsg(""), 3000);
                   }
                 }}
-                className={`py-1 px-4 mt-2 ${phoneNumberExists ? 'bg-gray-400 text-gray-600 cursor-not-allowed' : 'bg-violet-700 text-white hover:bg-violet-800'}`}
+                className={`py-1 px-4 mt-5 ${phoneNumberExists ? 'bg-gray-400 text-gray-600 cursor-not-allowed' : 'bg-violet-700 text-white hover:bg-violet-800'}`}
                 disabled={phoneNumberExists}
               >
                 Send OTP
@@ -346,42 +397,60 @@ export default function Register() {
                 <span className="text-red-500">{errorMsg}</span>
               )}
             </div>
-
-            {/*________________________________________________________________________________________________________________________*/}
-
             {otpSent && (
-              <div className="flex-1 ml-2">
-                <label htmlFor="otp">Enter OTP</label>
-                <input
-                  type="text"
-                  className="border p-2 rounded w-full mt-1"
-                  name="otp"
-                  id="otp"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                />
-                <button
-                  onClick={handleVerifyOtp}
-                  className="py-1 px-4 bg-violet-700 text-white mt-2"
-                >
-                  Verify OTP
-                </button>
-                {otpError && <span className="text-red-500">{otpError}</span>}
-                <button
-                  onClick={handleResendOtp}
-                  className="py-1 px-4 text-violet-700 mt-2 ml-2 border border-violet-700"
-                >
-                  Resend OTP
-                </button>
+              <div className="ml-9 flex-1">
+                <div className="mb-4">
+                  <label htmlFor="otp">Enter OTP</label>
+                  <div className="relative">
+                  <input
+                    type="text"
+                    className="border p-2 rounded w-full mt-1"
+                    name="otp"
+                    id="otp"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                  />
+                  {isOtpVerified && (
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-green-500 text-xl">&#10004;</span> // Render a green tick mark if OTP is verified
+                  )}
+
+                  {isOtpNotCorrect && (
+                   <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-red-500 text-xl">&#10008;</span> // Render a red cross sign if OTP is not verified
+                  )}
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <button
+                  type="button"
+                    onClick={() => handleVerifyOtp(otp)} // Pass the otp state value
+                    className="py-1 px-4 mt-1 bg-violet-700 text-white"
+                  >
+                    Verify OTP
+                  </button>
+                  {otpError && <span className="text-red-500">{otpError}</span>}
+                </div>
               </div>
             )}
-
           </div>
+
+          {registrationClicked && (
+            <div className="text-red-500 mb-4">{errorMsg}</div>
+          )}
+
+          {registrationAllowed && isOtpVerified && (
+            <button
+              className="py-2 px-4 bg-violet-700 text-white w-full mt-4"
+              type="submit"
+              onClick={handleRegistrationClick}
+            >
+              Register
+            </button>
+          )}
           {!registrationAllowed && (
             <button
-              className="py-2 px-4 bg-gray-300 text-gray-600 w-full mt-4"
+              className="py-2 px-4 bg-gray-300 text-gray-600 cursor-not-allowed w-full mt-4"
               type="button"
-
+              disabled
             >
               Register
             </button>

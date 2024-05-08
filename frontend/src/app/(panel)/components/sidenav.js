@@ -64,8 +64,6 @@ export default function Sidenav() {
               pathname === "/dashboard/products" ? "active" : ""
             }`}
           >
-            <PersonIcon />
-            <span className="ms-2">Admin</span>
           </Link>
         </li>
       </ul>

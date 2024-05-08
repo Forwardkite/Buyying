@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import useAuth from "../../utilis/authUser";
-
+import Image from "next/image";
 
 // Mock authentication function, replace with your actual authentication logic
 const checkIfAuthenticated = () => {
@@ -26,6 +26,7 @@ function Product({ params }) {
     const fetchData = async () => {
       const productData = await getProduct(params.id);
       setProduct(productData);
+      console.log("THIS IS IT:", productData)
     };
 
     fetchData();
@@ -33,6 +34,8 @@ function Product({ params }) {
     // Check if the user is authenticated when component mounts
     setIsLoggedIn(checkIfAuthenticated());
   }, [params.id]);
+
+
 
   const handleProceed = () => {
     // Check if isLoggedIn is true (i.e., user is authenticated)
@@ -50,46 +53,39 @@ function Product({ params }) {
     <>
       {product && (
         <>
-          <section>
-            <div className="w-full bg-[url('/assets/img/page-title.png')] p-12 bg-no-repeat bg-cover rounded-b-[50px]">
-              <h4 className="font-bold text-white text-6xl mx-auto mb-4 text-center">
-                {product.productName}
-              </h4>
-              <p className="text-base text-white text-center ">
-                Scratch the card and get your surprise ticket. Best of Luck
-              </p>
+          <section className="bg-gray-100 py-12">
+            <div className="container mx-auto px-4">
+              <div className="text-center">
+              </div>
             </div>
           </section>
-          <section className="py-8 mt-16 mb-8">
-            <div className="flex flex-wrap  justify-between w-11/12 mx-auto gap-8">
-              <div className="w-6/12">
-                <h1>{product.productName}</h1>
-                <p>{product.productDiscription}</p>
-                <div className="flex justify-between font-bold text-base mt-8">
-                  <p className="w-5/12">Price</p>
-                  <span>:</span>
-                  <p className="w-5/12">Rs {product.productPrice}</p>
+          <section className="py-8">
+            <div className="container mx-auto px-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <img src={`${apiUrl}/uploads/${product.imageProduct}`} alt={product.productName} className="w-full rounded-lg" />
                 </div>
-                <div className="flex justify-between font-bold text-base">
-                  <p className="w-5/12">Item Left</p>
-                  <span>:</span>
-                  <p className="w-5/12">{product.stockNumber}</p>
+                <div>
+                  <div className="text-3xl font-semibold text-gray-800 mb-4">{product.productName}</div>
+                  <div className="text-sm text-gray-600">{product.productDiscription} </div>
+                  <div style={{ height: '10px' }}></div>
+                  <div className="w-5/5 mx-auto border-b-2 border-gray-300 mb-4"></div>
+
+                  <div className="flex justify-between mb-2">
+
+                    <span className="text-3xl font-bold text-gray-800">₹{product.productPrice}</span>
+                  </div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-sm text-gray-600">Inclusive of all taxes</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    
+                  <span className="text-sm font-semibold">Hurry Up! Only {product.stockNumber} Left</span>
+                  </div>
+                  <button onClick={handleProceed} className="btn-theme-dual text-white py-3 px-6 rounded-md font-semibold hover:bg-blue-600 transition duration-300">Proceed to Buy</button>
+
+                  
                 </div>
-              </div>
-              <div className="w-5/12">
-                <img
-                  src={`${apiUrl}/uploads/${product.imageProduct}`}
-                  alt=""
-                  className="rounded-lg"
-                />
-              </div>
-              <div className="w-1/4 ml-auto">
-                <button
-                  onClick={handleProceed}
-                  className="btn-theme-dual font-bold text-white w-full rounded-full py-4 mt-12"
-                >
-                  Proceed
-                </button>
               </div>
             </div>
           </section>
@@ -98,5 +94,4 @@ function Product({ params }) {
     </>
   );
 }
-
 export default Product;
