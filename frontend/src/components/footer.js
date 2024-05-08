@@ -4,8 +4,8 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import FacebookIcon from "@mui/icons-material/Facebook";
 export default function footer() {
   return (
-    <footer className="shadow-inner">
-      <div className="footer-top relative max-w-[1600px] mx-auto py-16 px-8 flex flex-wrap gap-8">
+    <footer className="shadow-inner max-w-[1536px] mx-auto px-4 md:px-6">
+      <div className="footer-top relative mx-auto py-4 md:py-16   flex flex-wrap gap-y-6">
         <img
           src="/assets/img/Buyyinn-logo.png"
           alt=""
@@ -25,8 +25,8 @@ export default function footer() {
           <FacebookIcon />
         </div>
       </div>
-      <span className="w-full max-w-[1600px] h-1 bg-theme-grad-cyan block mx-auto"></span>
-      <div className="footer-bottom w-full max-w-[1600px] py-16 px-8 flex justify-center">
+      <span className="w-full h-1 bg-theme-grad-cyan block mx-auto md:px-6"></span>
+      <div className="footer-bottom w-full py-4 md:py-16 px-4 md:px-8 flex justify-center">
         <span className="text-center">
           © Buyyinn 2024. License No: CN- 2965688. All Rights Reserved.
         </span>

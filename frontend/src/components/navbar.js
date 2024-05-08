@@ -63,7 +63,11 @@ export default function Navbar(props) {
     <React.Fragment>
       <CssBaseline />
       <ElevationScroll {...props}>
-        <AppBar position="static" className="bg-white text-theme py-6">
+        <AppBar
+          position="sticky"
+          className="bg-white text-theme py-2 md:py-6 px-0"
+          sx={{ px: 2 }}
+        >
           <Container maxWidth="xl">
             <Toolbar disableGutters>
               <Link href="/">
