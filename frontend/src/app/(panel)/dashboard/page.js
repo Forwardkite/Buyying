@@ -8,6 +8,43 @@ export default function Dashboard() {
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+  const [showForm, setShowForm] = useState(false);
+  const [bannerData, setBannerData] = useState({
+    image: '',
+    title: '',
+    description: '',
+    winningDate: '',
+    expiryDate: ''
+  });
+
+  const toggleForm = () => {
+    setShowForm(!showForm);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setBannerData({
+      ...bannerData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission, for example, send data to the server
+    console.log('Submitted data:', bannerData);
+    // Reset form data
+    setBannerData({
+      image: '',
+      title: '',
+      description: '',
+      winningDate: '',
+      expiryDate: ''
+    });
+    // Close the form after submission
+    setShowForm(false);
+  };
+
   useEffect(() => {
     // Fetch products data from the API
     fetch(`${apiUrl}/admin/view`)
@@ -24,7 +61,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <section className="w-full mb-6">
+      <section className="w-full mb-6 ">
   <h5 className="mb-4 font-bold text-xl">Stock Left</h5>
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
     {products.map((product, index) => (
@@ -35,7 +72,7 @@ export default function Dashboard() {
             <span>Stock: {product.stockLeft}</span>
             <span>Left: {product.stockNumber}</span>
           </div>
-          <div className="mt-400 h-2  bg-blue-200 rounded-full overflow-hidden">
+          <div className="mt-400 h-2  bg-blue-200 rounded-full overflow-hidden ">
             <div
               className="h-full bg-blue-500"
               style={{ width: `${(product.stockNumber / product.stockLeft) * 100}%` }}
@@ -47,6 +84,40 @@ export default function Dashboard() {
   </div>
 </section>
 
+
+ {/* Button to toggle the form */}
+ <button onClick={toggleForm} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        {showForm ? 'Close Form' : 'Ad Banner'}
+      </button>
+
+      {/* Form for adding ad banner */}
+      {showForm && (
+        <form onSubmit={handleSubmit} className="mt-6">
+          <div className="mb-4">
+            <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Image:</label>
+            <input type="text" id="image" name="image" value={bannerData.image} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="title" className="block text-gray-700 font-bold mb-2">Title Name:</label>
+            <input type="text" id="title" name="title" value={bannerData.title} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="description" className="block text-gray-700 font-bold mb-2">Description:</label>
+            <textarea id="description" name="description" value={bannerData.description} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="winningDate" className="block text-gray-700 font-bold mb-2">Winning Date:</label>
+            <input type="date" id="winningDate" name="winningDate" value={bannerData.winningDate} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="expiryDate" className="block text-gray-700 font-bold mb-2">Ad Expiry Date:</label>
+            <input type="date" id="expiryDate" name="expiryDate" value={bannerData.expiryDate} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          </div>
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Save and Run Live
+          </button>
+        </form>
+      )}
 
 
 
@@ -62,23 +133,6 @@ export default function Dashboard() {
             <div className="w-1/3"></div>
             <div className="w-1/3"></div>
             <div className="w-full"></div>
-          </div>
-        </div>
-        <div className="w-2/6">
-          <div className="p-4 h-[40rem] shadow-0-0 rounded-md flex flex-col gap-6">
-            <h6 className="font-bold">Banners</h6>
-            <div className="h-1/4 gap-6 bg-gray-100 rounded-md overflow-hidden">
-              <img src="../../../assets/img/banner.png" alt="" />
-            </div>
-            <div className="h-1/4 gap-6 bg-gray-100 rounded-md overflow-hidden">
-              <img src="../../../assets/img/pen.png" alt="" />
-            </div>
-            <div className="h-1/4 gap-6 bg-gray-100 rounded-md overflow-hidden">
-              <img src="../../../assets/img/biryani.png" alt="" />
-            </div>
-            <div className="h-1/4 gap-6 bg-gray-100 rounded-md overflow-hidden">
-              <img src="../../../assets/img/tshirt.png" alt="" />
-            </div>
           </div>
         </div>
       </section>

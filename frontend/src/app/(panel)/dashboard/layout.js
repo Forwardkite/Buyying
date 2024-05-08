@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function Dashboard({ children }) {
   return (
-    <div className="flex w-full h-screen">
+    <div className="flex w-full h-full">
       <aside className="w-1/6 p-10 bg-theme-black text-white">
         <img
           src="../../../assets/img/buyyinn-logo.png"
@@ -16,7 +16,7 @@ export default function Dashboard({ children }) {
         />
         <Sidenav />
       </aside>
-      <main className="w-5/6 p-10">{children}</main>
+      <main className="w-5/6 p-10 ml-1/6">{children}</main>
     </div>
   );
 }
