@@ -9,6 +9,8 @@ const productDatabase = new mongoose.Schema({
   startingDate: String, // Change the type to String for formatted dates
   endingDate: String, // Change the type to String for formatted dates
   imageProduct: String,
+  shortDescription: String, // Add Short Description field
+  productDetails: String, // Add Product Details field
 });
 
 // Convert the dates to dd-mm-yyyy format before saving
