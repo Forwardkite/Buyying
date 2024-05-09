@@ -130,7 +130,7 @@ export default function Home() {
                           </p>
                         </div>
                         <p className="text-sm justify-start">
-                          {e.productDiscription}
+                          {e.shortDescription}
                         </p>
                       </div>
                       <div>
@@ -186,6 +186,7 @@ export default function Home() {
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
+            
           }}
           navigation={false}
           breakpoints={{

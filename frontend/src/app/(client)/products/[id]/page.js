@@ -89,7 +89,7 @@ function Product({ params }) {
                     {product.productName}
                   </div>
                   <div className="text-sm text-gray-600">
-                    {product.productDiscription}{" "}
+                    {product.shortDescription}{" "}
                   </div>
                   <div style={{ height: "10px" }}></div>
                   <div className="w-5/5 mx-auto border-b-2 border-gray-300 mb-4"></div>
@@ -109,26 +109,12 @@ function Product({ params }) {
                       Hurry Up! Only {product.stockNumber} Left
                     </span>
                   </div>
-                  <Button
-                    className="btn-theme-dual relative text-white py-3 px-6 rounded-md font-semibold transition duration-300"
+                  <button
                     onClick={handleProceed}
-                    disabled={loading}
+                    className="btn-theme-dual text-white py-3 px-6 rounded-md font-semibold hover:bg-blue-600 transition duration-300"
                   >
                     Proceed to Buy
-                    {loading && (
-                      <CircularProgress
-                        size={24}
-                        sx={{
-                          color: "#12b4b9",
-                          position: "absolute",
-                          top: "50%",
-                          left: "50%",
-                          marginTop: "-12px",
-                          marginLeft: "-12px",
-                        }}
-                      />
-                    )}
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>

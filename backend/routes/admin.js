@@ -4,6 +4,8 @@ const router = express.Router();
 const app = express();
 const multer = require("multer");
 connectionDB();
+const deleteExpiredProducts = require ("../controllers/deleteExpiredProducts")
+deleteExpiredProducts();
 
 // Set up multer storage
 const storage = multer.diskStorage({
