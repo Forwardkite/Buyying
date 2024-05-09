@@ -109,12 +109,18 @@ function Product({ params }) {
                       Hurry Up! Only {product.stockNumber} Left
                     </span>
                   </div>
-                  <button
+                   <button
                     onClick={handleProceed}
                     className="btn-theme-dual text-white py-3 px-6 rounded-md font-semibold hover:bg-blue-600 transition duration-300"
                   >
                     Proceed to Buy
                   </button>
+                  <button onClick={handleProceed} className="btn-theme-dual text-white py-3 px-6 rounded-md font-semibold hover:bg-blue-600 transition duration-300">Buy Now</button>
+
+                  <div className="mt-4">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Product Details</h3>
+                  <p className="text-sm text-gray-600">{product.productDetails}</p>
+                </div>
                 </div>
               </div>
             </div>
