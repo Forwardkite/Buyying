@@ -9,6 +9,8 @@ import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
 import useAuth from "../../../utilis/authUser";
 import { useRouter } from "next/navigation";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const reducer1 = (state, action) => {
   if (state.checkedIds.includes(action.id)) {
@@ -116,7 +118,7 @@ export default function TicketSelection() {
 
   const validateNumberCombination = async (selectedNumbers) => {
     const combinedNumbers = selectedNumbers.join("");
-    
+
     console.log("Email:", userNameCopy);
     const requestBody = {
       numbers: combinedNumbers,
@@ -155,6 +157,15 @@ export default function TicketSelection() {
       // Show your error message to the user
     }
   };
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const timer = React.useRef();
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
   const handleProceedClick = () => {
     // Handle proceed action here
     console.log("Proceed clicked ok");
@@ -164,7 +175,14 @@ export default function TicketSelection() {
     const selectedSlots = state1.checkedIds.join(",");
     console.log("GETTING IT:", selectedSlots);
     router.push(`./ticket-selection/cart?slots=${selectedSlots}`);
-
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 5000);
+    }
     // window.location.href = "/cart";
   };
   //_________________________________________SLOT_SAVING_FUNCTION_____________________________________________________//
@@ -202,7 +220,7 @@ export default function TicketSelection() {
         setEmail(user.email); // Set the email fetched from the API
         setName(user.name); // Set the name fetched from the API
 
-        // Assign values to other variables 
+        // Assign values to other variables
         userEmailCopy = user.email;
         userNameCopy = user.name;
       } catch (error) {
@@ -361,12 +379,26 @@ export default function TicketSelection() {
         </div>
         <div className="w-11/12 mx-auto flex justify-end mt-4">
           {buttonVisible && (
-            <button
-              className="btn-theme-dual font-bold text-white rounded-full py-2 px-20"
+            <Button
+              className="btn-theme-dual relative font-bold text-white rounded-full py-2 px-20"
               onClick={handleProceedClick}
+              disabled={loading}
             >
               Add To Cart
-            </button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    color: "#12b4b9",
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: "-12px",
+                    marginLeft: "-12px",
+                  }}
+                />
+              )}
+            </Button>
           )}
         </div>
       </section>
@@ -380,4 +412,4 @@ export default function TicketSelection() {
       />
     </>
   );
-          }
+}

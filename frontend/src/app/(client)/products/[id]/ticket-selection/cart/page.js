@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import Script from "next/script";
 import useAuth from "../../../../utilis/authUser";
 import { useRouter } from "next/navigation";
-
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 export default function Cart() {
-
   //user authentication middleware
   useAuth();
 
@@ -24,7 +24,7 @@ export default function Cart() {
     amount: null,
   });
 
-  // Fetching Email and User Name of Authenticated User 
+  // Fetching Email and User Name of Authenticated User
 
   let userEmailCopy = "";
   let userNameCopy = "";
@@ -65,7 +65,6 @@ export default function Cart() {
       // Assign values to other variables
       userEmailCopy = user.email;
       userNameCopy = user.name;
-
     } catch (error) {
       console.error("There was a problem with your fetch operation:", error);
     }
@@ -75,19 +74,18 @@ export default function Cart() {
   useEffect(() => {
     const handlePayment = async () => {
       try {
-
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
         const requestData = {
           productName: productName,
           amount: productPrice * 100, // assuming the price is already in the smallest currency unit
-          currency: 'INR', // Assuming you are always using INR
+          currency: "INR", // Assuming you are always using INR
           // Other necessary data for order creation
         };
 
         const response = await fetch(`${apiUrl}/orders`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(requestData),
         });
@@ -102,42 +100,38 @@ export default function Cart() {
         });
 
         const options = {
-          key: 'rzp_test_iCvzKiw8EqvAQg', // Your Razorpay test key
+          key: "rzp_test_iCvzKiw8EqvAQg", // Your Razorpay test key
           amount: requestData.amount,
           currency: requestData.currency,
-          name: 'BUYYING CORP Private Ltd',
-          description: 'Test Transaction',
-          image: 'https://media.istockphoto.com/id/1331491686/vector/element-design.jpg?s=612x612&w=0&k=20&c=QIMRS2IPiQyyTZJR_G1JAjH_ErBBkrDPtQe2GBNgm2w=',
+          name: "BUYYING CORP Private Ltd",
+          description: "Test Transaction",
+          image:
+            "https://media.istockphoto.com/id/1331491686/vector/element-design.jpg?s=612x612&w=0&k=20&c=QIMRS2IPiQyyTZJR_G1JAjH_ErBBkrDPtQe2GBNgm2w=",
           order_id: orderId,
 
           handler: async function (response) {
             const body = {
               ...response,
             };
-            const validateResponse = await fetch(
-              `${apiUrl}/payment-verify`,
-              {
-                method: "POST",
-                body: JSON.stringify(body),
-                headers: {
-                  "Content-Type": "application/json",
-
-                },
-              }
-            );
+            const validateResponse = await fetch(`${apiUrl}/payment-verify`, {
+              method: "POST",
+              body: JSON.stringify(body),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
             if (validateResponse.ok) {
-
               // Function to send selected numbers to the backend
               const sendSelectedNumbersToBackend = (numbers) => {
-
                 // Get the current date
                 const currentDate = new Date();
 
                 // Format the date to DD-MM-YYYY
-                const formattedDate = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
+                const formattedDate = `${currentDate.getDate()}-${
+                  currentDate.getMonth() + 1
+                }-${currentDate.getFullYear()}`;
 
-
-                const concatenatedNumbers = numbers.join('');
+                const concatenatedNumbers = numbers.join("");
                 // Wrap the selected numbers in an object with other required data
                 const requestBody = {
                   numbers: concatenatedNumbers,
@@ -146,7 +140,6 @@ export default function Cart() {
                   product: productName,
                   cost: productPrice,
                   date: formattedDate,
-
                 };
 
                 // Send a POST request to the backend server
@@ -172,15 +165,6 @@ export default function Cart() {
                   });
               };
 
-              
-
-              
-
-
-
-
-
-
               // Function to extract numbers from the URL query parameters
               const getNumbersFromURL = () => {
                 const queryParams = new URLSearchParams(window.location.search);
@@ -194,23 +178,17 @@ export default function Cart() {
                 }
               };
 
-              
-
-
               // Fetch numbers from the URL and send them to the backend
               const numbersFromURL = getNumbersFromURL();
               sendSelectedNumbersToBackend(numbersFromURL);
 
-
               const deleteProductNumbers = async () => {
                 try {
-
                   // Fetch product details based on product ID from URL
                   const Id = router.query?.productId; // Use optional chaining to access router.query
                   const pathname = window.location.pathname; // Get the pathname from the URL
-                  const id = pathname.split('/')[2];
+                  const id = pathname.split("/")[2];
 
-                  
                   const amountToDelete = 1;
                   // Make an API call to delete product numbers
                   const deleteResponse = await fetch(
@@ -229,7 +207,10 @@ export default function Cart() {
                     console.log("Product numbers deleted successfully");
                   } else {
                     // Error deleting product numbers
-                    console.error("Error deleting product numbers:", deleteResponse.statusText);
+                    console.error(
+                      "Error deleting product numbers:",
+                      deleteResponse.statusText
+                    );
                   }
                 } catch (error) {
                   console.error("Error deleting product numbers:", error);
@@ -239,47 +220,44 @@ export default function Cart() {
               // Call the function to delete product numbers
               await deleteProductNumbers();
 
-              window.location.href = '/profile';
-
+              window.location.href = "/profile";
             } else {
               // Payment verification failed
               const errorData = await validateResponse.json();
-              console.error('Error verifying payment:', errorData.message);
+              console.error("Error verifying payment:", errorData.message);
 
               // Handle the error condition, such as displaying an error message to the user
             }
           },
           callback_url: `${window.location.origin}/profile`,
           prefill: {
-            name: '',
-            email: '',
-            contact: '',
+            name: "",
+            email: "",
+            contact: "",
           },
           notes: {
-            address: 'Razorpay Corporate Office',
+            address: "Razorpay Corporate Office",
           },
           theme: {
-            color: '#3399cc',
+            color: "#3399cc",
           },
         };
 
         const rzp1 = new Razorpay(options);
         rzp1.open();
-
       } catch (error) {
         console.error("Error:", error);
       }
     };
 
-    const rzpButton = document.getElementById('rzp-button1');
+    const rzpButton = document.getElementById("rzp-button1");
     if (rzpButton) {
-      rzpButton.addEventListener('click', handlePayment);
+      rzpButton.addEventListener("click", handlePayment);
       return () => {
-        rzpButton.removeEventListener('click', handlePayment);
+        rzpButton.removeEventListener("click", handlePayment);
       };
     }
   }, [productName, productPrice, userEmailCopy, userNameCopy]);
-
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -288,17 +266,15 @@ export default function Cart() {
     if (slots) {
       const numbers = slots.split(",").map(Number); // Convert strings to numbers
       setSlotNumbers(numbers);
-
     }
 
     // Fetch product details based on product ID from URL
     const productId = router.query?.productId; // Use optional chaining to access router.query
     const pathname = window.location.pathname; // Get the pathname from the URL
-    const id = pathname.split('/')[2]; // Split the pathname and get the third segment (index 2) which represents the id
+    const id = pathname.split("/")[2]; // Split the pathname and get the third segment (index 2) which represents the id
     if (id) {
       // Fetch product details from backend using productId
       fetchProductDetails(id);
-
     }
   }, [router.query?.id]);
 
@@ -314,14 +290,31 @@ export default function Cart() {
       setProductName(productData.productName);
       setProductPrice(productData.productPrice);
       setProductImage(productData.imageProduct);
-
     } catch (error) {
       console.error("Error fetching product details:", error);
     }
   };
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const timer = React.useRef();
 
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+  const handleButtonClick = () => {
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 5000);
+    }
+  };
   return (
     <div className="flex mt-12">
       <div className="w-3/4">
@@ -372,11 +365,27 @@ export default function Cart() {
           id="razorpay-checkout-js"
           src="https://checkout.razorpay.com/v1/checkout.js"
         />
-        <button id="rzp-button1"
-          className="btn-theme-dual font-bold text-white rounded-full py-3 px-40 mt-12"
+        <Button
+          id="rzp-button1"
+          className="btn-theme-dual relative font-bold text-white rounded-full py-3 px-40 mt-12"
+          disabled={loading}
+          onClick={handleButtonClick}
         >
           Pay
-        </button>
+          {loading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                color: "#12b4b9",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginTop: "-12px",
+                marginLeft: "-12px",
+              }}
+            />
+          )}
+        </Button>
       </div>
     </div>
   );

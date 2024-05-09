@@ -49,7 +49,7 @@ export default function Home() {
       timer.current = setTimeout(() => {
         setSuccess(true);
         setLoading(false);
-      }, 2000);
+      }, 5000);
     }
   };
   return (
