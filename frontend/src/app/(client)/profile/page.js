@@ -20,6 +20,7 @@ export default function Profile() {
     const fetchUserData = async () => {
       try {
         const cookie = document.cookie;
+        console.log("THATBIS:",cookie)
         const cookieParts = cookie.split(';');
         let userId;
 
