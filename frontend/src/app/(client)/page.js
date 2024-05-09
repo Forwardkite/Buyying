@@ -143,6 +143,7 @@ export default function Home() {
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
+            
           }}
           navigation={false}
           breakpoints={{
