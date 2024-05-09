@@ -162,7 +162,7 @@ export default function Navbar(props) {
                   >
                     <MenuItem onClick={handleCloseUserMenu}>
                       <Link
-                        href="/login"
+                        href="/profile"
                         className={`flex link text-theme ${
                           pathname === "/profile" ? "active" : ""
                         }`}

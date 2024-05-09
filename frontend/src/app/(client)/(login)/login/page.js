@@ -2,17 +2,38 @@
 import { useState, useEffect } from "react";
 import Link from "next/link"; // Import Link component
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation'; // Import useRouter for redirection
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showLoginError, setShowLoginError] = useState(false); // State to control popup display
+  const [redirectTimer, setRedirectTimer] = useState(5); // Timer for redirection
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter();
 
   useEffect(() => {
-    // Ensure useRouter is only invoked on the client-side
-    const currentPath = window.location.pathname;
-    console.log("Current path:", currentPath);
+    // Check if the token exists in cookies
+    const token = document.cookie;
+
+    if (token) {
+      // Show login error popup if token is found
+      setShowLoginError(true);
+
+      // Start the redirect timer
+      const timerInterval = setInterval(() => {
+        setRedirectTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+
+      // Redirect after 5 seconds
+      setTimeout(() => {
+        router.push('/');
+      }, 5000);
+
+      // Cleanup function to clear the interval
+      return () => clearInterval(timerInterval);
+    }
   }, []);
 
   const handleLogin = async (e) => {
@@ -28,9 +49,8 @@ export default function Login() {
       });
       if (response.ok) {
         const token = await response.json();
-        // console.log('Token here:', token);
         Cookies.set('token', token, { expires: 1 / 24, secure: true, sameSite: 'none' });
-        window.location.href = "/";
+        router.push('/'); // Redirect to the home page
       } else {
         const errorMessage = await response.text();
         const formattedErrorMessage = errorMessage.replace(/"/g, '');
@@ -83,6 +103,14 @@ export default function Login() {
           </div>
         </form>
       </div>
+      {/* Popup for showing login error */}
+      {showLoginError && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-md shadow-lg">
+            <p className="text-center text-red-600 font-semibold mb-4">Oops..You are already logged in! Redirecting in {redirectTimer} seconds...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
