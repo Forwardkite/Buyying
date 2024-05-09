@@ -164,7 +164,7 @@ export default function Navbar(props) {
                       <Link
                         href="/login"
                         className={`flex link text-theme ${
-                          pathname === "/dashboard/login" ? "active" : ""
+                          pathname === "/profile" ? "active" : ""
                         }`}
                       >
                         <Typography textAlign="center">Profile</Typography>
