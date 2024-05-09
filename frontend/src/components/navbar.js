@@ -66,10 +66,9 @@ export default function Navbar(props) {
         <AppBar
           position="sticky"
           className="bg-white text-theme py-2 md:py-6 px-0"
-          sx={{ px: 2 }}
         >
           <Container maxWidth="xl">
-            <Toolbar disableGutters>
+            <Toolbar disableGutters className="w-full flex justify-between">
               <Link href="/">
                 <img
                   src="/assets/img/Buyyinn-logo.png"
@@ -117,8 +116,8 @@ export default function Navbar(props) {
               </Box>
 
               <Box
-                sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
-                className="text-theme justify-end"
+                sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}
+                className="text-theme justify-between w-[400px]"
               >
                 <Button sx={{ my: 2, color: "white", display: "block" }}>
                   Play
@@ -139,44 +138,43 @@ export default function Navbar(props) {
                     <span className="ms-2">Donations</span>
                   </Link>
                 </Button>
-              </Box>
-
-              <Box sx={{ flexGrow: 0 }} className="text-theme">
-                <Tooltip title="Open Profile">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <PersonIcon />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Link
-                      href="/login"
-                      className={`flex link text-theme ${
-                        pathname === "/dashboard/login" ? "active" : ""
-                      }`}
-                    >
-                      <Typography textAlign="center">Profile</Typography>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">Logout</Typography>
-                  </MenuItem>
-                </Menu>
+                <Box sx={{ flexGrow: 0 }} className="text-theme">
+                  <Tooltip title="Open Profile">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <PersonIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <Link
+                        href="/login"
+                        className={`flex link text-theme ${
+                          pathname === "/dashboard/login" ? "active" : ""
+                        }`}
+                      >
+                        <Typography textAlign="center">Profile</Typography>
+                      </Link>
+                    </MenuItem>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">Logout</Typography>
+                    </MenuItem>
+                  </Menu>
+                </Box>
               </Box>
             </Toolbar>
           </Container>

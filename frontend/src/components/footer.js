@@ -27,7 +27,7 @@ export default function footer() {
       </div>
       <span className="w-full h-1 bg-theme-grad-cyan block mx-auto md:px-6"></span>
       <div className="footer-bottom w-full py-4 md:py-16 px-4 md:px-8 flex justify-center">
-        <span className="text-center">
+        <span className="text-center text-xs">
           © Buyyinn 2024. License No: CN- 2965688. All Rights Reserved.
         </span>
       </div>

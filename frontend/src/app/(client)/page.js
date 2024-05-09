@@ -1,5 +1,5 @@
 "use client";
-
+import * as React from "react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -7,6 +7,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/bundle";
 import { Autoplay, Navigation } from "swiper/modules";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Home() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -30,7 +33,25 @@ export default function Home() {
 
     fetchData();
   }, []);
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const timer = React.useRef();
 
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+  const handleButtonClick = () => {
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 2000);
+    }
+  };
   return (
     <>
       <section className=" md:px-0 ">
@@ -46,9 +67,9 @@ export default function Home() {
       <section className="home-prizes mt-4 md:mt-12 flex flex-wrap md:flex-nowrap gap-4 md:gap-8 w-full md:px-0 mb-4 md:mb-16">
         <div className="w-full md:w-1/2 bg-orange-500 bg-pattern-orange bg-cover rounded-lg md:rounded-3xl text-white flex flex-col justify-center items-center ">
           <div className="w-full md:w-4/6 p-8">
-            <h6 className="text-3xl md:text-5xl font-bold">
+            <h6 className="text-4xl md:text-5xl font-bold">
               Buy Now <br />
-              <span className="text-2xl md:text-4xl font-bold">
+              <span className="text-xl md:text-4xl font-bold">
                 And Get Your Thar Now
               </span>
             </h6>
@@ -115,10 +136,30 @@ export default function Home() {
                       <div>
                         <p className="text-sm">Stock: {e.stockNumber}</p>
                       </div>
-                      <Link href={`/products/${e._id}`} className="w-full">
-                        <button className="btn-theme-dual font-bold text-white w-full rounded-full py-3 mt-4">
+                      <Link
+                        href={`/products/${e._id}`}
+                        className="w-full  mt-4 relative"
+                      >
+                        <Button
+                          className="btn-theme-dual font-bold text-white w-full rounded-full py-3 disabled:bg-gray-300"
+                          disabled={loading}
+                          onClick={handleButtonClick}
+                        >
                           Buy Now
-                        </button>
+                        </Button>
+                        {loading && (
+                          <CircularProgress
+                            size={24}
+                            sx={{
+                              color: "#12b4b9",
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              marginTop: "-12px",
+                              marginLeft: "-12px",
+                            }}
+                          />
+                        )}
                       </Link>
                     </div>
                   </div>
