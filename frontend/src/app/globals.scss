@@ -20,6 +20,9 @@ body {
   box-sizing: border-box;
   color: #000;
 }
+.min-h-main {
+  min-height: calc(100vh - 460px);
+}
 h1 {
   font-size: 3rem;
   font-weight: 700;
@@ -81,7 +84,7 @@ nav li {
     background-position: right center;
   }
   &:disabled {
-    background-color: #4e4e4e;
+    background-color: #b8b8b8;
     background-image: none;
   }
 }
