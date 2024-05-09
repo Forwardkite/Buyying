@@ -47,7 +47,8 @@ export default function Home() {
   const [variablePro, SetVariablePro] = useState(false);
   const [ProId, setProId] = useState();
   const [openEditModal, setOpenEditModal] = React.useState(false);
-
+  const [shortDescription, setShortDescription] = useState('');
+  const [productDetails, setProductDetails] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [ProImage, setProImage] = useState(null);
 
@@ -71,7 +72,8 @@ export default function Home() {
     endingDate: endDate,
     productId: ProId,
     imageProduct: ProImage,
-
+    shortDescription: shortDescription, // Include Short Description
+    productDetails: productDetails,
   };
 
   const handleFileChange = (e) => {
@@ -89,6 +91,8 @@ export default function Home() {
   };
 
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -100,7 +104,9 @@ export default function Home() {
     formData.append("startingDate", startDate);
     formData.append("endingDate", endDate);
     formData.append("productId", ProId);
-    formData.append("imageProduct", selectedFile); // Make sure this matches your backend field name
+    formData.append("imageProduct", selectedFile);
+    formData.append("shortDescription", shortDescription);
+    formData.append("productDetails", productDetails);
 
     try {
       const response = await fetch(`${apiUrl}/admin/create`, {
@@ -436,6 +442,30 @@ export default function Home() {
                 <Switch {...label} />
               </div>
             </div>
+            <div className="flex gap-6 w-full">
+              <div className="input flex flex-col w-1/2">
+                <label htmlFor="">Short Description</label>
+                <input
+                  type="text"
+                  className="border"
+                  value={shortDescription}
+                  onChange={(e) => setShortDescription(e.target.value)}
+                />
+              </div>
+              <div className="input flex flex-col w-1/2">
+                <label htmlFor="">Product Details</label>
+                <textarea
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="5"
+                  className="border"
+                  value={productDetails}
+                  onChange={(e) => setProductDetails(e.target.value)}
+                ></textarea>
+              </div>
+            </div>
+
             <div className="flex w-full">
               <button
                 type="submit"
@@ -505,7 +535,7 @@ export default function Home() {
                         className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded"
                         onClick={() => setProImage(null)}
                       >
-                        DELETE  
+                        DELETE
                       </button>
                     </div>
                   )}
@@ -566,7 +596,32 @@ export default function Home() {
                 <span>Variable product</span>
                 <Switch {...label} />
               </div>
+
             </div>
+            <div className="flex gap-6 w-full">
+              <div className="input flex flex-col w-1/2">
+                <label htmlFor="">Short Description</label>
+                <input
+                  type="text"
+                  value={shortDescription}
+                  className="border"
+                  onChange={(e) => setShortDescription(e.target.value)}
+                />
+              </div>
+              <div className="input flex flex-col w-1/2">
+                <label htmlFor="">Product Details</label>
+                <textarea
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="5"
+                  className="border"
+                  value={productDetails}
+                  onChange={(e) => setProductDetails(e.target.value)}
+                ></textarea>
+              </div>
+            </div>
+
             <div className="flex w-full">
               <button
                 type="button"

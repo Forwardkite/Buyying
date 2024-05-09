@@ -24,6 +24,8 @@ const createProduct = async (req, res) => {
     startingDate,
     endingDate,
     imageProduct,
+    shortDescription,
+    productDetails
   } = req.body;
 
   const productData = {
@@ -35,6 +37,8 @@ const createProduct = async (req, res) => {
     endingDate,
     imageProduct,
     stockLeft: stockNumber,
+    productDetails,
+    shortDescription,
   };
 
   try {
