@@ -1,5 +1,5 @@
 // Import the ProductDB model
-const Slot = require('../models/usersDB');
+const Slot = require('../models/jackpotDB');
 
 // Function to handle '/admin/view' route
 const displaySlotData = async (req, res) => {

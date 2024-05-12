@@ -4,7 +4,7 @@ const router = express.Router();
 const app = express();
 const multer = require("multer");
 connectionDB();
-const deleteExpiredProducts = require ("../controllers/deleteExpiredProducts")
+const deleteExpiredProducts = require("../controllers/deleteExpiredProducts")
 deleteExpiredProducts();
 
 // Set up multer storage
@@ -119,9 +119,60 @@ router.post("/api/verify-otp", loginVerifyOtp.verifyOTP);
 
 /*___________________________________________SMS_RESEND_API_______________________________________*/
 
-const loginResendOtp = require ("../controllers/loginOtpApi");
+const loginResendOtp = require("../controllers/loginOtpApi");
 
-router.post("api/resend-otp", loginResendOtp.resendOTP)
+router.post("/api/resend-otp", loginResendOtp.resendOTP)
+
+/*___________________________________________JACKPOT_DATA______________________________________*/
+
+const jackpotData = require("../controllers/jackpotData");
+
+const displayJackpotData = require ("../controllers/displayJackpot");
+
+const jackpotDelete = require("../controllers/deleteJackpot");
+
+//jackpot Image
+router.post("/api/jackpot", upload.single("image"), jackpotData.createJackpot)
+
+//jackpot Data
+router.get("/api/jackpot/view", displayJackpotData.viewJackpot)
+
+//jackpot Delete
+router.delete("/api/jackpot/delete/:JackpotIdToDelete", jackpotDelete.deleteJackpot);
+
+/*___________________________________________WINNER_DATA______________________________________*/
+
+const winnerData = require("../controllers/winnerData");
+
+const displayWinnerData = require ("../controllers/displayWinner");
+
+const WinnerDelete = require("../controllers/deleteWinner");
+
+//winner Image
+router.post("/api/winner", upload.single("image"), winnerData.createWinner)
+
+//winner Data
+router.get("/api/winner/view", displayWinnerData.viewWinner)
+
+//winner Delete
+router.delete("/api/winner/delete/:WinnerIdToDelete", WinnerDelete.deleteWinner);
+
+/*___________________________________________NEWS_DATA______________________________________*/
+
+const newsData = require("../controllers/newsData");
+
+const displayNewsData = require ("../controllers/displayNews");
+
+const NewsDelete = require("../controllers/deleteNews");
+
+//winner Image
+router.post("/api/news", upload.single("image"), newsData.createNews)
+
+//winner Data
+router.get("/api/news/view", displayNewsData.viewNews)
+
+//news Delete
+router.delete("/api/news/delete/:NewsIdToDelete", NewsDelete.deleteNews);
 
 /*__________________________________________________________________________________________________*/
 
