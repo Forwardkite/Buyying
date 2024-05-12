@@ -35,6 +35,12 @@ export default function Home() {
   }, []);
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
+
+   // State variables to store data fetched from each database
+   const [news, setNews] = useState([]);
+   const [jackpots, setJackpots] = useState([]);
+   const [winners, setWinners] = useState([]);
+
   const timer = React.useRef();
 
   React.useEffect(() => {
@@ -52,6 +58,42 @@ export default function Home() {
       }, 5000);
     }
   };
+  useEffect(() => {
+    
+    // Fetch data for jackpot
+    fetch(`${apiUrl}/admin/api/jackpot/view`)
+      .then(response => response.json())
+      .then(data => {
+        
+        setJackpots(data);
+        console.log("CONSEL:",data)
+      })
+      .catch(error => {
+        console.error("Error fetching news data:", error);
+      });
+
+    // Fetch data for news
+    fetch(`${apiUrl}/admin/api/news/view`)
+      .then(response => response.json())
+      .then(data => {
+        setNews(data);
+      })
+      .catch(error => {
+        console.error("Error fetching news data:", error);
+      });
+
+    // Fetch data for winners
+    fetch(`${apiUrl}/admin/api/winner/view`)
+      .then(response => response.json())
+      .then(data => {
+        setWinners(data);
+        console.log("THIS IS IT",data)
+      })
+      .catch(error => {
+        console.error("Error fetching winners data:", error);
+      });
+  }, []);
+
   return (
     <>
       <section className=" md:px-0 ">
@@ -85,8 +127,8 @@ export default function Home() {
             <Swiper
               slidesPerView={1}
               speed={200}
-              loop={true}
-              css-mode={true}
+              loop="true"
+              css-mode="true"
               spaceBetween={30}
               autoplay={{
                 delay: 2500,
@@ -181,7 +223,7 @@ export default function Home() {
           slidesPerView={1}
           speed={200}
           loop={true}
-          css-mode={true}
+          css-mode="true"
           spaceBetween={30}
           autoplay={{
             delay: 2500,
@@ -191,7 +233,7 @@ export default function Home() {
           navigation={false}
           breakpoints={{
             640: {
-              slidesPerView: 2,
+              slidesPerView: 1,
               spaceBetween: 30,
             },
             768: {
@@ -205,93 +247,37 @@ export default function Home() {
           }}
           modules={[Autoplay, Navigation]}
         >
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-8 flex flex-col gap-4">
-              <div className="details">
-                <h6 className="font-bold text-xl">Mega Prize</h6>
-                <p className="font-bold text-3xl">Mahindra Thar 4x4</p>
+          {jackpots.map((jackpot) => (
+            <SwiperSlide key={jackpot.id}>
+              {/* Render jackpot slide content */}
+              <div className="w-full bg-white rounded-xl p-8 flex flex-col gap-4">
+                <div className="details">
+                  <h6 className="font-bold text-xl">{jackpot.name}</h6>
+                  {/* <p className="font-bold text-3xl">{jackpot.date}</p> */}
+                </div>
+                <img
+                  src={`${apiUrl}/uploads/${jackpot.image}`}
+                  alt=""
+                  className="rounded-xl aspect-[4/3] object-contain"
+                />
+                <div className="flex justify-between">
+                  <h6 className="text-sm">
+                    Product: <span className="font-bold">{jackpot.name}</span>
+                  </h6>
+                  <p className="text-sm">
+                    How to get this? <span className="font-bold">Read More</span>
+                  </p>
+                </div>
               </div>
-              <img
-                src="@/../assets/img/thar.png"
-                alt=""
-                className="rounded-xl aspect-[4/3] object-contain"
-              />
-              <div className="flex justify-between">
-                <h6 className="text-sm">
-                  Product: <span className="font-bold">T-shirt</span>
-                </h6>
-                <p className="text-sm">
-                  How to get this? <span className="font-bold">Read More</span>
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-8 flex flex-col gap-4">
-              <div className="details">
-                <h6 className="font-bold text-xl">Mega Prize</h6>
-                <p className="font-bold text-3xl">Mahindra Thar 4x4</p>
-              </div>
-              <img
-                src="@/../assets/img/thar.png"
-                alt=""
-                className="rounded-xl aspect-[4/3] object-contain"
-              />
-              <div className="flex justify-between">
-                <h6 className="text-sm">
-                  Product: <span className="font-bold">T-shirt</span>
-                </h6>
-                <p className="text-sm">
-                  How to get this? <span className="font-bold">Read More</span>
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-8 flex flex-col gap-4">
-              <div className="details">
-                <h6 className="font-bold text-xl">Mega Prize</h6>
-                <p className="font-bold text-3xl">Mahindra Thar 4x4</p>
-              </div>
-              <img
-                src="@/../assets/img/thar.png"
-                alt=""
-                className="rounded-xl aspect-[4/3] object-contain"
-              />
-              <div className="flex justify-between">
-                <h6 className="text-sm">
-                  Product: <span className="font-bold">T-shirt</span>
-                </h6>
-                <p className="text-sm">
-                  How to get this? <span className="font-bold">Read More</span>
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-8 flex flex-col gap-4">
-              <div className="details">
-                <h6 className="font-bold text-xl">Mega Prize</h6>
-                <p className="font-bold text-3xl">Mahindra Thar 4x4</p>
-              </div>
-              <img
-                src="@/../assets/img/thar.png"
-                alt=""
-                className="rounded-xl aspect-[4/3] object-contain"
-              />
-              <div className="flex justify-between">
-                <h6 className="text-sm">
-                  Product: <span className="font-bold">T-shirt</span>
-                </h6>
-                <p className="text-sm">
-                  How to get this? <span className="font-bold">Read More</span>
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </section>
-      <section className="bg-theme-grad-orange py-4 md:py-16 px-4 md:px-8 mb-4 md:mb-16">
+
+      
+      
+       {/* Winners section */}
+       <section className="bg-theme-grad-orange py-4 md:py-16 px-4 md:px-8 mb-4 md:mb-16">
         <h4 className="font-bold text-white text-4xl md:text-6xl mx-auto mb-3 md:mb-8 text-center">
           Winners
         </h4>
@@ -302,7 +288,7 @@ export default function Home() {
           slidesPerView={1}
           speed={200}
           loop={true}
-          css-mode={true}
+          css-mode="true"
           spaceBetween={30}
           autoplay={{
             delay: 2500,
@@ -311,107 +297,44 @@ export default function Home() {
           navigation={false}
           breakpoints={{
             640: {
-              slidesPerView: 2,
+              slidesPerView: 1  ,
               spaceBetween: 30,
             },
             768: {
-              slidesPerView: 3,
+              slidesPerView: 2,
               spaceBetween: 30,
             },
             1024: {
-              slidesPerView: 4,
+              slidesPerView: 3,
               spaceBetween: 30,
             },
           }}
           modules={[Autoplay, Navigation]}
         >
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
+          {/* Map through winners data */}
+          {winners.map((winner) => (
+            <SwiperSlide key={winner.id}>
+              {/* Render winner slide content */}
+              <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
+                <img
+                  src={`${apiUrl}/uploads/${winner.image}`}
+                  alt=""
+                  className="rounded-xl aspect-[4/3] object-contain"
+                />
+                <div className="details">
+                  <h6 className="font-bold text-xl">{winner.name}</h6>
+                  <p className="text-sm"></p>
+                  <p className="text-base mt-4">{winner.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </section>
+
+
+      {/* News section */}
       <section className="bg-theme-grad-cyan py-4 md:py-16 px-4 md:px-8 mb-8 md:mb-16">
         <h4 className="font-bold text-white text-4xl md:text-6xl mx-auto mb-3 md:mb-8 text-center">
           News
@@ -422,8 +345,8 @@ export default function Home() {
         <Swiper
           slidesPerView={1}
           speed={200}
-          loop={true}
-          css-mode={true}
+          loop="true"
+          css-mode="true"
           spaceBetween={30}
           autoplay={{
             delay: 2500,
@@ -446,91 +369,24 @@ export default function Home() {
           }}
           modules={[Autoplay, Navigation]}
         >
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
+          {/* Map through news data */}
+          {news.map((item) => (
+            <SwiperSlide key={item.id}>
+              {/* Render news slide content */}
+              <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
+                <img
+                  src={`${apiUrl}/uploads/${item.image}`}
+                  alt=""
+                  className="rounded-xl aspect-[4/3] object-contain"
+                />
+                <div className="details">
+                  <h6 className="font-bold text-xl">{item.name}</h6>
+                  {/* <p className="text-sm">{item.date}</p> */}
+                  <p className="text-base mt-4">{item.description}</p>
+                </div>
               </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full bg-white rounded-xl p-6 flex flex-col gap-8">
-              <img
-                src="@/../assets/img/winner.png"
-                alt=""
-                className="rounded-xl"
-              />
-              <div className="details">
-                <h6 className="font-bold text-xl">Title</h6>
-                <p className="text-sm">11/01/2024</p>
-                <p className="text-base mt-4">
-                  As per the existing procedure, when Telecom Service Providers
-                  (TSPs) plan to procure directly from a Non-India
-                </p>
-              </div>
-            </div>
-          </SwiperSlide>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </section>
     </>
